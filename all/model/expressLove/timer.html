@@ -1,0 +1,175 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml"> 
+<head> 
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
+<title>计时器</title> 
+<script type="text/javascript" src="js/jquery.js"></script>
+<script type="text/javascript" src="js/timecountdown.js"></script>
+<style>
+    *{padding: 0; margin: 0; font-family: "Lato", sans-serif}
+    i{font-size: 14px}
+    body{background: #0d0d0d; color: #ffffff}
+    div{font-size: 20px; text-align: center; padding-top: 15px;}
+    div span{display: inline-block; width: 50px;padding: 10px; border-radius: 5px}
+    p{font-size: 18px}
+    span.red{background: #ff0000}
+    span.yg{background: yellowgreen}
+    span.or{background: orange}
+    span.pi{background: palevioletred}
+    span.pk{background: #00a0e9}
+    span.dp{background: #FF1493}
+    span.mk{background: #1FADC5}
+    span p:first-child{font-size: 25px}
+    span p:last-child{font-size: 14px}
+</style>
+<script> 
+/**
+ * time.day 和 time.dayZero 区别
+ * time.day 如果是1天 返回 1
+ * time.dayZero 如果是1天 则返回 01
+ * 除了day拥有Zero外 hour,minute,second,msec都有Zero 即小于10的，都会在前面补0
+ */
+window.onload=function(){
+	setInterval(function() {
+        var now = new Date();
+		document.getElementById("y0").innerHTML=now.getFullYear();
+		document.getElementById("m0").innerHTML=now.getMonth();
+		document.getElementById("d0").innerHTML=now.getDate();
+		document.getElementById("h0").innerHTML=now.getHours();
+		document.getElementById("i0").innerHTML=now.getMinutes();
+		document.getElementById("s0").innerHTML=now.getSeconds();
+		document.getElementById("mm0").innerHTML=now.getDay();
+    },100)
+	//倒计时
+	var end = "2037-12-27 21:49:00"; 
+	document.getElementById("end").innerHTML=end
+	xcsoft.countdown(new Date(end).getTime()/1000,function (time) {
+		document.getElementById("y1").innerHTML=time.year
+		document.getElementById("d1").innerHTML=time.day
+		document.getElementById("h1").innerHTML=time.hourZero
+		document.getElementById("i1").innerHTML=time.minuteZero
+		document.getElementById("s1").innerHTML=time.secondZero
+		document.getElementById("m1").innerHTML=time.msecZero
+	},function (time) {
+		//倒计时结束后的操作
+	})
+	//计时
+	var start = "2019-12-27 21:49:00"; 
+	document.getElementById("start").innerHTML=start
+	xcsoft.countup(new Date(start).getTime()/1000,function (time) {
+		document.getElementById("y2").innerHTML=time.year
+		document.getElementById("d2").innerHTML=time.day
+		document.getElementById("h2").innerHTML=time.hourZero
+		document.getElementById("i2").innerHTML=time.minuteZero
+		document.getElementById("s2").innerHTML=time.secondZero
+	})
+
+
+}
+function getnow(){
+	var now = new Date();
+	document.getElementById("y0").innerHTML=now.getFullYear();
+	document.getElementById("m0").innerHTML=now.getMonth();
+	document.getElementById("d0").innerHTML=now.getDate();
+	document.getElementById("h0").innerHTML=now.getHours();
+	document.getElementById("i0").innerHTML=now.getMinutes();
+	document.getElementById("s0").innerHTML=now.getMinutes();
+	document.getElementById("mm0").innerHTML=now.getDay();
+}
+</script>
+</head> 
+<body> 
+<div>
+    <i>现在时间</i>
+    <div>
+        <span class="red">
+            <p id="y0">00</p>
+            <p>年</p>
+        </span>
+        <span class="dp">
+            <p id="m0">00</p>
+            <p>月</p>
+        </span>
+        <span class="or">
+            <p id="d0">00</p>
+            <p>日</p>
+        </span>
+        <span class="pi">
+            <p id="h0">00</p>
+            <p>时</p>
+        </span>
+        <span class="yg">
+            <p id="i0">00</p>
+            <p>分</p>
+        </span>
+        <span class="pk">
+            <p id="s0">00</p>
+            <p>秒</p>
+        </span>
+        <span class="mk">
+            <p id="mm0">00</p>
+            <p>星期</p>
+        </span>
+    </div>
+</div>
+<div>
+    <i>距<span id="end" style="width: 150px;"></span>还有</i>
+    <div>
+        <span class="red">
+            <p id="y1">00</p>
+            <p>年</p>
+        </span>
+        <span class="yg">
+            <p id="d1">00</p>
+            <p>天</p>
+        </span>
+        <span class="or">
+            <p id="h1">00</p>
+            <p>时</p>
+        </span>
+        <span class="pi">
+            <p id="i1">00</p>
+            <p>分</p>
+        </span>
+        <span class="pk">
+            <p id="s1">00</p>
+            <p>秒</p>
+        </span>
+        <span class="mk">
+            <p id="m1">00</p>
+            <p>毫秒</p>
+        </span>
+    </div>
+</div>
+
+
+<div>
+    <i>从<span id="start" style="width: 150px;"></span>至今已经过去</i>
+    <div>
+        <span class="red">
+            <p id="y2">1</p>
+            <p>年</p>
+        </span>
+        <span class="yg">
+            <p id="d2">150</p>
+            <p>天</p>
+        </span>
+        <span class="or">
+            <p id="h2">13</p>
+            <p>时</p>
+        </span>
+        <span class="pi">
+            <p id="i2">10</p>
+            <p>分</p>
+        </span>
+        <span class="pk">
+            <p id="s2">37</p>
+            <p>秒</p>
+        </span>
+    </div>
+</div>
+
+
+
+</body> 
+</html> 
