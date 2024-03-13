@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>科技公司主页</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f2f2f2;
+            animation: fadeIn 1s ease-out;
+        }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+            animation: slideDown 1s ease-out;
+        }
+        @keyframes slideDown {
+            from {
+                transform: translateY(-100%);
+            }
+            to {
+                transform: translateY(0);
+            }
+        }
+        h1 {
+            margin: 0;
+            font-size: 36px;
+        }
+        section {
+            padding: 50px 20px;
+            text-align: center;
+            animation: slideUp 1s ease-out;
+        }
+        @keyframes slideUp {
+            from {
+                transform: translateY(100%);
+            }
+            to {
+                transform: translateY(0);
+            }
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .about-us, .mission, .products, .team, .contact {
+            opacity: 0;
+            animation: fadeIn 1s ease-out forwards;
+        }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .products ul {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            animation: pulse 1s infinite alternate;
+        }
+        @keyframes pulse {
+            from {
+                transform: scale(1);
+            }
+            to {
+                transform: scale(1.05);
+            }
+        }
+        footer {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 20px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>欢迎来到科技公司</h1>
+    </header>
+    <section class="about-us">
+        <div class="container">
+            <h2>关于我们</h2>
+            <p>我们是一家充满创新精神的科技公司，致力于提供高质量的技术解决方案，推动世界的科技进步。</p>
+        </div>
+    </section>
+    <section class="mission">
+        <div class="container">
+            <h2>我们的使命</h2>
+            <p>我们的使命是利用最新的科技成果，改变人们的生活方式，创造一个更加智能、便捷和可持续的世界。</p>
+        </div>
+    </section>
+    <section class="products">
+        <div class="container">
+            <h2>我们的产品</h2>
+            <p>以下是我们推出的一些产品：</p>
+            <ul>
+                <li>智能家居系统</li>
+                <li>人工智能助手</li>
+                <li>区块链解决方案</li>
+            </ul>
+        </div>
+    </section>
+    <section class="team">
+        <div class="container">
+            <h2>我们的团队</h2>
+            <p>我们的团队由一群充满激情和创造力的科技专家组成，他们拥有丰富的经验和专业知识，致力于为客户提供最佳的技术解决方案。</p>
+        </div>
+    </section>
+    <section class="contact">
+        <div class="container">
+            <h2>联系我们</h2>
+            <p>如有任何问题或合作意向，请联系我们：</p>
+            <ul>
+                <li>地址：[公司地址]</li>
+                <li>电话：[公司电话]</li>
+                <li>邮箱：[公司邮箱]</li>
+                <li>网站：[公司网站]</li>
+            </ul>
+        </div>
+    </section>
+    <footer>
+        &copy; 2024 科技公司. 版权所有.
+    </footer>
+</body>
+</html>
