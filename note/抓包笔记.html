@@ -1,21 +1,21 @@
-<!DOCTYPE html><html><head><script>fetch('common_head.html').then(response=>response.text()).then(html=>{document.head.innerHTML+=html;});</script></head><body><p>
+<!DOCTYPE html><html><head><script>fetch('../note/common_head.html').then(response=>response.text()).then(html=>{document.head.innerHTML+=html;});</script></head><body><p>
 
-wiresharkÄÜ»ñÈ¡HTTP£¬Ò²ÄÜ»ñÈ¡HTTPS£¬µ«ÊÇ²»ÄÜ½âÃÜHTTPS£¬ËùÒÔwireshark¿´²»¶®HTTPSÖĞµÄÄÚÈİ£¬×Ü½á£¬Èç¹ûÊÇ´¦ÀíHTTP,HTTPS »¹ÊÇÓÃFiddler, ÆäËûĞ­Òé±ÈÈçTCP,UDP ¾ÍÓÃwireshark.
+wiresharkèƒ½è·å–HTTPï¼Œä¹Ÿèƒ½è·å–HTTPSï¼Œä½†æ˜¯ä¸èƒ½è§£å¯†HTTPSï¼Œæ‰€ä»¥wiresharkçœ‹ä¸æ‡‚HTTPSä¸­çš„å†…å®¹ï¼Œæ€»ç»“ï¼Œå¦‚æœæ˜¯å¤„ç†HTTP,HTTPS è¿˜æ˜¯ç”¨Fiddler, å…¶ä»–åè®®æ¯”å¦‚TCP,UDP å°±ç”¨wireshark.
 
-or Óë ||     µÈĞ§
-eq Óë ==     µÈĞ§
-and Óë &&    µÈĞ§
+or ä¸ ||     ç­‰æ•ˆ
+eq ä¸ ==     ç­‰æ•ˆ
+and ä¸ &&    ç­‰æ•ˆ
 
-ÅÅ³ıarp°ü£¬Èç!arp   »òÕß   not arp
+æ’é™¤arpåŒ…ï¼Œå¦‚!arp   æˆ–è€…   not arp
 
-Ä¿µÄµØÖ·         ip.dst==192.168.101.8
-Ô´µØÖ·Îª         ip.src==1.1.1.1
-Ä¿µÄ¶Ë¿ÚÎª80     tcp.dstport==80
-Ô´¶Ë¿ÚÎª80       tcp.srcport==80
-¹ıÂËget°ü        http.request.method=="GET",
-¹ıÂËpost°ü       http.request.method=="POST"
+ç›®çš„åœ°å€         ip.dst==192.168.101.8
+æºåœ°å€ä¸º         ip.src==1.1.1.1
+ç›®çš„ç«¯å£ä¸º80     tcp.dstport==80
+æºç«¯å£ä¸º80       tcp.srcport==80
+è¿‡æ»¤getåŒ…        http.request.method=="GET",
+è¿‡æ»¤poståŒ…       http.request.method=="POST"
 
-ip.addr == 119.75.217.26 and icmp ±íÊ¾Ö»ÏÔÊ¾ICPMĞ­ÒéÇÒÔ´Ö÷»úIP»òÕßÄ¿µÄÖ÷»úIPÎª119.75.217.26µÄÊı¾İ°ü¡£
+ip.addr == 119.75.217.26 and icmp è¡¨ç¤ºåªæ˜¾ç¤ºICPMåè®®ä¸”æºä¸»æœºIPæˆ–è€…ç›®çš„ä¸»æœºIPä¸º119.75.217.26çš„æ•°æ®åŒ…ã€‚
 
 
 </p></body></html>
