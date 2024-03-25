@@ -16,7 +16,8 @@ def getfiles():
     
     # 绘制index首页
     with open(os.path.dirname(parent_directory)+"/index.html", "w", encoding="utf-8") as file:
-        file.write("<!DOCTYPE html><html><head><script></script></head><body><p>"+generate_ul(parent_directory)+"</p></body></html>")
+        file.write('<!DOCTYPE html><html><head><script></script></head><body><div style="float: left;width:20%;">'\
+            +generate_ul(parent_directory)+'</div><div style="float: left;width: 80%;"><iframe name="myFrame" style="width: 100%;height: 700px;"></iframe></div></body></html>')
 
 # 绘制index首页
 def generate_ul(directory,indent='note'):
@@ -31,7 +32,7 @@ def generate_ul(directory,indent='note'):
         # 如果是文件，则直接添加到<ul>节点中
         else:
             if item.endswith(".txt") :
-                html += '<li><a href="{}">{}</a></li>\n'.format(indent+"/"+item,item)
+                html += '<li><a href="{}" target="myFrame">{}</a></li>\n'.format(indent+"/"+item,item)
     # 结束<ul>节点
     html += '</ul>\n'
     return html
