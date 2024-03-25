@@ -1,0 +1,67 @@
+<!DOCTYPE html><html><head><script>fetch('../../note_common_head.html').then(response=>response.text()).then(html=>{document.head.innerHTML+=html;});</script></head><body><p>
+<span th:text="${user.name}">
+<img alt="" th:src="@{'/static/'+*{test_org_code}+'.png'}" />
+#省去前面user
+<h2 th:object="${user}">
+    <p>Name: <span th:text="*{name}">Jack</span>.</p>
+    <p>Age: <span th:text="*{age}">21</span>.</p>
+    <p>friend: <span th:text="*{friend.name}">Rose</span>.</p>
+</h2>
+#ognl表达式中的方法调用
+<h2 th:object="${user}">
+    <p>FirstName: <span th:text="*{name.split(' ')[0]}">Jack</span>.</p>
+    <p>LastName: <span th:text="*{name.split(' ')[1]}">Li</span>.</p>
+</h2>
+
+<span th:text="${#dates.format(today,'yyyy-MM-dd')}">2018-04-25</span>
+#使用一对'引用的内容就是字符串字面值
+<span th:text="'thymeleaf'">template</span>
+
+<p>今年是 <span th:text="2018">1900</span>.</p>
+<p>两年后将会是 <span th:text="2018 + 2">1902</span>.</p>
+
+#普通字符串与表达式拼接
+<span th:text="'欢迎您:' + ${user.name} + '!'"></span>
+<span th:text="|欢迎您:${user.name}|"></span>
+
+
+<div th:if="true">你填的是true</div>
+如果表达式结果为布尔值，则为 true 或 false
+如果表达式的值为 null，th:if 将判定此表达式为 false
+如果值是数字，为 0 时，判断为 false；不为零时，判定为 true
+如果值是是 String，值为 “false”、“off”、“no” 时，判定为 false，否则判断为 true，字符串为空时，也判断为 true
+如果值不是布尔值，数字，字符或字符串的其它对象，只要不为 null，则判断为 true
+<span th:text="${user.age}%2 == 0"></span>  
+gt (>), lt (<), ge (>=), le (<=), not (!). Also eq (==), neq/ne (!=).
+#三元运算
+<span th:text="${user.sex} ? '男':'女'"></span> 拓展默认值使用：<span th:text="${user.name} ?: '二狗'"></span>
+
+#循环
+<tr th:each="user : ${users}">
+    <td th:text="${user.name}">Onions</td>
+    <td th:text="${user.age}">2.41</td>
+</tr>
+<tr th:each="user,stat : ${users}">
+    <td th:text="${user.name}">Onions</td>
+    <td th:text="${user.age}">2.41</td>
+</tr>
+stat对象包含以下属性：
+index，从0开始的角标
+count，元素的个数，从1开始
+size，总元素个数
+current，当前遍历到的元素
+even/odd，返回是否为奇偶，boolean值
+first/last，返回是否为第一或最后，boolean值
+
+#分支控制switch
+<div th:switch="${user.role}">
+  <p th:case="'admin'">用户是管理员</p>
+  <p th:case="'manager'">用户是经理</p>
+  <p th:case="*">用户是别的玩意</p>
+</div>
+
+#在script标签中通过th:inline="javascript"来声明这是要特殊处理的js脚本
+<script th:inline="javascript">
+var data = [[${list}]];
+
+</p></body></html>

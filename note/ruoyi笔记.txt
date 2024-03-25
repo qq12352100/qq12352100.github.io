@@ -1,0 +1,2 @@
+ruoyi-admin --> application-druid.yml 修改数据库连接
+101.43.7.199:3306/bkk   root/root@qwer

@@ -1,0 +1,99 @@
+<!DOCTYPE html><html><head><script>fetch('../note_common_head.html').then(response=>response.text()).then(html=>{document.head.innerHTML+=html;});</script></head><body><p>
+============================================================================================================================
+============================================================================================================================
+============================================================================================================================
+==========================================================================================================把jar放入本地私服引入
+dzjkkTool.jar放在apache-maven-3.5.3\bin下然后cmd
+
+D:\apache-maven-3.5.3\bin>mvn install:install-file -Dfile=dzjkkTool.jar -DgroupId=com.bkk -DartifactId=dzjkkTool -Dversion=1.0.0 -Dpackaging=jar
+mvn install:install-file -Dfile=aliyun-java-sdk-core-4.4.1.jar -DgroupId=com.aliyun -DartifactId=sm-java-sdk-core -Dversion=4.4.1 -Dpackaging=jar
+mvn install:install-file -Dfile=sm-encrypt-bigdata.jar -DgroupId=com.bkk -DartifactId=sm-encrypt-bigdata -Dversion=1.0.0 -Dpackaging=jar
+
+
+<dependency>
+    <groupId>com.bkk</groupId>
+    <artifactId>sm-encrypt-bigdata</artifactId>
+    <version>1.0.0</version>
+</dependency>
+<dependency>
+    <groupId>com.aliyun</groupId>
+    <artifactId>sm-java-sdk-core</artifactId>
+    <version>4.4.1</version>
+</dependency>
+<dependency>
+    <groupId>com.bkk</groupId>
+    <artifactId>dzjkkTool</artifactId>
+    <version>1.0.0</version>
+</dependency>
+==========================================================================================================maven install时报错
+Failed to execute goal org.apache.maven.plugins:maven-compiler-plugin:2.3.2:compile
+首先检查父项目,子项目的jdk版本是否一致,编码格式是否一致
+把java Build Path里面的Libraries中的JRE System Libraries(JRE7)改为jdk7, maven编译需要jdk, 而不是jre
+==========================================================================================================maven Java 1.6 or newer
+Dynamic Web Module 3.0 requires Java 1.6 or newer.
+在项目的pom.xml的<build></build>标签中加入： 
+<plugins><plugin><groupId>org.apache.maven.plugins</groupId><artifactId>maven-compiler-plugin</artifactId>  
+<version>2.3.2</version><configuration><source>1.6</source> <target>1.6</target></configuration></plugin></plugins>
+保存，项目构建完成后在项目文件夹上点右键，选择Maven->Update Project 
+============================================================================================================================
+Error while downloading 'https://maven.apache.org/xsd/maven-4.0.0.xsd' to C:\Users\Administrator\.lemminx\cache\https\maven.apache.org\xsd\maven-4.0.0.xsd.	pom.xml
+解决：close项目重新打开
+============================================================================================================================
+
+第一步：配置环境变量
+     MAVEN_HOME : D:\apache-maven-3.0.2 
+     MAVEN : %MAVEN_HOME%\bin 
+     在path 前面 加上 %MAVEN%; 
+     (可选）会出现因为maven项目过大，导致内存不足java栈溢出的error：java.lang.OutOfMemoryError: Java heap space
+     MAVEN_OPTS : -Xms256m -Xmx512m 
+第二步：验证
+    在命令行上输入 ： mvn -version; 回车
+    首次运行完mvn -version后，会在用户目录下创建一个.m2的目录(比如：C:\Users\当前用户名\.m2\)，这个目录是maven的“本地仓库”
+第三步：创建项目mvn archetype:generate
+    先创建项目的根目录，比如c:\test，命令行窗口下输入
+    cd /d c:\test
+    mvn archetype:generate
+    首次运行时，mvn会从远程"中央仓库"下载一些必需的文件到"本地仓库"
+    [INFO] Generating project in Interactive mode (这里会卡一会儿，因为要联网获取项目模板)
+    1: remote -> br.com.ingenieux:elasticbeanstalk-service-webapp-archetype (A Maven Archetype Encompassing RestAssured, Jetty, Jackson, Guice and Jersey for Publishing JAX-RS-based Services on AWS' Elastic Beanstalk Service)
+    ... (这里会自动列出很多项目模板，每种模板前面会有一个数字序号)
+    Choose a number or apply filter (format: [groupId:]artifactId, case sensitive contains): 336: (这里根据每个人机器上安装的eclipse插件不同，可能默认的数字不是这个，直接回车)
+    Choose a number: 6: (直接回车)
+    Y: :  (直接回车确认)
+    [INFO] BUILD SUCCESS (看到这个，表示项目创建成功！)
+第四步：tree查看目录
+    maven项目采用“约定优于配置”的原则，src/main/java约定用于存放源代码，
+    src/main/test用于存放单元测试代码，src/target用于存放编译、打包后的输出文件。这是全世界maven项目的通用约定，请记住这些固定的目录结构。
+第五步：编译mvn clean compile
+第六步：测试mvn clean test
+    如果单元测试不通过，会提示出错信息，注意看输出。
+    注：从输出上可以发现，test前，会先执行compile，即先编译，再执行单元测试.
+第七步：插入项目根目录下的pom.xml在</project>之前即可。然后在命令行下，输入mvn exec:exec
+    <build>
+        <finalName>${project.artifactId}</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>1.2.1</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <executable>java</executable>          
+                    <arguments>                       
+                        <argument>-classpath</argument>
+                        <classpath>
+                        </classpath>
+                        <argument>cnblogs.App</argument>
+                    </arguments>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+第八步：项目部署mvn clean jboss-as:deploy
+</p></body></html>

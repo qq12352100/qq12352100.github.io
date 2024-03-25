@@ -1,0 +1,37 @@
+-----------【整合php】-------------
+1、在apache的conf目录下的http.conf模块管理下加下面代码
+    #apache加载php处理模块
+    LoadModule php5_module ~php安装路径/php5apache2_2.dll
+    #phpinidir 这个用于指定php放ini文件，该文件加载时处理php的一些配置
+    PHPIniDir "~php模块安装路径"
+    #当有一个资源是*.php的时候就由php来处理
+    AddType application/x-httpd-php .php .phtml
+2、把php.ini-development改成php.ini
+3、在php.ini中指定对应功能模块
+    ；这是指定php的扩展路径
+    extension_dir = "~php安装路径/ext"
+4、测试test.php
+    <?php
+      phpinfo();
+    ?>
+重启apache访问http://localhost/test.php
+-------------【整合mysql】----------------
+1、php.ini中打开
+    extension=php_mysql.dll
+    extension=php_mysqli.dll
+2、测试
+test.php
+<?php
+    $conn=mysql_connect("localhost","root","root");
+    if($conn){
+     echo "连接mysql成功！";
+    }else{
+     echo "连接mysql失败！";
+    }
+?>
+重启apache访问http://localhost/test.php
+-----------【整合phpmyadmin】-------------
+1、php.ini中打开
+    extension=php_mbstring.dll
+直接解压到htdocs目录下面
+访问http://localhost/目录名/index.php

@@ -1,0 +1,194 @@
+<!DOCTYPE html><html><head><script>fetch('../../note_common_head.html').then(response=>response.text()).then(html=>{document.head.innerHTML+=html;});</script></head><body><p>
+General error: 1665 Cannot execute statement: impossible to write to binary log since BINLOG_FORMAT = STATEMENT and at least one table uses a storage engine limited to row-based logging. InnoDB is limited to row-logging when transaction isolation level is READ COMMITTED or READ UNCOMMITTED.
+永久生效，需要修改my.ini
+binlog_format=ROW
+
+/*[mysqld]*/
+character-set-server=utf8
+---------------------------------------------------------------------------------------
+数据库备份
+mysqldump -u root -p bkk>bak.sql
+mysqldump -u root -proot --databases hlwsjtb > hlwsjtb.db
+mysqldump -u root -proot --databases hlwsjtb > `date +%Y-%m-%d`_hlwsjtb.db
+mysqldump -u root -proot hlwsjtb t_yisa_door_device > t_yisa_door_device.sql
+
+还原数据库备份
+方式一：命令行
+mysql -uroot -p  db_name < /backup/mysqldump/db_name.db
+方式二：进mysql
+mysql > use db_name
+mysql > source /backup/mysqldump/db_name.db
+注：在导入备份数据库前，db_name如果没有，是需要创建的； 而且与db_name.db中数据库名是一样的才可以导入。
+
+创建数据库
+create database `hlwsjtb`;
+清空数据表
+truncate user_a;    #ID从0开始
+delete user_a;      #ID从上次的开始
+删除
+DELETE FROM _user WHERE username IS NULL AND city <> 'NULL';
+插入
+INSERT INTO _user(username) VALUES (RAND()*10);
+更新
+UPDATE _user SET int_=5 WHERE int_ IS NULL ;
+--------------------------------------------------------------------------------------------------------【授权】 
+#grant all privileges on *.* to 'root'@'%' identified by 'yangxin123456' with grant option;
+all privileges：表示将所有权限授予给用户。也可指定具体的权限，如：SELECT、CREATE、DROP等。
+on：表示这些权限对哪些数据库和表生效，格式：数据库名.表名，这里写“*”表示所有数据库，所有表。如果我要指定将权限应用到test库的user表中，可以这么写：test.user
+to：将权限授予哪个用户。格式：”用户名”@”登录IP或域名”。%表示没有限制，在任何主机都可以登录。比如：”yangxin”@”192.168.0.%”，表示yangxin这个用户只能在192.168.0IP段登录
+identified by：指定用户的登录密码
+with grant option：表示该用户可以将自己拥有的权限授权给别人
+刷新权限
+#flush privileges;
+回收权限
+#revoke create on *.* from 'yangxin@localhost';
+删除用户
+#select host,user,Password,password_expired from user;
+#drop user 'yangxin'@'localhost';
+修改密码use mysql;
+mysql5.7之前#update user set password=password('123456') where user='root';
+mysql5.7之后#update user set authentication_string=password('123456') where user='root';
+-----------------------------------------------------------------------------------------------------------------
+在创建表时，就插入另一张表里面的某些数据
+create table user_b AS select * from user_a where id < 10;
+
+复制表A里面10条记录插入表B里面
+insert into user_b(name,password) select name,password from user_a where id < 10;
+
+查询年龄20岁以下分布段个数
+SELECT age "年龄" ,COUNT(id) "数量" FROM user_a GROUP BY age HAVING age <20;
+
+查询年龄段分布
+SELECT COUNT(id) "10-20岁人数量" FROM user_my WHERE age >10 AND age <20;
+
+保留后两位小数
+SELECT ROUND(foolt,2) FROM user_a;
+
+执行sql脚本文件
+1、mysql –uroot –p123456 -Dtest<d:\test\ss.sql
+2、进入mysql的控制台后，使用source命令执行
+source d:\test\ss.sql 或者 \. d:\test\ss.sql
+
+-----------------------------------------------------------------------------------------------------------------
+SELECT a.a1 "活跃人数" , b.b1 "男性活跃" ,c.c1 "女性活跃" FROM (
+(SELECT COUNT(id) a1 FROM wl_member WHERE last_login_time_ms > 1447478154729 AND city <> 'NULL') a,
+(SELECT COUNT(id) b1 FROM wl_member WHERE last_login_time_ms > 1447478154729 AND sex =1 AND city <> 'NULL') b,
+(SELECT COUNT(id) c1 FROM wl_member WHERE last_login_time_ms > 1447478154729 AND sex =2 AND city <> 'NULL') c
+);
+
+-----------------------------------------------------------------------------------------------------------------
+
+
+
+-----------------------------------------------------触发器-------------------------------------------------------
+触发器是属于某一个表的
+当在这个表上执行插入、更新或删除操作的时候就导致触发器的激活 
+我们不能给同一张表的同一个事件安排两个触发器 
+语法：
+create trigger trigger_name 
+    before | after
+    insert | update | delete
+    on table_name
+    for each row
+begin
+   sql
+end
+create trigger：关键字
+trigger_name：触发器名称（自定义）
+trigger_time：触发时间，取值范围：before（之前）和after（之后）
+trigger_event：触发事件，取值范围：insert、update、delete
+on：关键字
+table_name：表名
+for each row：关键字
+begin：开始（关键字）
+sql：sql语句（可以有多条语句）
+end：结束（关键字）
+
+管理触发器 
+show triggers;
+查询当前数据库下所有表的触发器
+在information_schema数据库下，有一个表叫triggers,里面保存了所有数据的触发器信息
+drop triggers trigger_name ;
+删除触发器
+
+------------------------------------------------------事务管理------------------------------------------------------
+为保证数据库内容的一致，就要将数据库的一组操作作为一个整体来进行，要么全部成功完成，要么全部失败退出。
+开启事务处理的方式：
+标准事务：start transaction      #遇到commit或rollback语句，则认为是事务终止，后面的语句会立即写入到文件
+非标准：set autocommit=0        #即使遇到commit或rollback语句，后面语句仍然处于事务之中，说明不会写入到文件
+set autocommit=0：       表示关闭自动提交模式
+set autocommit=1：       表示开启自动提交模式
+start transaction：      开启标准事务
+commit：             提交事务
+rollback：               回滚事务
+
+-------------------------------------------------------存储过程-----------------------------------------------------
+大型数据库系统中，一组为了完成特定功能的SQL
+create procedure sp_name 
+[参数名] [类型],[参数名] [类型] 
+　begin 
+　......... 
+　end 
+create procedure：关键字（创建存储过程）
+sp_name：存储过程名称
+[type]：in、out、inout
+in：输入参数（在调用存储过程时，必须指定）
+out：输出参数（必须指定，可以在存储过程中被修改）
+[参数名]
+[参数类型]：数据类型
+Begin：关键字
+Sql：
+End：关键字语句集，经编译后存储在数据库中，用户通过指定存储过程的名字并给出参数（如果该存储过程带有参数）来执行它。 
+存储过程像是我们SQL里的函数
+查看与删除
+select name from mysql.proc where db=’数据库名’;
+我们创建的所有存储的信息，会保存到mysql数据库下proc表中
+show procedure status where db='数据库名';
+show create procedure 数据库.存储过程名;
+drop procedure 数据库.存储过程名;
+call sp_name [参数名] 
+------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------
+--  广告词排名更新的存储过程
+DELIMITER //  
+CREATE PROCEDURE ranks()  
+BEGIN 
+SET @rank:=0;
+SET @preScore:=0;
+
+UPDATE `wl_ad_word`, (SELECT oid,( IF( @preScore<>support_num,@rank:=@rank+1,@rank ) ) rank_num,@preScore:=support_num  
+FROM wl_ad_word 
+ORDER  BY support_num DESC) temp_tb_rank
+SET wl_ad_word.rank_num=temp_tb_rank.rank_num
+WHERE wl_ad_word.member_id=temp_tb_rank.member_id; 
+END 
+//  
+DELIMITER ; 
+
+
+
+
+DELIMITER //
+CREATE PROCEDURE pro11()
+ BEGIN
+ DECLARE i INT DEFAULT 0; 
+ WHILE i<10 DO  
+     INSERT INTO _user VALUES ();
+     SET i=i+1;  
+ END WHILE;   
+END;//
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</p></body></html>

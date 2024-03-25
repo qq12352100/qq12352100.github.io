@@ -1,0 +1,126 @@
+<!DOCTYPE html><html><head><script>fetch('../../note_common_head.html').then(response=>response.text()).then(html=>{document.head.innerHTML+=html;});</script></head><body><p>
+1、检查已安装版本
+#检查是否安装了低版本的SVN
+rpm -qa subversion
+#如果存储旧版本，卸载旧版本SVN
+yum remove subversion
+
+2、安装SVN
+yum -y install subversion 
+
+3、验证安装
+svnserve --version
+
+4、代码库创建
+mkdir -p /opt/svn/               #创建SVN根目录
+svnadmin create /opt/svn/repo    #创建repo测试库
+执行上面的命令后，自动建立repo测试库，查看/opt/svn/repo 文件夹发现包含了conf, db,format,hooks, locks, README.txt等文件，说明一个SVN库已经建立。
+
+5、用户密码passwd配置
+cd /opt/svn/repo/conf
+vim passwd
+修改passwd为以下内容：
+[users]
+# harry = harryssecret
+# sally = sallyssecret
+admin = admin
+bkk = 123
+
+这样我们就建立了bkk用户， 123密码
+以上语句都必须顶格写, 左侧不能留空格, 否则会出错.
+
+6、权限控制authz配置
+vim authz
+目的是设置哪些用户可以访问哪些目录，向authz文件追加以下内容：
+[groups]            #组
+admin = admin,bkk   #创建一个admin组，将用户加入到组
+[/]                 #根目录权限设置（就是“svn”这个文件夹）
+admin = rw          #admin对svn下的所有版本库有读写权限
+[repo:/]            #repo:/,表示对repo版本库下的所有资源设置权限
+@admin = rw         #admin组的用户对repo版本库有读写权限
+#[repo2:/occi]       #表示对版本库repo2中的occi项目设置权限
+#[repo2:/occi/aaa]   #表示对版本库2中的occi项目的aaa目录设置权限　　
+#权限主体可以是用户组、用户或*，用户组在前面加@，*表示全部用户。权限可以是w、r、wr和空，空表示没有任何权限。
+以上语句都必须顶格写, 左侧不能留空格, 否则会出错.
+
+7、服务svnserve.conf配置
+vim svnserve.conf
+追加以下内容：
+[general]
+#匿名访问的权限，可以是read,write,none,默认为read
+anon-access = none
+#使授权用户有写权限
+auth-access = write
+#密码数据库的路径
+password-db = passwd
+#访问控制文件
+authz-db = authz
+#认证命名空间，subversion会在认证提示里显示，并且作为凭证缓存的关键字
+realm = /opt/svn/repo
+以上语句都必须顶格写, 左侧不能留空格, 否则会出错.
+
+8、配置防火墙端口(或直接关闭防护墙)
+vim /etc/sysconfig/iptables
+#添加以下内容：
+-A INPUT -m state --state NEW -m tcp -p tcp --dport 3690 -j ACCEPT
+#保存后重启防火墙
+service iptables restart
+
+9、启动SVN
+svnserve -d -r /opt/svn/         #指定SVN根目录
+#查看SVN进程
+ps -ef|grep svnserve
+#检测SVN 端口
+netstat -ln |grep 3690
+#停止重启SVN
+killall svnserve                //停止
+svnserve -d -r /opt/svn/repo    //启动
+#如果已经有svn在运行，可以换一个端口运行
+svnserve -d -r /opt/svn/ --listen-port 3399
+
+svn://115.28.41.25:3399
+
+
+------------------------------------------------------------------本文介绍利用svnsync来同步版本库，达到备份版本库的目的----------------------------------------------------------------------------------------------
+要用到两个命令
+1、svnsync init
+初始化，建立目标库和源库之间的同步关系
+命令格式 svnsync init 目标库URL 源库URL
+2、svnsync sync
+真正的同步
+命令格式 svnsync sync 目标库URL
+目标
+本次实现的是版本库的远程自动备份，将版本库备份到另一台机器上
+假设我们要同步的源版本库为 http://192.168.0.1/svn/proj1　位于机器A，具体路径我们不必理会，因为我们使用http协议
+目标库在机器B，file:///svn/proj1，这个为了简单和安全，我们使用file://协议，proj1是我们用svnadmin create命令创建的一个空库
+过程
+1、在机器B上，创建目标库
+mkdir /svn
+svnadmin create /svn/proj1
+2、在机器B上，修改目标库的脚本pre-revprop-change
+进入/svn/proj1/hooks/
+cd /svn/proj1/hooks/
+cp pre-revprop-change.tmpl pre-revprop-change
+chmod +x pre-revprop-change
+vi pre-revprop-change
+REPOS=”$1″
+REV=”$2″
+USER=”$3″
+PROPNAME=”$4″
+ACTION=”$5″
+if [ "$ACTION" = "M" -a "$PROPNAME" = "svn:log" ]; then exit 0; fi
+echo “Changing revision properties other than svn:log is prohibited” >&2
+exit 1
+原脚本的意思是如果修改的是svn:log属性，将允许修改，返回0；否则，不允许，返回1
+我们要将它改为允许修改所有的属性，在脚本中直接返回0，新的脚本如下：
+exit 0;
+3、初始化
+在机器B上
+svnsync init file:///svn/proj1 http://192.168.0.1/svn/proj1 会提示输入用户名和密码，这里提供的用户名和密码是可以完全读取http://192.168.0.1/svn/proj1的用户名和密码
+4、同步
+在机器B上
+svnsync sync file:///svn/proj1
+依然会提示输入用户名和密码，不过，你可以在这个命令之后加上 username 、password参数，
+例如svnsync sync file:///svn/proj1 –username username –password password
+
+</p></body></html>

@@ -1,0 +1,180 @@
+<!DOCTYPE html><html><head><script>fetch('../../note_common_head.html').then(response=>response.text()).then(html=>{document.head.innerHTML+=html;});</script></head><body><p>
+===================================linux安装==========================================================
+1、下载，解压mongodb文件。
+wget http://fastdl.mongodb.org/linux/mongodb-linux-x86_64-3.0.6.tgz
+tar -zxvf mongodb-linux-x86_64-3.0.6.tgz
+
+2、创建mongodb存放的数据文件、日子文件(mongodb_db、mongodb_logs)
+mkdir mongodbdata
+cd mongodbdata
+mkdir mongodb_db
+mkdir mongodb_logs
+
+3、进入刚才解压的mongodb3.0.6/bin 目录指定输出路径
+./mongod --dbpath=/usr/local/mongodbdata/mongodb_db --logpath=/usr/local/mongodbdata/mongodb_logs/mongodb.log --logappend&
+
+4、检查端口是否启动
+netstat -lanp  | grep 27017
+
+5、进入到bin目录，执行 ./mongo
+
+killall mongod 关闭
+===================================window安装==========================================================
+E:\mongodb-win32-i386-3.0.6\bin
+
+E:\mongodb-win32-i386-3.0.6\db
+
+cd mongodb-win32-i386-3.0.6\bin
+
+> db.version()      //版本
+> db.serverStatus() //状态
+
+启动
+mongod --dbpath E:\mongodb-win32-i386-3.0.6\db
+
+安装服务
+mongod --dbpath E:\mongodb-win32-i386-3.0.6\db --install
+mongod --dbpath=E:\mongodb-win32-i386-3.0.6\db --logpath=E:\mongodb-win32-i386-3.0.6\logs\mongodb.log --install
+
+net start MongoDB
+net stop MongoDB
+
+指定log路径
+mongod --dbpath E:\mongodb-win32-i386-3.0.6\db --logpath=E:\mongodb-win32-i386-3.0.6\logs\mongodb.log --logappend
+=============================================================================================
+显示数据库
+> show dbs
+
+创建/切换数据库
+> use mysql
+
+删除数据库
+> use mysql
+> db.dropDatabase()
+
+------------------------------------------------------------------
+显示集合
+> show collections
+
+创建集合
+> db.createCollection("mysql")     //只创建集合不插入数据
+> db.mysql.insert({"name" : "bkk"}) //创建集合并插入一条数据
+
+删除集合
+> db.mysql.drop()
+
+------------------------------------------------------------------
+插入数据
+> db.person.insert({"name":"bkk","age":20})
+> db.person.save({"name":"bkk","age":20})   //如果指定_id，它会替换整个数据文件。不指定_id和insert()一样。
+
+查找数据
+> db.person.find()
+> db.person.find({"name":"bkk_updata"})
+> db.person.find({},{name:1})   //1用来显示字段而0是用来隐藏字段。(投影)
+
+更新数据
+> db.person.update({"name":"bkk"},{"name":"bkk_updata","age":21})
+
+删除数据（不带参数全部删除）
+> db.person.remove({"name":"bkk_updata"})
+------------------------------------------------------------------
+备份
+> mongodump --collection mysql --db test     //备份指定的数据库唯一指定的集合。
+> mongodump --host 127.0.0.1 --port 27017    //备份所有的数据库。
+恢复
+>mongorestore   //恢复所有的数据从备份目录。
+
+==============================================================================================
+==>>插入
+(mongo命令打开的是一个javascript shell。所以js的语法在这里面都行得通)
+> var single={"name":"bkk","password":"123456","age":20,"address":{"province":"anhui","city":"wuhu"},"favourite":["apple","banana"]}
+> db.user.insert(single)
+> db.user.find()
+{ "_id" : ObjectId("55fa27eca85077fba6f2753e"), "name" : "bkk", "password" : "123456", "age" : 20, "address" : { "province" : "anhui", "city" : "wuhu" }, "favourite" : [ "apple", "banana" ] }
+> single.name="bkk_bak"
+> db.user.insert(single)
+> db.user.find()
+{ "_id" : ObjectId("55fa27eca85077fba6f2753e"), "name" : "bkk", "password" : "123456", "age" : 20, "address" : { "province" : "anhui", "city" : "wuhu" }, "favourite" : [ "apple", "banana" ] }
+{ "_id" : ObjectId("55fa2843a85077fba6f2753f"), "name" : "bkk_bak", "password" : "123456", "age" : 20, "address" : { "province" : "anhui", "city" : "wuhu" }, "favourite" : [ "apple", "banana" ] }
+
+------------------------------------------------------------------
+==>>查找
+($gt为大于、$gte为大于等于、$lt为小于、$lte为小于等于、$ne为不等于、$exists不存在、$in指定范围、$nin指定不在某范围)
+> db.books.find( { money: { $in: [ 20,30,90] } } );          //查找money等于20，30，90的数据  
+> db.books.find( { auther: { $in: [ /^李/,/^钱/ ] } } );   //查找以李，钱开头的数据  
+> db.books.find( { $or: [ { money: 20 }, { money: 80 } ] } );    //查找money等于20，80的数据 
+> db.books.distinct( 'auther' );                             //distinct 去处重复
+> db.person.count({"age":{$gt:20}})                          //计算年龄超过20的
+> db.person.find()
+{ "_id" : ObjectId("55fa29d6a85077fba6f27540"), "name" : "bkk", "age" : 20 }
+{ "_id" : ObjectId("55fa29daa85077fba6f27541"), "name" : "bkk", "age" : 21 }
+{ "_id" : ObjectId("55fa29e1a85077fba6f27543"), "name" : "bkk", "age" : 19 }
+> db.person.find({"age":{$lt:25,$gt:20}})
+{ "_id" : ObjectId("55fa29e1a85077fba6f27543"), "name" : "bkk", "age" : 21 }
+> db.person.find("age": {$gt:10}, $or: [{"name": "bkk"}, {"title": "MongoDB"}] })   //or和and一起用
+==>>排序
+> db.books.find().sort({money:1,code:-1});      //1表示降序 -1表示升序,参数的先后影响排序顺序   
+==>>模糊查询
+> db.books.find({"title":/城/});     //like '%str%' 糊查询集合中的数据  
+> db.books.find({"auther":/^李/});       //like 'str%' 糊查询集合中的数据  
+> db.books.find({"auther":/书$/});       //like '%str' 糊查询集合中的数据  
+> db.books.find( { "title": { $regex: '城', $options: 'i' } } );   //like '%str%' 糊查询集合中的数据 
+
+------------------------------------------------------------------
+==>>更新
+1、局部更新
+> db.person.update({"name":"bkk"},{$inc:{"age":10}})        //在原来的基础上加10
+> db.person.update({"name":"bkk"},{$set:{"age":10}})        //修改为10
+> db.person.update({"name":"bk"},{$inc:{"age":10}},true)    //第三个参数为找不到add一条
+
+db.person.update( criteria, objNew, upsert, multi )
+criteria : update的查询条件，类似sql update查询内where后面的
+objNew   : update的对象和一些更新的操作符（如$,$inc...）等，也可以理解为sql update查询内set后面的
+upsert   : 这个参数的意思是，如果不存在update的记录，是否插入objNew,true为插入，默认是false，不插入。
+multi    : mongodb默认是false,只更新找到的第一条记录，如果这个参数为true,就把按条件查出来多条记录全部更新。
+
+------------------------------------------------------------------
+==>>分页
+> db.books.find().skip(1).limit(1);     //跳过第1条，取1条 
+
+==>>建立索引+删除索引
+-- 数字1表示索引按升序存储，-1表示索引按照降序方式存储。
+> db.person.ensureIndex({"name":1},{"unique":true})  //唯一索引
+> db.person.ensureIndex({"name":1,"birthday":1})     //组合索引
+> db.person.ensureIndex({"birthday":1,"name":1})     //组合索引，相信查询优化器，它给我们做出的选择往往是最优的。
+> db.person.dropIndex({"name":1})            //删除索引
+
+==>>聚合
+> db.mycol.aggregate([{$group : {_id : "$by_user", num_tutorial : {$sum : 1}}}]) 等价于 select by_user, count(*) from mycol group by by_user
+==>>检查集合是否达到上限
+> db.person.isCapped()
+
+=========================MongoDB支持的数据类型=================================
+String : 这是最常用的数据类型来存储数据。在MongoDB中的字符串必须是有效的UTF-8。
+Integer : 这种类型是用来存储一个数值。整数可以是32位或64位，这取决于您的服务器。
+Boolean : 此类型用于存储一个布尔值 (true/ false) 。
+Double : 这种类型是用来存储浮点值。
+Min/Max keys : 这种类型被用来对BSON元素的最低和最高值比较。
+Arrays : 使用此类型的数组或列表或多个值存储到一个键。
+Timestamp : 时间戳。这可以方便记录时的文件已被修改或添加。
+Object : 此数据类型用于嵌入式的文件。
+Null : 这种类型是用来存储一个Null值。
+Symbol : 此数据类型用于字符串相同，但它通常是保留给特定符号类型的语言使用。
+Date : 此数据类型用于存储当前日期或时间的UNIX时间格式。可以指定自己的日期和时间，日期和年，月，日到创建对象。
+Object ID : 此数据类型用于存储文档的ID。
+Binary data : 此数据类型用于存储二进制数据。
+Code : 此数据类型用于存储到文档中的JavaScript代码。
+Regular expression : 此数据类型用于存储正则表达式。
+==============================================================================
+> db.createUser({"user":"bkk","pwd":"root","roles":["readWrite"]})  //添加用户
+> db.dropUser("admin")                                              //删除用户
+
+
+
+
+
+
+
+
+</p></body></html>

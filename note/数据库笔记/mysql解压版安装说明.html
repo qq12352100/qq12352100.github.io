@@ -1,0 +1,66 @@
+<!DOCTYPE html><html><head><script>fetch('../../note_common_head.html').then(response=>response.text()).then(html=>{document.head.innerHTML+=html;});</script></head><body><p>
+mysqlnoinstallzipwindows解压安装mysql
+
+1.首先获取mysql5.5，下载社区版，免费。
+
+  mysql5.5的现在地址 http://dev.mysql.com/downloads/mysql/5.5.html#downloads
+
+  mysql5.5_noinstall_32位的下载地址：http://cdn.mysql.com/Downloads/MySQL-5.5/mysql-5.5.34-win32.zip
+
+   mysql5.5_noinstall_64位的下载地址：http://cdn.mysql.com/Downloads/MySQL-5.5/mysql-5.5.34-winx64.zip
+
+ 
+
+2.开始安装
+
+  把mysql-5.5.34-winx64.zip解压缩到C盘，并把mysql-5.5.34-winx64重命名mysql，复制my-medium.ini为my.ini，修改my.ini，在[mysqld]下面增加：  
+Ini代码  收藏代码
+
+    basedir=C:/mysql  
+    datadir=C:/mysql/data  
+
+ 
+
+ 
+
+  把mysql加入环境变量，这一步可以不做，只是为了以后在任意路径下都可以登陆mysql。
+
+  新增加环境变量：
+环境变量代码  收藏代码
+
+    MYSQL_HOME=C:\mysql  
+
+ 修改PATH环境变量，在最前面增加，注意最后面的英文字符";"：
+环境变量path前增加代码  收藏代码
+
+    %MYSQL_HOME%\bin;  
+
+ 3.安装服务
+安装mysql服务命令代码  收藏代码
+
+    C:\mysql\bin>mysqld --install mysql --defaults file="c:\mysql\my.ini"  
+    Service successfully installed.  
+
+   如果需要删除mysql服务，命令如下：
+删除mysql服务命令代码  收藏代码
+
+    C:\mysql\bin>mysqld -remove mysql  
+    Service successfully removed.  
+
+ 4.启动与停止
+
+  可以直接开始-》运行-》输入如下命令回车：
+
+ 
+启动mysql服务命令代码  收藏代码
+
+    net start mysql  
+
+  同样停止mysql服务，开始-》运行-》输入如下命令回车：
+
+ 
+停止mysql服务命令代码  收藏代码
+
+    net stop mysql  
+
+</p></body></html>

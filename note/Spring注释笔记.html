@@ -1,0 +1,112 @@
+<!DOCTYPE html><html><head><script>fetch('../note_common_head.html').then(response=>response.text()).then(html=>{document.head.innerHTML+=html;});</script></head><body><p>
+@Configuration  
+#配置类
+@Controller, @Service, @Repository, @Component
+@Resource是J2EE的，减少了与spring的耦合。
+@Named和Spring的@Component功能相同。@Named可以有值
+---------------------------------------------------------------------------
+@Autowired
+@Qualifier("db1JdbcTemplate")
+Autowired默认先按byType，如果发现找到多个bean，则，又按照byName方式比对，如果还有多个，则报出异常。
+1.可以手动指定按byName方式注入，使用@Qualifier。例：一个service对应多个实现类注入时
+2.如果要允许null 值，可以设置它的required属性为false，如：@Autowired(required=false) 
+---------------------------------------------------------------------------
+@Bean
+@DependsOn("beanB")
+@DependsOn({"beanD","beanE"})
+#该注解用于声明当前bean依赖于另外一个bean。所依赖的bean会被容器确保在当前bean实例化之前被实例化。
+---------------------------------------------------------------------------
+@Primary
+#自动装配时当出现多个Bean候选者时，被注解为@Primary的Bean将作为首选者，否则将抛出异常。
+---------------------------------------------------------------------------
+@PostConstruct    
+public void  init(){    
+    System.out.println(“初始化”);    
+}    
+@PreDestroy    
+public void  dostory(){    
+    System.out.println(“销毁”);    
+}    
+---------------------------------------------------------------------------
+@Lazy
+#用于指定该Bean是否取消预初始化，用于注解类，延迟初始化。
+---------------------------------------------------------------------------
+@RequestMapping(value = "getPayNotify", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+@ResponseBody
+@RestController --注解，相当于@Controller+@ResponseBody两个注解的结合
+---------------------------------------------------------------------------
+@ResponseStatus(value=HttpStatus.FORBIDDEN, reason=“出现了错误”)  
+#当某处抛出UserException时，则会把value和reason返回给前端。
+---------------------------------------------------------------------------
+---------------------------------------------------------------------------
+---------------------------------------------------------------------------
+---------------------------------------------------------------------------
+---------------------------------------------------------------------------
+---------------------------------------------------------------------------
+---------------------------------------------------------------------------
+空检查
+@Null       验证对象是否为null
+@NotNull    验证对象是否不为null, 无法查检长度为0的字符串
+@NotBlank   检查约束字符串是不是Null还有被Trim的长度是否大于0,只对字符串,且会去掉前后空格.
+@NotEmpty   检查约束元素是否为NULL或者是EMPTY.
+Booelan检查
+@AssertTrue     验证 Boolean 对象是否为 true 
+@AssertFalse    验证 Boolean 对象是否为 false 
+长度检查
+@Size(min=, max=)       验证对象（Array,Collection,Map,String）长度是否在给定的范围之内 
+@Length(min=, max=)     验证注解的元素值长度在min和max区间内
+日期检查
+@Past           验证 Date 和 Calendar 对象是否在当前时间之前 
+@Future         验证 Date 和 Calendar 对象是否在当前时间之后 
+@Pattern        验证 String 对象是否符合正则表达式的规则
+数值检查，建议使用在Stirng,Integer类型，不建议使用在int类型上，因为表单值为“”时无法转换为int，但可以转换为Stirng为”“,Integer为null
+@Min(value=””)            验证 Number 和 String 对象是否大等于指定的值 
+@Max(value=””)            验证 Number 和 String 对象是否小等于指定的值 
+@DecimalMax(value=值)     被标注的值必须不大于约束中指定的最大值. 这个约束的参数是一个通过BigDecimal定义的最大值的字符串表示.小数存在精度
+@DecimalMin(value=值)     被标注的值必须不小于约束中指定的最小值. 这个约束的参数是一个通过BigDecimal定义的最小值的字符串表示.小数存在精度
+@Digits                   验证 Number 和 String 的构成是否合法 
+@Digits(integer=,fraction=)     验证字符串是否是符合指定格式的数字，interger指定整数精度，fraction指定小数精度。
+@Range(min=, max=)              检查数字是否介于min和max之间.
+@Range(min=10000,max=50000,message=”range.bean.wage”)
+@Valid                          递归的对关联对象进行校验, 如果关联对象是个集合或者数组,那么对其中的元素进行递归校验,如果是一个map,则对其中的值部分进行校验.(是否进行递归验证)
+@CreditCardNumber               信用卡验证
+@Email                          验证是否是邮件地址，如果为null,不进行验证，算通过验证。
+@ScriptAssert(lang=,script=, alias=)
+@URL(protocol=,host=,port=,regexp=, flags=)
+
+注意
+@Valid 是使用hibernate Validation.jar做校验
+@Validated 是只用spring Validator校验机制使用
+============================================================第一步：定义全局异常
+@ControllerAdvice
+@Component
+public class GlobalExceptionHandler {
+    @Bean
+    public MethodValidationPostProcessor methodValidationPostProcessor() {
+        return new MethodValidationPostProcessor();
+    }
+    @ExceptionHandler
+    @ResponseBody
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public String handle(ValidationException exception) {
+        System.out.println("bad request, " + exception.getMessage());
+        return "bad request, " + exception.getMessage();
+    }
+}
+-------------------------------第二步：在XXController.java头上添加@Validated，然后在@RequestParam后台使用上面介绍的验证注解
+@Controller  
+@RequestMapping(“/test”)  
+@Validated  
+public class TestController{  
+    @RequestMapping(value = “testValidated”, method = RequestMethod.GET)  
+    @ResponseBody  
+    @ResponseStatus(HttpStatus.BAD_REQUEST)  
+    public Object testValidated(@RequestParam(value = “pk”, required = true) @Size(min = 1, max = 3) String pk,@RequestParam(value = “age”, required = false) @Range(min = 1, max = 3) String age) { 
+
+
+
+
+
+
+
+</p></body></html>

@@ -1,0 +1,10 @@
+app.openUrl("https://www.baidu.com"); //默认浏览器打开网页
+//launchApp('钉钉'); //打开钉钉
+sleep(3000);//睡眠3秒
+click(device.width/2, device.height/2); //点击屏幕中心
+sleep(3000);//睡眠3秒
+home();
+sleep(1000);//睡眠3秒
+
+var name = getPackageName('Hamibot'); //获取apk
+log(name)

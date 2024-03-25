@@ -1,0 +1,135 @@
+<!DOCTYPE html><html><head><script>fetch('../../note_common_head.html').then(response=>response.text()).then(html=>{document.head.innerHTML+=html;});</script></head><body><p>
+declare
+ type type_table_emp_empno is table of emp.empno%type index by binary_integer;
+v_empno type_table_emp_empno;
+begin
+ v_empno(0) := 7329;
+ v_empno(1) := 3421;
+ v_empno(-1) := 123;
+ dbms_output.put_line(v_empno(1));
+end;
+
+------select 语句 和 into一起用并且有且只有一条记录返回
+declare
+ v_ename emp.ename%type;
+ v_sal emp.sal%type;
+begin
+ select ename, sal into v_ename, v_sal from emp where empno = 7369;
+ dbms_output.put_line(v_ename || ' ' || v_sal);
+end;
+
+--------insert 语句
+declare
+ v_deptno dept.deptno%type := 50;
+ v_dname dept.dname%type := 'aaa';
+ v_loc dept.loc%type := 'bj';
+begin
+  insert into dept2 values (v_deptno, v_dname, v_loc);
+ commit;
+end;
+
+-----------返回值问题 select 返回一个值
+declare
+ v_deptno emp2.deptno%type := 50;
+ v_count number;
+begin
+   --update emp2 set sal = sal/2 where deptno = v_deptno;
+   --select deptno into v_deptno from emp2 where empno = 7369;
+     select count(*) into v_count from emp2;
+    dbms_output.put_line(sql%rowcount || '条记录被影响');-- sql 是指刚刚执完的sql语句
+  commit;
+end;
+
+-----------在pl/sql中执行DDL语句
+begin
+  execute immediate 'create table T (nnn varchar2(20) default ''aaa'')';
+end;
+
+-----------if语句
+declare
+ v_sal emp.sal%type;
+begin
+ select sal into v_sal from emp
+         where empno = 7369;
+ if (v_sal < 1200) then
+          dbms_output.put_line('low');
+ elsif (v_sal <2000) then
+        dbms_output.put_line('middle');
+ else
+        dbms_output.put_line('high');
+end if;
+end;
+
+----------------循环loop开头，end loop结尾。
+declare---do while
+  i binary_integer := 1;
+begin
+  loop
+    dbms_output.put_line(i);
+    i := i+1;
+    exit when (i >= 11);
+  end loop;
+end;
+
+declare---while do
+  j binary_integer := 1;
+begin
+  while j < 11 loop
+      dbms_output.put_line(j);
+      j := j + 1;
+ end loop;
+end;
+
+begin---for
+ for k in 1..10 loop
+   dbms_output.put_line(k);
+ end loop;
+ for k in reverse 1..10 loop
+   dbms_output.put_line(k);
+ end loop;
+end;
+
+-------------------错误处理
+create table errorlog------建立日志
+(
+id number primary key,
+errcode number,
+errmsg varchar2(1024),
+errdate date
+)
+
+
+declare
+  v_deptno dept.deptno%type := 10;
+  v_errcode number;
+  v_errmsg varchar2(1024);
+begin
+ delete from dept where deptno = v_deptno;
+ commit;
+exception
+  when others then
+    rollback;
+       v_errcode := SQLCODE;
+       v_errmsg := SQLERRM;
+    insert into errorlog values (seq_errorlog_id.nextval, v_errcode, v_errmsg, sysdate);
+  commit;
+end;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</p></body></html>

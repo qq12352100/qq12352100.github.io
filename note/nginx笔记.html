@@ -1,0 +1,110 @@
+<!DOCTYPE html><html><head><script>fetch('../note_common_head.html').then(response=>response.text()).then(html=>{document.head.innerHTML+=html;});</script></head><body><p>
+下载地址：http://nginx.org/en/download.html
+
+yum -y install make zlib zlib-devel pcre pcre-devel gcc-c++ libtool  openssl openssl-devel
+mkdir /usr/local/src/
+cd /usr/local/src/
+wget http://nginx.org/download/nginx-1.21.6.tar.gz
+tar -zxvf nginx-1.21.6.tar.gz
+cd nginx-1.21.6
+./configure
+make && make install
+
+cd /lib/systemd/system/
+vim nginx.service
+
+[Unit]
+Description=nginx service
+After=network.target 
+[Service] 
+Type=forking 
+ExecStart=/usr/local/nginx/sbin/nginx
+ExecReload=/usr/local/nginx/sbin/nginx -s reload
+ExecStop=/usr/local/nginx/sbin/nginx -s quit
+PrivateTmp=true 
+[Install] 
+WantedBy=multi-user.target
+
+systemctl enable nginx && systemctl start nginx
+
+-----------------------------------------查看版本
+编译安装  --> nginx -V  
+yum源安装 --> rpm -qa | grep nginx  
+---------------------------------------------------默认配置文件/usr/local/nginx/conf  /etc/nginx/nginx.conf
+默认主页：/usr/share/doc/HTML/index.html
+export PATH=$PATH:/usr/local/nginx/sbin
+===========================================================
+connect() to connect() failed (13: Permission denied)
+解决如下：/usr/sbin/setsebool httpd_can_network_connect=1
+-------------------------------------------------------------------
+bind() to 0.0.0.0:5499 failed (13: Permission denied)
+解决如下：setenforce 0    （关闭selinux）
+-------------------------------------------------------------------
+webservice地址名没有端口号或与原地址不符合
+解决：
+upstream localhost {
+   server 172.20.123.208:7071;
+   server 172.20.123.208:7072;  #访问机率server localhost:9999 weight=5; 
+}
+server {
+    listen       5499;
+    server_name  172.20.123.231;
+
+    location / {
+        proxy_set_header Host $host:$server_port;  #soad location 变为默认80端口与原地址端口不符合 172.20.123.231:5499
+        proxy_pass   http://localhost;
+    }   
+}
+
+-----------------------------------------------------------
+nginx服务器地址及端口：127.0.0.1:80
+后端服务地址及端口：127.0.0.1:8080
+测试URL：http://127.0.0.1:80/api/upload
+location /api/ {
+    proxy_pass http://127.0.0.1:8080/;  #实际访问：http://127.0.0.1:8080/upload
+}
+location /api {
+    proxy_pass http://127.0.0.1:8080/;  #实际访问：http://127.0.0.1:8080//upload
+}
+location /api/ {
+    proxy_pass http://127.0.0.1:8080;   #实际访问：http://127.0.0.1:8080/api/upload
+}
+location /api {
+    proxy_pass http://127.0.0.1:8080;   #实际访问：http://127.0.0.1:8080/api/upload
+}
+location /api/ {
+    proxy_pass http://127.0.0.1:8080/server/;   #实际访问：http://127.0.0.1:8080/server/upload
+}
+location /api {
+    proxy_pass http://127.0.0.1:8080/server/;   #实际访问：http://127.0.0.1:8080/server//upload
+}
+location /api/ {
+    proxy_pass http://127.0.0.1:8080/server;    #实际访问：http://127.0.0.1:8080/serverupload
+}
+location /api {
+    proxy_pass http://127.0.0.1:8080/server;    #实际访问：http://127.0.0.1:8080/server/upload
+}
+--总结--proxy_pass后有目录(包括 / )，去除location匹配
+===========================================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</p></body></html>

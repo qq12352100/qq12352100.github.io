@@ -1,0 +1,148 @@
+<!DOCTYPE html><html><head><script>fetch('../../note_common_head.html').then(response=>response.text()).then(html=>{document.head.innerHTML+=html;});</script></head><body><p>
+1、删除现有Python
+[root@test ~]# rpm -qa|grep python|xargs rpm -ev --allmatches --nodeps ##强制删除已安装程序及其关联
+[root@test ~]# whereis python |xargs rm -frv ##删除所有残余文件 ##xargs，允许你对输出执行其他某些命令
+[root@test ~]# whereis python ##验证删除，返回无结果
+2、删除现有的yum
+[root@test ~]# rpm -qa|grep yum|xargs rpm -ev --allmatches --nodeps
+[root@test ~]# whereis yum |xargs rm -frv
+=================================================================================================================【更换yum源】
+1、备份你的原镜像文件，以免出错后可以恢复 (文件位置/etc/yum.repos.d)
+#mv /etc/yum.repos.d/CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo.backup
+2、下载新的CentOS-Base.repo 到/etc/yum.repos.d/
+163源    #wget -O /etc/yum.repos.d/CentOS-Base.repo http://mirrors.163.com/.help/CentOS7-Base-163.repo
+aliyun  #wget -O /etc/yum.repos.d/CentOS-Base.repo http://mirrors.aliyun.com/repo/Centos-7.repo
+3、修改文件中的baseurl地址,把每个baseurl后边的$releasever替换成7，把$basearch替换成x86_64
+#vi CentOS-Base.repo
+4、清除原有yum缓存
+#yum clean all
+#yum makecache
+--------------【本地yum源】
+1、添加一个新的yum源配置文件dvd.repo（文件名字自定义）
+cd /etc/yum.repos.d
+vi dvd.repo
+2、添加新的内容
+[loca]          #仓库名字
+name=rhel_dvd   #name相当于是注释信息，随便写
+baseurl=file://'/run/media/root/RHEL-7.3 Server.x86_64'     #此为本地光盘的路径，即yum源的地址,根据实际地址填写
+enabled=1       #是否启用 默认为启动也可不写，0则表示为禁用
+gpgcheck=0      #是否检查源的合法性，此处为0表示不检查，为1时要写下一行，后面是地址
+文件配置完成之后可以查看一下添加的内容：cat dvd.repo
+3、清除原有yum缓存
+#yum clean all
+#yum makecache
+=================================================================================================================【基本命令】
+yum的命令形式一般是如下：yum [options] [command] [package ...]
+其中的[options]是可选的，选项包括-h（帮助），-y（当安装过程提示选择全部为"yes"），-q（不显示安装的过程）等等。[command]为所要进行的操作，[package ...]是操作的对象。
+
+yum install package1    安装指定的安装包package1
+yum check-update        列出所有可更新的软件清单
+yum update              全部更新
+yum list                显示所有已经安装和可以安装的程序包
+yum remove package1     删除程序包package1
+yum clean all           清除缓存目录下的软件包及旧的headers
+-----------------------------------------------------------------------------------------------------------------
+查询yum install安装软件的路径:
+一般是/usr/local一般一个软件是要复制多个文件到不同的地方，包括可执行文件，文档，配置文件。
+通过yum安装的软件包，可以通过rpm -ql软件包名来查询这个软件包具体都复制到了哪些文件到哪些地方。
+=================================================================================================================【安装python，pip】  
+yum list python*  
+yum install java-1.7.0-openjdk* -y  (自动选择yes)
+------------------------
+curl https://bootstrap.pypa.io/2.6/get-pip.py -o get-pip.py
+python get-pip.py
+------------------------
+wget https://www.python.org/ftp/python/3.7.0/
+=================================================================================================================【安装JDK】  
+yum list java*  
+yum install java-1.8.0-openjdk* -y  (自动选择yes)
+=================================================================================================================【安装mysql】
+
+第1步、yum安装mysql
+yum -y install mysql-server
+【找不到mysql-server的话】
+1、下载mysql的repo源
+#wget http://repo.mysql.com/mysql-community-release-el7-5.noarch.rpm
+#wget http://dev.mysql.com/get/mysql57-community-release-el7-8.noarch.rpm
+
+2、安装mysql-community-release-el7-5.noarch.rpm包
+#sudo rpm -ivh mysql-community-release-el7-5.noarch.rpm
+【报错mysql-community-release conflicts with mysql57-community-release-el7-8.noarch】
+解决#rpm -e mysql57-community-release-el7-8.noarch --nodeps
+可以修改#vim /etc/yum.repos.d/mysql-community.repo源，改变默认安装的mysql版本。
+比如要安装5.6版本，将5.7源的enabled=1改成enabled=0。然后再将5.6源的enabled=0改成enabled=1即可。
+安装这个包后，会获得两个mysql的yum repo源： 
+/etc/yum.repos.d/mysql-community.repo和 
+/etc/yum.repos.d/mysql-community-source.repo。
+
+第2步、设置开机启动
+chkconfig mysqld on
+systemctl enable mysqld.service
+
+第3步、启动MySql服务
+service mysqld start
+如果出现Note: Forwarding request to 'systemctl enable mysqld.service'.调用systemctl enable mysqld.service
+
+第4步、设置MySQL的root用户设置密码
+mysql -u root
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+...... 省略了一些行
+mysql> select user,host,password from mysql.user;       //查询用户的密码，都为空，用下面的命令设置root的密码为root
+mysql> set password for root@localhost=password('root');
+mysql> exit
+
+第5步、用新密码登陆
+mysql -u root -p
+
+第6步、开放远程登录权限
+
+GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY 'root' WITH GRANT OPTION;
+FLUSH PRIVILEGES;
+=================================================================================================================【安装tomcat】
+yum -y install tomcat6 tomcat6-webapps tomcat6-admin-webapps tomcat6-docs-webapp tomcat6-javadoc
+service tomcat6 start
+service tomcat6 stop
+service tomcat6 restart
+通过以下命令可以查看tomcat安装目录：rpm -ql tomcat6 | cat -n
+----------------------------------------------------------------------同一机器部署多个tomcat需要改掉的端口
+<Server port="8005" shutdown="SHUTDOWN">
+<Connector port="8080" protocol="HTTP/1.1"
+<Connector port="8009"
+=================================================================================================================【安装ftp】
+yum -y install ftp
+=================================================================================================================【安装git】
+yum -y install git
+=================================================================================================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</p></body></html>
