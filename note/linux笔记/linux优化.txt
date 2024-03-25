@@ -1,0 +1,72 @@
+
+yum install -y yum-fastestmirror lrzsz vim screen java-1.8.0-openjdk* mariadb mariadb-server redis nginx unzip zip wget net-tools
+
+#------------------------------配置mariadb
+systemctl start mariadb
+systemctl enable mariadb
+mysql_secure_installation
+回车-初始密码为空
+y-设置密码
+y-清楚匿名用户
+n-允许远程登录
+y-移除test库
+y-重新装载权限
+
+vi /etc/my.cnf                  #在[mysqld]标签下添加
+init_connect='SET collation_connection = utf8_unicode_ci' 
+init_connect='SET NAMES utf8' 
+character-set-server=utf8
+collation-server=utf8_unicode_ci
+skip-character-set-client-handshake
+vi /etc/my.cnf.d/client.cnf         #在[client]中添加   default-character-set=utf8
+vi /etc/my.cnf.d/mysql-clients.cnf  #在[mysql]中添加    default-character-set=utf8
+
+systemctl restart mariadb
+
+mysql -uroot -proot@qwer
+grant all privileges on *.* to 'root'@'%' identified by 'root@qwer' with grant option;
+flush privileges;
+show variables like "%character%";show variables like "%collation%";
+
+#------------------------------配置redis
+vim /etc/redis.conf
+命令模式:/requirepass
+命令模式:/bind
+systemctl start redis.service
+
+#------------------------------配置nginx
+vim /etc/nginx/nginx.conf
+systemctl start nginx.service
+
+#------------------------------配置gohttpserver
+wget -P /usr/local/src/ https://github.com/codeskyblue/gohttpserver/releases/download/1.1.0/gohttpserver_1.1.0_linux_amd64.tar.gz
+tar -C /usr/local -xzf gohttpserver_1.1.0_linux_amd64.tar.gz
+wget -P /usr/local/src/ https://studygolang.com/dl/golang/go1.16.4.linux-amd64.tar.gz
+tar -C /usr/local -xzf go1.16.4.linux-amd64.tar.gz
+echo "export PATH=$PATH:/usr/local/go/bin" >> /etc/profile
+source /etc/profile
+go version
+mkdir /usr/local/share/bkk/ & cd /usr/local
+screen -S svn
+./gohttpserver -r /usr/local/share/bkk --port 8000 --auth-type http --auth-http bkk:bkk --upload --delete
+
+#------------------------------配置frp
+wget -P /usr/local/src/ https://github.com/fatedier/frp/releases/frp_0.43.0_linux_amd64.tar.gz
+tar -C /usr/local -xzf frp_0.43.0_linux_amd64.tar.gz
+cd /usr/local/frp_0.43.0_linux_amd64 ; vim frps.ini
+screen -S frp
+./frps -c frps.ini
+
+nohup java -jar master_base-0.0.1_BASE.jar >>log.file 2>&1 &
+
+
+
+
+
+
+
+
+
+
+
+

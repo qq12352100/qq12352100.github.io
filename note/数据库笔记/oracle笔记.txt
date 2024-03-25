@@ -1,0 +1,288 @@
+oracle 创建实例bkk(与orcl同级同概念） 创建用户赋权限
+
+Insert into Table2(a, c, d) select a,c,5 from Table1
+============================================================================================================建库流程
+-- 注意：请用SYSTEM用户登录，再运行此脚本
+-- 文档 https://docs.oracle.com/cd/B19306_01/server.102/b14200/statements_7003.htm
+--创建用户表空间
+CREATE TABLESPACE BKK DATAFILE  'D:/oracledate/BKK.dbf'  SIZE 128M REUSE
+AUTOEXTEND ON NEXT 1280K
+MAXSIZE 32767M
+MINIMUM EXTENT 128K
+DEFAULT STORAGE (INITIAL 128K NEXT 128K MINEXTENTS 1 MAXEXTENTS 4096 PCTINCREASE 0);
+
+--创建索引表空间
+CREATE TABLESPACE TPPAML_BSE_IDX DATAFILE  'D:/oracledate/BKK_IDX.dbf'  SIZE 100M 
+AUTOEXTEND ON NEXT 10M 
+MAXSIZE UNLIMITED;
+
+REUSE       表示文件是否被重用.   
+AUTOEXTEND  表明是否自动扩展.  
+NEXT        表示数据文件满了以后扩展的大小.
+UNLIMITED   表示无限的表空间.    
+MINIMUM EXTENT 指出在表空间中范围的最小值。这个参数可以减小空间碎片，保证在表空间的范围是这个数值的整数倍。
+
+--创建用户并指定表空间
+CREATE USER BKK IDENTIFIED BY "A!bcd_1234" DEFAULT TABLESPACE BKK;
+--赋权限
+GRANT UNLIMITED TABLESPACE TO BKK;
+GRANT CONNECT,RESOURCE,DBA To BKK;
+--收回权限
+REVOKE CONNECT,RESOURCE,DBA FROM BKK;
+============================================================================================================重启oracle
+1.执行 sqlplus /nolog；
+2.conn sys / as sysdba ;（口令是你登录数据库时输入的密码）
+3.shutdown immediate ;
+4.startup;
+----------------------------------------------------------------------------------------------------------监听问题
+两个文件中要一致LISTENER_ORCL
+\app\Administrator\admin\orcl\pfile
+local_listener=LISTENER_ORCL
+
+\app\Administrator\product\11.2.0\dbhome_1\network\admin\tnsnames.ora
+LISTENER_ORCL =
+  (DESCRIPTION =
+    (ADDRESS_LIST =
+      (ADDRESS = (PROTOCOL = TCP)(HOST = server35)(PORT = 1521))  #HOST 为127.0.0.1和localhost是本机可连接，为主机名或实际IP则远程可以连
+    )
+    (CONNECT_DATA =
+      (SERVICE_NAME = orcl)
+    )
+  )
+============================================================================================================常用sql
+./sqlplus bztyzfgzh/tyzfgzh2018@172.20.123.248:1521/zfpt
+select count(*) from v$session;                         --当前会话的连接数
+select count(*) from v$process;                         --当前进程的连接数
+select count(*) from v$session where status='ACTIVE';   --并发连接数
+select value from v$parameter where name = 'processes'; --查询数据库允许的最大连接数
+show parameter processes;
+show parameter sessions;
+show parameter instance;
+SELECT * FROM all_tables;           --查看能看的所有表  赋予了select any table权限后
+
+lsnrctl status                  #查看监听服务状态
+
+select * from 表名 where length(nvl(字段,''))=1;                                            --查询非空字段的长度
+select TABLE_NAME ,NUM_ROWS,LAST_ANALYZED,user from user_tables ORDER BY TABLE_name;        --查看所有表名  where TABLESPACE_NAME is not null and  user='BKK' 
+SELECT table_name, column_name, data_type FROM all_tab_cols WHERE table_name = 'WX_TOKEN';  --查看表下所有字段名称类型
+
+DROP TABLESPACE GW_ETL_BAK INCLUDING CONTENTS AND DATAFILES CASCADE CONSTRAINTS;    --删除命名空间
+drop user user_name cascade;                                                        --删除用户
+
+select 'alter table '||table_name||' enable constraint '||constraint_name||';' from user_constraints where constraint_type='R';     --启动外键
+select 'alter table '||table_name||' disable constraint '||constraint_name||';' from user_constraints where constraint_type='R';    --关闭外键
+
+select owner,object_name from dba_objects where object_type='DATABASE LINK';
+select * from user_sys_privs where privilege like upper('%DATABASE LINK%');     --查看用户有没有创建dblin的权限
+grant CREATE PUBLIC DATABASE LINK,DROP PUBLIC DATABASE LINK to username;        --赋值创建删除dblink
+create database link link31 connect to CEN_BZGL identified by "CEN_BZGL" using '10.61.234.31:1521/orcl'; --创建dblink
+SELECT * FROM t_test@link31;        --测试dblink
+drop public database link LINK31;   --删除dblink
+drop database link link31;
+
+grant resource to GW_CEN_SYS;                           --为用户授予resource权限，则不对用户的表空间进行限制
+grant unlimited tablespace to GW_CEN_SYS;               --授予用户表空间不受限制的权限
+
+create public synonym table_name for user.table_name;   --创建同义词
+drop public synonym table_name;                         --删除同义词
+
+select * from user_jobs;            --查看调度任务
+select * from dba_jobs_running;     --查看正在执行的调度任务
+select * from dba_jobs;             --查看执行完的调度任务
+
+select * from dba_users;            --查看数据库里面所有用户，前提是你是有dba权限的帐号，如sys,system
+select username from all_users;     --查看你能管理的所有用户！
+select * from user_users;           --查看当前用户信息 ！
+@ d:\wonders\1_create_table.sql     --运行sql脚本
+select * from user_triggers;        --查看建立的触发器
+select * from user_sequences;       --查看建立的序列
+
+============================================================================================================序列
+--创建序列
+CREATE  SEQUENCE dic_seq
+INCREMENT  BY   1       --  每次加的个数据 
+START  WITH   1         --  从1开始计数 
+NOMAXVALUE              --  不设置最大值 
+NOCYCLE                 --  CYCLE | NOCYCLE 是否循环，建议不使用
+NOCACHE;                --  CACHE | NOCACHE 是否启用缓存
+--删除序列
+DROP  SEQUENCE dic_seq; 
+--使用序列
+insert into goods(id,name,store_date) values(seq_goods_id.nextval,'矿泉水',to_date('2011-01-01','yyyy-mm-dd')); 
+--导出序列
+select  'create sequence ' ||sequence_name||   
+        ' minvalue ' ||min_value||   
+        ' maxvalue ' ||max_value||   
+        ' start with ' ||last_number||   
+        ' increment by ' ||increment_by||   
+       ( case  when cache_size= 0  then  ' nocache'   else   ' cache ' ||cache_size end) || ';'   
+from dba_sequences where sequence_owner= 'JXDB'  ;-- JXDB貌似要大写才行
+==============================================================================================================================================================查看使用情况表空间
+--查看使用情况
+select a.tablespace_name, a.bytes / 1024 / 1024 "sum MB", (a.bytes - b.bytes) / 1024 / 1024 "used MB",  b.bytes / 1024 / 1024 "free MB",
+round(((a.bytes - b.bytes) / a.bytes) * 100, 2) "used%"
+from (select tablespace_name, sum(bytes) bytes from dba_data_files group by tablespace_name) a,
+(select tablespace_name, sum(bytes) bytes, max(bytes) largest from dba_free_space group by tablespace_name) b
+where a.tablespace_name = b.tablespace_name order by ((a.bytes - b.bytes) / a.bytes) desc;
+--查看某一个表空间占用
+SELECT  table_name, nvl ( bytes / 1024 / 1024, 0 ) MB FROM  dba_tables  LEFT JOIN dba_segments ON table_name = segment_name 
+--where table_name like '%SIPI_MSG%'
+ORDER BY    nvl ( bytes, 0 ) DESC;
+
+--找位置
+select tablespace_name, file_id, file_name, round(bytes / (1024 * 1024), 0)||'M'  total_space from sys.dba_data_files order by tablespace_name;
+
+--表空间扩展到4G
+alter database datafile 'D:\APP\ADMINISTRATOR\ORADATA\XYSHARE\SGSHARE.DBF' resize 4096m;
+扩展表空间，为其增加更多存储空间，有四种方法：
+第一种：增加数据文件
+alter tablespace data01 add datafile 'd:\java\test\data02.dbf’size 2m
+第二种：手动改变已存在数据文件大小
+alter database datafile 'd:\java\test\data01.dbf' resize 4m;
+第三种：允许已存在的数据文件自动增长
+alter database datafile ‘d:\java\test\data01.dbf’ autoextend on next 10m maxsize 500m;
+第四种方法：新增数据文件，并且允许数据文件自动增长
+alter tablespace data01 add datafile 'd:\java\test\data03.dbf’size 2m autoextend on next 10m maxsize 500m;
+============================================================================================================锁表解决
+SELECT sid, serial#, username, osuser FROM v$session where sid 
+in(select session_id from v$locked_object);
+--kill掉相关的会话
+ALTER SYSTEM KILL SESSION '597,1171';
+--------------------------------------------------------------------------
+--所有session中的所有被锁定的对象信息。
+select t2.username, t2.sid, t2.serial#, t3.object_name, t2.OSUSER, t2.MACHINE, t2.PROGRAM, t2.LOGON_TIME, t2.COMMAND, t2.LOCKWAIT, t2.SADDR, t2.PADDR, t2.TADDR, t2.SQL_ADDRESS, t1.LOCKED_MODE
+  from v$locked_object t1, v$session t2, dba_objects t3
+ where t1.session_id = t2.sid
+   and t1.object_id = t3.object_id
+ order by t2.logon_time;
+--解锁
+ alter system kill session 'sid,seial#';
+ alter system kill session '10,15';
+============================================================================================================备份
+--备份
+exp HCBMP/'A!bcd_1234'@BKK full=y inctype=complete file=20200518_ecard.dmp log=oracleBak_ecard.log
+--恢复
+imp HCBMP/HCBMP@BKK file=f:/2.dmp full=y ignore=y;
+
+exp mines/123456@xxx.xxx.x.xxx:1521/orcl file=D:\data\mine-2019-12-17.dmp  log=D:\data\mine-2019-12-17.log
+imp mines/123456@localhost:1521/orcl full=y file=D:\data\mine-2019-12-17.dmp
+============================================================================================================修改SYS密码
+在cmd窗口中敲入下列命令:
+sqlplus /nolog
+connect  /  as  sysdba
+alter user sys identified by root; 
+alter user system identified by root;
+============================================================================================================视图
+--创建视图
+CREATE OR REPLACE VIEW rs_sbk_tk AS 
+select zaz006, zke196,zke185,aac003,aae019,zke599,zkf018,akb020,aae065,zke601,aae036 from yy_zf08;
+--创建用户
+CREATE USER rs_sbk IDENTIFIED BY "sX1$W76J8n^@cNh&";
+--授权connect，resource角色
+grant connect, resource to rs_sbk;
+--授权查看视图
+grant select on BZTYZF.rs_sbk_cz to rs_sbk;
+--查看
+SELECT * FROM BZTYZF.RS_SBK_CZ rsc;
+--手动刷新视图
+BEGIN
+DBMS_MVIEW.REFRESH (
+list => 'MV_MCINFOBOUND',
+Method =>'C',
+refresh_after_errors => True);
+END;
+============================================================================================================【数据库问题】
+SQL> select file#，status，bytes/1024/1024 mb，name from v$datafile where file#=4;
+ORA-01122: database file 2 failed verification check
+ORA-01110: data file 2: '/oradata/oracle/oradata/oradb/sysaux01.dbf'
+ORA-01200: actual file size of 62720 is smaller than correct size of 66560 blocks
+报错提示数据库记录/oradata/oracle/oradata/oradb/sysaux01.dbf的大小是66560而实际大小是62720，此种报错有个简单的解决方法，就是通过dd修改报错相关的数据文件，改成数据库期望的大小，瞒过oracle：
+SQL> select 66560 - 62720 from dual;
+3840
+SQL> !dd if=/dev/zero of=/oradata/oracle/oradata/oradb/sysaux01.dbf bs=8192 count=3840 seek=62721 --bs是数据库块大小，count是差值，seek是从哪开始填充0
+3840+0 records in
+3840+0 records out
+31457280 bytes (31 MB) copied, 0.02607 seconds, 1.2 GB/s
+SQL> alter database open;
+Database altered.
+SQL> shutdown immediate;
+Database closed.
+Database dismounted.
+ORACLE instance shut down.
+SQL> startup;
+ORACLE instance started.
+Total System Global Area  839282688 bytes
+Fixed Size     2257880 bytes
+Variable Size    545262632 bytes
+Database Buffers     289406976 bytes
+Redo Buffers       2355200 bytes
+Database mounted.
+Database opened.
+------------------------------------------------------------------------------------------------------------存储过程
+删除存储过程 DROP PROCEDURE 存储过程名字
+删除函数 DROP FUNCTION 函数名字
+删除触发器 DROP TRIGGER 触发器名字
+--在创建视图（VIEW）时，只能使用AS。在声明游标（CURSOR）时，只能使用IS。
+set serveroutput on;--打开输出
+EXEC raisesalary(1);--执行存储过程
+--创建 无参无括号
+create or replace procedure raisesalary(eno in number) 
+as
+ --变量
+ psal h_p_dic_mapping.h_category_name%type;
+begin
+ select h_category_name into psal from h_p_dic_mapping where pkid=eno;
+ update h_p_dic_mapping set h_category_name=h_category_name||'333' where pkid=eno;
+ dbms_output.put_line('涨前：涨后：'||psal);
+end;
+-----------------------------------------------------系统时间
+create or replace procedure calc_Money is 
+str_begin varchar2(20);
+str_end varchar2(20);
+begin
+str_begin := to_char(sysdate-1,'yyyy-mm-dd');  
+str_end :=to_char(sysdate,'yyyy-mm-dd');
+Insert into A_MONEY
+select to_char(sysdate,'yyyy/mm/dd hh24:mi:ss'),z.akb021,v.* from (select '退款：'||sum(t.aae019),t.akb020 from YY_ZF10 t where t.zke599='2' and t.zkf018='1' 
+and t.aae036 >to_date(str_begin,'yyyy/mm/dd hh24:mi:ss') 
+and t.aae036 <to_date(str_end,'yyyy/mm/dd hh24:mi:ss')
+group by t.akb020)v  left join yy_zk49 z on v.akb020=z.akb020);
+commit;
+end;
+-------------------------------------------------------循环
+create or replace procedure test_job(i in number) as
+v_num number ;
+begin
+v_num:=0;
+delete from A_test;
+while v_num < i LOOP
+  Insert into A_test(ID,name) values (to_char(sysdate,'yyyy-mm-dd'),'ss'||v_num);
+  commit;
+  v_num:= v_num + 1;
+end LOOP;
+end;
+------------------------------------------------------------------------------------------------------------定时任务
+declare
+job_number number;
+cursor job_cursor is select * from user_jobs;
+begin
+-- Call the procedure
+sys.dbms_job.submit(job => job_number,   --out参数，job编号
+what => 'calc;', --注意有分号
+next_date => sysdate + 5/(24*60), --下一个 5分钟执行  
+--ADD_MONTHS(trunc(sysdate,'yyyy'),6)+1/24  --每年7月1日和1月1日凌晨1点 
+--TRUNC(next_day(sysdate,'星期一'))+1/24   --每周一凌晨1点执行 
+interval => 'TRUNC(sysdate+1)' --每天凌晨0点执行
+);
+commit;
+end;
+------------------删除
+begin
+sys.dbms_job.remove(job => 28);
+end;
+------------------修改执行时间
+begin
+sys.dbms_job.interval(job => 29,
+interval => 'TRUNC(sysdate+1)');
+end;
+------------------------------------------------------------------------------------------------------------

@@ -1,0 +1,248 @@
+cat test.log | grep outage
+
+jsonContent = new JSONObject();
+jsonContent.put("touser", u.getOpenid());
+jsonContent.put("msgtype", "text");
+
+JSON.parseObject()
+
+1
+//模版引入
+<import src="../../template/component.wxml"/>
+
+//定义模版
+<template name="swiper">
+</template>
+
+//模版使用
+<template is="msgItem" data="{{...item}}"/>
+
+//事件传参
+<view data-alpha-beta="1" data-alphaBeta="2" bindtap="bindViewTap"> DataSet Test </view>
+bindViewTap:function(event){
+    event.currentTarget.dataset.alphaBeta === 1 // - 会转为驼峰写法
+    event.currentTarget.dataset.alphabeta === 2 // 大写会转为小写
+}
+
+//手机号正则
+var myreg=/^[1][3,4,5,7,8][0-9]{9}$/;  
+if (!myreg.test(str)) {  
+  return false;  
+} else {  
+  return true;  
+}  
+
+bindtap="tap"  绑定js中事件
+
+循环
+<view class="group">
+  <block wx:for="{{iconType}}">
+    <icon type="{{item}}" size="40"/>
+  </block>
+</view>
+
+请求后端
+wx.request({
+   url: 'https://localhost:8443/test-json/comfirorder', //仅为示例，并非真实的接口地址
+   data: {
+     x: '',
+     y: ''
+   },
+   method: 'get',
+   header: {
+     'content-type': 'application/json'
+   },
+   success: function (res) {
+     that.setData({
+       shopList: res.data
+     });
+     console.log(res.data)
+   }
+}
+          wx.request({
+            url: 'https://localhost:8443/test-json/comfirorder', //仅为示例，并非真实的接口地址
+            data: {
+              arriveTime: date, phone: phone, people: people, remark: remark,shopId:shopId
+            },
+            method: 'POST',
+            header: {
+              'content-type': 'application/x-www-form-urlencoded;charset=utf-8',
+            },
+            success: function (res) {
+              if(res.data)
+              wx.hideLoading()
+            }
+          })
+
+  <navigator url="/page/navigate/navigate?title=navigate" hover-class="navigator-hover">跳转到新页面</navigator>
+  <navigator url="../../redirect/redirect/redirect?title=redirect" open-type="redirect" hover-class="other-navigator-hover">在当前页打开</navigator>
+  <navigator url="/page/index/index" open-type="switchTab" hover-class="other-navigator-hover">切换 Tab</navigator>
+
+打电话
+wx.makePhoneCall({
+  phoneNumber: '0755-1234567' 
+})
+获取当前位置
+wx.getLocation({
+  type: 'gcj02', //返回可以用于wx.openLocation的经纬度  
+  success: function (res) {
+    var latitude = res.latitude
+    var longitude = res.longitude
+  }
+})  
+打开地图去哪
+wx.openLocation({
+  latitude: 37.376086, 
+  longitude: 118.020314,
+  name: "花园桥肯德基",
+  scale: 28 //层级
+})
+打开客服
+<button open-type="contact" />
+
+支付
+wx.request({
+url: 'https://www.see-source.com/weixinpay/xiadan', 
+method: 'POST',
+header: {
+'content-type': 'application/x-www-form-urlencoded'
+
+},
+data: {'openid':openId},
+success: function(res) {
+var prepay_id = res.data.prepay_id;
+console.log("统一下单返回 prepay_id:"+prepay_id);
+that.sign(prepay_id);
+}
+
+onShareAppMessage: function( options ){
+　　var that = this;
+　　// 设置菜单中的转发按钮触发转发事件时的转发内容
+　　var shareObj = {
+　　　　title: "转发的标题",        // 默认是小程序的名称(可以写slogan等)
+　　　　path: '/pages/share/share',        // 默认是当前页面，必须是以‘/’开头的完整路径
+　　　　imgUrl: '',     //自定义图片路径，可以是本地文件路径、代码包文件路径或者网络图片路径，支持PNG及JPG，不传入 imageUrl 则使用默认截图。显示图片长宽比是 5:4
+　　　　success: function(res){
+　　　　　　// 转发成功之后的回调
+　　　　　　if(res.errMsg == 'shareAppMessage:ok'){
+　　　　　　}
+　　　　},
+　　　　fail: function(){
+　　　　　　// 转发失败之后的回调
+　　　　　　if(res.errMsg == 'shareAppMessage:fail cancel'){
+　　　　　　　　// 用户取消转发
+　　　　　　}else if(res.errMsg == 'shareAppMessage:fail'){
+　　　　　　　　// 转发失败，其中 detail message 为详细失败信息
+　　　　　　}
+　　　　},
+　　　　complete: fucntion(){
+　　　　　　// 转发结束之后的回调（转发成不成功都会执行）
+　　　　}
+　　};
+　　// 来自页面内的按钮的转发
+　　if( options.from == 'button' ){
+　　　　var eData = options.target.dataset;
+　　　　console.log( eData.name );     // shareBtn
+　　　　// 此处可以修改 shareObj 中的内容
+　　　　shareObj.path = '/pages/btnname/btnname?btn_name='+eData.name;
+　　}
+　　// 返回shareObj
+　　return shareObj;
+}
+登陆
+wx.request({
+  //后台接口地址
+  url: 'https://api.weixin.qq.com/sns/jscode2session',
+  data: { 
+    appid:'wx7255a01c5dfe1f7c',
+    secret:'e035d9830443adaa943e7f6415b20c21',
+    grant_type: 'authorization_code',
+    js_code:  res.code,
+  },
+  method: 'GET',
+  header: {'content-type': 'application/json'},
+  success: function (res) {
+    console.log(res.data)
+    wx.setStorageSync('openId', res.data.openid);
+  }
+})
+发模版消息
+  sendMsg:function(e){
+    var opid = wx.getStorageSync('openid');
+    var fId = e.detail.formId;  
+    var l = 'https://api.weixin.qq.com/cgi-bin/message/wxopen/template/send?access_token=9_faXetBSTEykPl9DeKWM08yEO5--zo5rjoNAp5LuJEJwIeAHqxaP51PrvNoF3yoh1Q2Q_g-Q8pC_lzqyiF6Y5Z5WiiASERSgrO64WCm9D7brpai1vrKXlTDian90ijWs1kMD4K3wNrj37zzBYAQRhAGAFVW';  
+    var d = {
+      touser: opid,
+      template_id: 'F--MGLm3i0isE4bOHfB-4UjxechDGMQDWYxU2CDW_F8',//这个是1、申请的模板消息id，  
+      page: '/pages/index/index',
+      form_id: fId,
+      value: {//测试完发现竟然value或者data都能成功收到模板消息发送成功通知，是bug还是故意？？【鄙视、鄙视、鄙视...】 下面的keyword*是你1、设置的模板消息的关键词变量  
+
+        "keyword1": {
+          "value": "ss",
+          "color": "#4a4a4a"
+        },
+        "keyword2": {
+          "value": "sss2",
+          "color": "#9b9b9b"
+        },
+        "keyword3": {
+          "value": new Date().getDate(),
+          "color": "#9b9b9b"
+        },
+        "keyword4": {
+          "value": "201612130909",
+          "color": "#9b9b9b"
+        },
+        "keyword5": {
+          "value": "$300",
+          "color": "red"
+        }
+      },  }
+    wx.request({
+      url: l,
+      data: d,
+      method: 'POST',
+      success: function (res) {
+        console.log("push msg");
+        console.log(res);
+      },
+      fail: function (err) {
+        // fail  
+        console.log("push err")
+        console.log(err);
+      }
+    });  
+  },
+公账号网页上传图片
+wx.chooseImage({
+                count: 1, // 默认9
+                sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
+                sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+                success: function (res) {
+                    var localIds = res.localIds; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
+                    console.log("localIds="+localIds)
+                    wx.uploadImage({
+                        localId: localIds[0], // 需要上传的图片的本地ID，由chooseImage接口获得
+                        isShowProgressTips: 1, // 默认为1，显示进度提示
+                        success: function (res) {
+                            var serverId = res.serverId; // 返回图片的服务器端ID
+                            console.log("serverId="+serverId)
+                            pushServer(serverId);
+                            wx.downloadImage({
+                                serverId: serverId, // 需要下载的图片的服务器端ID，由uploadImage接口获得
+                                isShowProgressTips: 1, // 默认为1，显示进度提示
+                                success: function (res) {
+                                    var localId = res.localId; // 返回图片下载后的本地ID
+                                    console.log("localId="+localId)
+                                    $("#image").attr('src',localId);  
+                                }
+                            });
+                        }
+                    });
+                }
+            });
+
+
+
+

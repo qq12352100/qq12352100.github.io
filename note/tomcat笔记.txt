@@ -1,0 +1,100 @@
+JVM 内存参数设置：
+-Xms 设置堆的最小空间大小。
+-Xmx 设置堆的最大空间大小。
+-Xmn:设置年轻代大小
+-XX:NewSize 设置新生代最小空间大小。
+-XX:MaxNewSize 设置新生代最大空间大小。
+-XX:PermSize 设置永久代最小空间大小。
+-XX:MaxPermSize 设置永久代最大空间大小。
+-Xss 设置每个线程的堆栈大小
+-XX:+UseParallelGC:选择垃圾收集器为并行收集器。此配置仅对年轻代有效。即上述配置下，年轻代使用并发收集，而年老代仍旧使用串行收集。
+-XX:ParallelGCThreads=20:配置并行收集器的线程数，即：同时多少个线程一起进行垃圾回收。此值最好配置与处理器数目相等。
+==========================================================================================================给tomcat指定jdk与jre
+1、用记事本打开tomcat/bin/setclasspath.bat
+2、最头上添加两行代码，jdk和jre的根目录，相当于直接给出JAVA_HOME和JRE_HOME路径
+set JAVA_HOME=C:\Program Files\Java\jdk1.8.0_101
+set JRE_HOME=C:\Program Files\Java\jdk1.8.0_101\jre
+-----当前路径下
+set JAVA_HOME=%~dp0\jdk
+set JRE_HOME=%~dp0\jdk\jre
+==========================================================================================================配置JVM内存参数
+创建环境变量文件在%TOMCAT_HOME%\bin\目录下创建文件setenv.bat
+SET JAVA_OPTS=-server -Xms4g -Xmx4g
+测试 #catalina.bat configtest
+----------------------------------------------------------------------------------------
+在bin下的catalina.bat文件中echo Using CATALINA_BASE: "%CATALINA_BASE%"的前一行加入如下代码。
+set JAVA_OPTS=%JAVA_OPTS% -server -Xms8192m -Xmx8192m -Xmn1890m
+-server：一定要作为第一个参数，在多个CPU时性能佳
+-Xms：java Heap初始大小。 默认是物理内存的1/64。
+-Xmx：java heap最大值。建议均设为物理内存的一半。不可超过物理内存。
+-XX:PermSize：设定内存的永久保存区初始大小。缺省值为64M。
+-XX:MaxPermSize：设定内存的永久保存区最大 大小。缺省值为64M。
+-Xmn：young generation(年轻代)的heap大小。一般设置为Xmx的3、4分之一
+==========================================================================================================Tomcat启动时Creation of SecureRandom instance for session ID很慢
+find / -name java.security
+vi /usr/lib/jvm/java-1.7.0-openjdk-1.7.0.181-2.6.14.5.el7.x86_64/jre/lib/security/java.security
+/securerandom 回车 按n找下一个 shift+n上一个
+ securerandom.source=file:/dev/urandom
+替换成    
+securerandom.source=file:/dev/./urandom
+重启tomcat
+==========================================================================================================Invalid character found in method name. HTTP method names must be tokens
+只需要在server.xml中增加maxHttpHeaderSize字段即可:
+<Connector URIEncoding="UTF-8" port="8080" protocol="org.apache.coyote.http11.Http11NioProtocol"
+    useBodyEncodingForURI="false"
+    enableLookups="false"
+               connectionTimeout="20000"
+               redirectPort="8443" maxHttpHeaderSize="8192"/>
+==========================================================================================================Tomcat在Windows中输出日志到catalina.out
+1、打开bin下面的startup.bat文件，把call "%EXECUTABLE%" start %CMD_LINE_ARGS%
+     改为call "%EXECUTABLE%" run %CMD_LINE_ARGS% 。
+2、打开bin下面的catalina.bat文件，会发现共有4处 %ACTION% ，在后面分别加上
+     >> %CATALINA_HOME%\logs\catalina.out
+     
+如果不能输出，配置环境变量CATALINA_HOME
+==================================================================================.keystore证书
+已经安装JDK
+步骤：
+l  进入%JAVA_HOME%/bin目录
+l  执行命令
+keytool -genkey -alias tomcat -keyalg RSA -keystore D:\tomcat.keystore -validity 36500
+参数简要说明：“F:\tomcat.keystore”含义是将证书文件保存在F盘，证书文件名称是tomcat.keystore ；“-validity 36500”含义是证书有效期，36500表示100年，默认值是90天
+l  在命令行填写必要的参数：
+A、输入keystore密码：此处需要输入大于6个字符的字符串123456
+B、“您的名字与姓氏是什么？”这是必填项，并且必须是TOMCAT部署主机的域名或者IP[如：gbcom.com 或者 10.1.25.251]，就是你将来要在浏览器中输入的访问地址
+C、 “你的组织单位名称是什么？”、“您的组织名称是什么？”、“您所在城市或区域名称是什么？”、“您所在的州或者省份名称是什么？”、“该单位的两字母国 家代码是什么？”可以按照需要填写也可以不填写直接回车，在系统询问“正确吗？”时，对照输入信息，如果符合要求则使用键盘输入字母“y”，否则输入“n”重新填写上面的信息
+D、输入<tomcat>的主密码，这项较为重要，会在tomcat配置文件中使用，建议输入与keystore的密码一致，设置其它密码也可以
+l  完成上述输入后，直接回车则在你在第二步中定义的位置找到生成的文件
+
+配置TOMCAT服务器
+则需要将生成的证书tomcat.keystore拷贝到Tomcat将要引用的位置c:/users/admin
+
+去掉注释且修改参数=>
+<Connector port="443" protocol="HTTP/1.1" SSLEnabled="true"
+               maxThreads="150" scheme="https" secure="true"
+               clientAuth="false" sslProtocol="TLS" keystoreFile="c:/users/admin/.keystore" keystorePass="123456"/>
+               
+在tomcat\conf\web.xml中的</welcome-file-list>后面加上这样一段：
+<login-config>
+<!-- Authorization setting for SSL -->
+<auth-method>CLIENT-CERT</auth-method>
+<realm-name>Client Cert Users-only Area</realm-name>
+</login-config>
+<security-constraint>
+<!-- Authorization setting for SSL -->
+<web-resource-collection >
+<web-resource-name >SSL</web-resource-name>
+<url-pattern>/*</url-pattern>
+</web-resource-collection>
+<user-data-constraint>
+<transport-guarantee>CONFIDENTIAL</transport-guarantee>
+</user-data-constraint>
+</security-constraint>
+==================================================================================.jks证书
+<Connector port="443"   protocol="org.apache.coyote.http11.Http11NioProtocol" maxThreads="150" SSLEnabled="true">
+    <SSLHostConfig>
+        <Certificate certificateKeystoreFile="conf/example.com.jks" certificateKeyAlias="example.com"
+            certificateKeystorePassword="password"
+                     type="RSA" />
+    </SSLHostConfig>
+</Connector>

@@ -1,0 +1,90 @@
+Topic：一组消息数据的标记符；
+Producer：生产者，用于生产数据，可将生产后的消息送入指定的Topic；
+Consumer：消费者，获取数据，可消费指定的Topic；
+Group：消费者组，同一个group可以有多个消费者，一条消息在一个group中，只会被一个消费者获取；
+Partition：分区，为了保证kafka的吞吐量，一个Topic可以设置多个分区。同一分区只能被一个消费者订阅。
+
+=============================================================================================================【Windows】
+1、jdk选择1.8的版本,然后环境变量JAVA_HOME。
+2、zookeeper
+    下载安装包：http://zookeeper.apache.org/releases.html#download
+    解压目录: D:\Tool,
+    1.进入Zookeeper设置目录，D:\Tool\zookeeper-3.4.13\conf
+    2. 将“zoo_sample.cfg”重命名为“zoo.cfg”
+    3. 在文本编辑器（如notepad）中打开zoo.cfg
+    4. 找到并编辑dataDir=D:/Tool/zookeeper-3.4.13/tmp (可以自定义文件夹)
+    5. 与Java中的做法类似，我们在系统环境变量中添加：
+        a. 在系统变量中添加ZOOKEEPER_HOME =D:\Tool\zookeeper-3.4.13
+        b. 编辑path系统变量，添加为路径 %ZOOKEEPER_HOME%\bin;
+    6. 在zoo.cfg文件中修改默认的Zookeeper端口（默认端口2181,可以不用修改）
+测试 : 打开新的cmd，输入zkServer，运行Zookeeper,成功binding to port 0.0.0.0/0.0.0.0:2181
+3、kafka
+    下载 http://kafka.apache.org/downloads.html,注意要下载二进制版本Binary downloads:kafka 2.11-2.1.1.tgz
+    解压到目录 D:\Tool\kafka_2.11-2.1.1
+    1. 编辑文件Kafka配置文件， D:\Tool\kafka_2.11-2.1.1\config\server.properties
+    2. 找到并编辑log.dirs=D:\Tool\kafka_2.11-2.1.1\kafka-log, (自定义文件夹)
+    3. 找到并编辑zookeeper.connect=localhost:2181。表示本地运行(默认的可以不改)
+    4. Kafka会按照默认，在9092端口上运行，并连接zookeeper的默认端口：2181。
+
+运行和测试：
+在启动Kafka前，先运行Zookeeper实例。 (前面的cmd命令:zkserver)
+1、启动Kafka服务器
+　　新建cmd窗口: cd D:\Tool\kafka_2.11-2.1.1 
+    .\bin\windows\kafka-server-start.bat .\config\server.properties
+2、创建主题
+    新建cmd窗口: cd D:\Tool\kafka_2.11-2.1.1\bin\windows
+    kafka-topics.bat --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic haha
+3、创建生产者
+    新建cmd窗口: cd D:\Tool\kafka_2.11-2.1.1\bin\windows
+    kafka-console-producer.bat --broker-list localhost:9092 --topic haha
+4、创建消费者
+    新建cmd窗口: cd D:\Tool\kafka_2.11-2.1.1\bin\windows
+    kafka-console-consumer.bat --bootstrap-server localhost:9092 --topic haha --from-beginning
+===============================================================================================================【linux】
+1、下载
+#wget https://mirrors.bfsu.edu.cn/apache/kafka/2.8.0/kafka_2.12-2.8.0.tgz
+#wget https://mirrors.bfsu.edu.cn/apache/zookeeper/zookeeper-3.7.0/apache-zookeeper-3.7.0-bin.tar.gz
+
+2、解压
+#tar -xzvf kafka_2.12-2.8.0.tgz
+#tar -xzvf apache-zookeeper-3.7.0-bin.tar.gz
+
+3、配置
+#vim kafka_2.12-2.8.0/config/server.properties
+listeners=PLAINTEXT://localhost:9092
+advertised.listeners=PLAINTEXT://localhost:9092
+
+#vim apache-zookeeper-3.7.0-bin/conf/zoo_sample.cfg
+#cp apache-zookeeper-3.7.0-bin/conf/zoo_sample.cfg apache-zookeeper-3.7.0-bin/conf/zoo.cfg
+
+4、启动zookeeper
+启动#sh zkServer.sh start
+状态#sh zkServer.sh status
+
+5、启动kafka
+启动#sh kafka_2.12-2.8.0/bin/kafka-server-start.sh kafka_2.12-2.8.0/config/server.properties
+停止#sh kafka-server-stop.sh
+
+6、创建topic
+#sh kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic test
+7、创建生产者
+#sh kafka-console-producer.sh --broker-list localhost:9092 --topic test
+8、创建消费者
+#sh kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic test --from-beginning
+
+sh kafka-topics.sh --list --zookeeper localhost:2181        #查看topic
+===============================================================================================================
+问题：
+1、java.nio.file.InvalidPathException: Illegal char <      > at index 18: D:kafka_2.12-2.7.0       mp\meta.properties.tmp
+Windows下server.properties中的Log Basics下的log.dirs路径问题改为log.dirs=D:\\kafka_2.12-2.7.0\\tmp
+
+2、启动broker报错 ERROR [KafkaServer id=0] Fatal error during KafkaServer startup. Prepare to shutdown (kafka.server.KafkaServer)
+这个主要的原因就是server.properties中的Socket Server Settings下的listeners端口号被占用了换一个端口号就行了
+
+3、创建topic报错 Replication factor: 1 larger than available brokers: 0.
+意思是可用brokers为0，说明在启动broker时有问题，查看一下启动时有没有报错
+
+4、java.net.ConnectException: Connection refused: no further information远程访问报错
+listeners=PLAINTEXT://localhost:9092
+advertised.listeners=PLAINTEXT://localhost:9092
+修改localhost为具体的IP地址

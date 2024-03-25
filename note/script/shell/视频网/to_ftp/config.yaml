@@ -1,0 +1,187 @@
+# Version: 4.3.0
+
+#取数据脚本
+yisa_get_msg:    
+    thread_num: 8
+
+#数据分发处理
+worker:
+    max_process: 8
+    thread_num: 128
+    #驾乘人脸相关配置
+    #是否将人脸数据存到车辆的srvdb中，0否，1是，默认开启
+    save_carface_to_vehicle_srvdb: 0
+    #推送到人脸api的最小置信度
+    save_carface_threshold: 0.95
+    #是否将驾乘人脸图片数据储存到weed中，1是，0否，当选择是的时候需要修改下列face_weed的配置
+    save_carface_image_to_weed: 0
+    #人脸的weed存储位置，需要填写所有的人脸weed主节点，要保证主节点与从节点与worker脚本在同一网络下
+    #face_weed:
+    #    host:
+    #        - 1.1.1.1:9333
+    #        - 1.1.1.1:9333
+        #驾乘人脸数据在人脸weed集群中的存储时间，m - 分钟, h - 小时, d - 天, w - 星期, M - 月, y - 年
+        #默认: 1M - 一个月
+    #    ttl: 1M
+    #是否将驾乘人脸数据单独推送到人脸video_processing中，1是，0否
+    post_carface_to_video_processing: 0
+    #人脸video_processing接口地址
+    face_video_processing_url: http://1.1.1.1:18082/postback
+    #保存推送video_processing接口失败数据的文件夹
+    failed_directory: /data/worker_post_video_processing_failed
+
+#识别接口
+#   有负载均衡时配置负载均衡的ip加端口
+#   没有负载均衡时配置识别的ip加端口
+fcgi:
+    #srv_fusion识别
+    url_vehicle: http://127.0.0.1:2017/api/image/process
+
+#kafka连接信息
+kafka:
+    #填写主机名
+    host: 
+        - sevdb1:9092
+        - sevdb2:9092
+        - sevdb3:9092
+        - sevdb4:9092
+    #worker入数据topic
+    topic_in: dockingMessage
+    #取清洗后的数据的topic
+    topic_out: monitorMessage
+    #入库数据流
+    topic_srvdb: srvdbMessage
+
+#web数据库
+mysql_web:
+    host: 1.1.1.1
+    port: 3306
+    user: yisa_oe
+    password: yisa_oe
+    database: yisa_oe
+
+#web ip，有端口时需要加上端口
+#web_ip: 1.1.1.1
+
+#其中的ip为webip
+#socket_io: http://1.1.1.1:2121
+
+#yisa_counter脚本相关配置
+yisa_counter:
+    #是否带有车辆库功能
+    is_car_lib: 1
+
+# 支持的数据源配置 (程序按照标准支持, 一般不要修改)
+#data_source_ids:
+#    # 卡口车辆
+#    vehicle: 22
+#    # 卡口两轮
+#    bicycle: 16
+#    # 卡口三轮
+#    tricycle: 19
+#    # 卡口行人
+#    people: 13
+#    # 卡口车辆人脸
+#    vehicle_face: 8
+#    # 卡口两轮人脸
+#    bicycle_face: 4
+#    # 卡口三轮人脸
+#    tricycle_face: 6
+#    # 卡口行人人脸
+#    people_face: 2
+  
+
+#主消息队列redis
+redis_mq:
+    unix_socket_path: '/dev/shm/redis_mq.sock'
+    host: 127.0.0.1
+    port: 6380
+    password: yisa123456q
+    database: 0
+    #车辆数据
+    queue_key_name: _jobs
+        
+#快速分析redis
+redis_quick:
+    unix_socket_path: '/dev/shm/redis_quick.sock'
+    host: 127.0.0.1
+    port: 6381
+    password: yisa123456q
+    database: 0
+    queue_key_name: _jobs
+
+#慢分析redis
+redis_slow:
+    unix_socket_path: '/dev/shm/redis_slow.sock'
+    host: 127.0.0.1
+    port: 6381
+    password: yisa123456q
+    database: 0
+    queue_key_name:
+
+#高速缓存redis
+redis_cache:
+    unix_socket_path: '/dev/shm/redis_cache.sock'
+    host: 127.0.0.1
+    port: 6383
+    password: yisa123456q
+    database: 0
+    queue_key_name:
+        
+#统计用redis
+redis_counter:
+    unix_socket_path: '/dev/shm/redis_counter.sock'
+    host: 127.0.0.1
+    port: 6384
+    password: yisa123456q
+    database: 0
+    queue_key_name:
+    
+#订阅redis
+redis_pubsub:
+    unix_socket_path: '/dev/shm/redis_pubsub.sock'
+    host: 127.0.0.1
+    port: 6385
+    password: yisa123456q
+    database: 0
+    queue_key_name:
+
+#驾管库缓存
+redis_jdcinfo:
+    unix_socket_path: '/dev/shm/redis_jdcinfo.sock'
+    host: 127.0.0.1
+    port: 6386
+    password: yisa123456q
+    database: 0
+    queue_key_name:
+    
+#大数据看板redis
+redis_board:
+    unix_socket_path: '/dev/shm/redis_board.sock'
+    host: 127.0.0.1
+    port: 6387
+    password: yisa123456q
+    database: 0
+    queue_key_name:
+
+
+#特征搜车服务
+feature_search:
+    host: 0.0.0.0
+    port: 9003
+    thread_num: 64
+
+#映射缓存服务
+web_tools:
+    listen: 0.0.0.0:9002
+
+redis:
+    host: 127.0.0.1
+    port: 6379
+
+FTP:
+    host: 127.0.0.1
+    port: 21
+    username: ysftp
+    password: imw100pass
+    datapath: /ftpdata/yisa_car/

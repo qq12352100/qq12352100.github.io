@@ -1,0 +1,166 @@
+linux 环境搭建：CentOS 6.5 64位
+-----------------------------------------------------------JDK安装：-------------------------------------------------------------------------
+1、解压：   $ tar -zxvf jdk.tar.gz
+2、配置环境变量：
+    vim /etc/profile
+    
+    在末尾行添加
+    JAVA_HOME=/usr/local/jdk1.7.0_80
+    CLASSPATH=.:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar
+    PATH=$JAVA_HOME/bin:$PATH
+    export JAVA_HOME CLASSPATH PATH
+    
+3、运行命令让配置生效     $ source /etc/profile   
+
+------------------------------------------------------taomcat安装------------------------------------------------------------------------
+TOMCAT_HOME=/usr/local/apache-tomcat-7.0.65
+PATH=$PATH:$TOMCAT_HOME/bin 
+export TOMCAT_HOME  PATH
+
+#修改tomcat权限
+chmod -R 755 /usr/local/apache-tomcat-7.0.65/bin 
+
+--------------------------------------------------------立马使配置文件生效----------------------------------------------------------------------
+source /etc/profile
+
+-----------------------------------------------------------------mysql安装----------------------------------------------------------------------
+1、下载MySQL-5.6.16-1.el6.x86_64.rpm-bundle.tar
+2、解压 tar -xvf MySQL-5.6.15-1.el6.i686.rpm-bundle.tar
+MySQL-shared-compat-5.6.15-1.el6.i686.rpm        # RHEL兼容包
+MySQL-server-5.6.15-1.el6.i686.rpm               # MySQL服务端程序
+MySQL-client-5.6.15-1.el6.i686.rpm               # MySQL客户端程序
+MySQL-devel-5.6.15-1.el6.i686.rpm                # MySQL的库和头文件
+MySQL-shared-5.6.15-1.el6.i686.rpm               # MySQL的共享库
+在RHEL系统中，必须先安装“MySQL-shared-compat-5.6.15-1.el6.i686.rpm”这个兼容包，然后才能安装server和client，否则安装时会出错。
+3、安装
+rpm -qa | grep mysql                            --查看系统之前是否已安装MySQL
+rpm -e --nodeps mysql-libs-5.1.47-4.el6.i686    --移除mysql
+find / -name mysql*                             --查找残留文件
+rm -rf /var/lib/mysql*                          --移除残留文件
+卸载后 /var/lib/mysql 中的  /etc/my.cnf 会重命名为 my.cnf.rpmsave，/var/log/mysqld.log 会重命名为 /var/log/mysqld.log.rpmsave，如果确定没用后就手工删除。
+安装开始：
+rpm -ivh MySQL-shared-compat-5.6.15-1.el6.i686.rpm
+rpm -ivh MySQL-server-5.6.15-1.el6.i686.rpm
+rpm -ivh MySQL-client-5.6.15-1.el6.i686.rpm
+rpm -q MySQL-server                 --安装完成，查看有没有安装成功
+netstat -nat                        --检测 MySQL 3306 端口是否安打开
+service mysql start/stop            --启动/关闭MySql 服务
+
+a、数据库目录    /var/lib/mysql/ 
+b、配置文件   /usr/share/mysql（mysql.server命令及配置文件） 
+c、相关命令   /usr/bin(mysqladmin mysqldump等命令) 
+d、启动脚本   /etc/rc.d/init.d/（启动脚本文件mysql的目录）
+
+在这个版本的安装过程中会在 /root/.mysql_secret 生成随机密码，首次登陆、找到随机密码，用此密码来登录
+
+set password=password('123456');                                                        --设置新密码
+GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY '123456' WITH GRANT OPTION； --赋予任何主机上以root身份访问数据的权限(有密码)
+GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' WITH GRANT OPTION；                            --赋予任何主机上以root身份访问数据的权限(没密码)
+flush privileges;                                                                       --刷新系统权限,重启服务也可以
+
+--查看连接权限
+use mysql;
+select user,host from user;  --注:host为%，说明可以任意主机连接
+
+--修复表名区分大小写
+修改配置 /usr/my.cnf
+在[mysqld]下加入一行：
+lower_case_table_names=1
+
+--修改字符集的问题
+show variables like 'character%';   --查看字符集
+vim /usr/my.cnf
+加文件中加入：
+[client]
+port=3306
+socket=/var/lib/mysql/mysql.sock
+default-character-set=utf8
+[mysqld]
+lower_case_table_names=1
+character-set-server=utf8
+socket=/var/lib/mysql/mysql.sock
+[mysql]
+no-auto-rehash
+default-character-set=utf8
+--重启服务
+service mysql restart
+
+注意事项：
+在连接的时候可能需要关闭防火墙、SeLinux
+关闭防火墙：
+/etc/init.d/iptables stop
+启动防火墙：
+/etc/init.d/iptables start
+永久关闭防火墙：
+chkconfig --level 35 iptables off
+service iptables stop
+修改配置：
+/etc/selinux/config
+      #SELINUX=enforcing     #注释掉
+      #SELINUXTYPE=targeted  #注释掉
+      SELINUX=disabled  #增加
+shutdown -r now   #重启系统
+
+----------------------------------------------------------ad压力测试--------------------------------------------------------------------
+如果不想安装apache但是又想使用ab命令的话，我们可以直接安装apache的工具包httpd-tools。如下：
+yum -y install httpd-tools
+查看ab是否安装成功，可以切换到上述目录下，使用ab –V命令进行检测。如下：
+ab -V
+
+并发测试：
+ab -c 10 -n 100 http://blog.csdn.net/
+-c 10表示并发用户数为10
+-n 100表示请求总数为100
+
+----------------------------------------------------------------tomcat优化--------------------------------------------------------------
+现公司服务器内存一般都可以加到最大2G ，所以可以采取以下配置：
+JAVA_OPTS='-Xms1024m -Xmx2048m -XX:PermSize=256M -XX:MaxNewSize=256m -XX:MaxPermSize=256m'
+
+-server      启用jdk 的 server 版；  
+-Xms         java虚拟机初始化时的最小内存；  
+-Xmx         java虚拟机可使用的最大内存；  
+-XX:PermSize      内存永久保留区域  
+-XX:MaxPermSize   内存最大永久保留区域  
+
+------------------------------------------------------解压命令------------------------------------------------------------------------
+ *.tar          用 tar –xvf 
+ *.gz           用 gzip -d或者 gunzip 
+ *.tar.gz和*.tgz 用 tar –xzf 
+ *.bz2          用 bzip2 -d或者    bunzip2 
+ *.tar.bz2      用 tar –xjf  
+ *.Z            用 uncompress 
+ *.tar.Z        用 tar –xZf 
+ *.rar          用 unrar 
+ *.zip          用 unzip 
+
+-------------------------------------------rpm包安装过程中依赖问题“libc.so.6 is needed by XXX”解决方法-----------------------------------------
+解决方法都是安装缺少的依赖库即可。但是搜索后发现，本机上有些库已经安装了。
+从Red Hat Enterprise Linux 6开始，默认只安装主架构所需要的包，而不安装兼容架构的包，也就是说，64位系统默认只安装64位的软件包。
+为避免这种问题，在64位系统中，要同时安装64位的包和32位的兼容包。
+
+yum list glibc*
+yum install glibc.i686
+yum list libstdc++*
+yum install libstdc++.i686
+-----------------------------------------------------------------------------------------------------------------------------------------------
+chown -R root:root /var/lib/mysql
+rpm -qa|grep -i mysql       --查找以前是否装有mysql
+rpm -e --nodeps mysql       --删除包
+
+mysql
+localhost密码root
+远程连接密码123456
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,40 @@
+会话 --> 首选项 --> 设置
+应用：无会话，去掉俩勾
+安全：锁屏设置0
+标签：悬停设置0 鼠标双击重复，右键关闭
+终端：右键单击粘贴文本
+文本：自动复制
+
+
+=========================================会话中=========================================
+自动换行显示     Alt + M --> Alt + W 
+放大缩小字       Ctrl - +
+拆分视图         Alt + W --> Alt + H 水平  Alt + V 垂直 
+显示时间戳       Alt + T --> Alt + T
+
+=====================================快捷键配置=========================================.wind\profiles\default.v10\terminal
+[
+    {
+        "quick.group" : "快速",
+        "quick.icon" : "session::waterdrop-coral",
+        "quick.label" : "Untitled",
+        "quick.type" : "Send Text",
+        "quick.uuid" : "8c7f3b51-25e7-448f-adb5-11d515f380f9"
+    },
+    {
+        "quick.group" : "装机",
+        "quick.icon" : "session::linux",
+        "quick.label" : "yum安装",
+        "quick.text" : "yum install yum-fastestmirror lrzsz vim screen java-1.8.0-openjdk* mariadb mariadb-server redis nginx -y",
+        "quick.type" : "Send Text",
+        "quick.uuid" : "46be9200-d21f-44b6-8129-64a8294e236e"
+    },
+    {
+        "quick.group" : "装机",
+        "quick.icon" : "session::heart-rosybrown",
+        "quick.label" : "测试2",
+        "quick.text" : "ll",
+        "quick.type" : "Send Text",
+        "quick.uuid" : "f72fdd15-2950-48f7-9ab1-870d223cae96"
+    }
+]

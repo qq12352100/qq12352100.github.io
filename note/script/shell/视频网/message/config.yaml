@@ -1,0 +1,35 @@
+# 不需要配置此项
+save_video_processing: 
+    url: http://127.0.0.1:18080/postback
+# 配置此项
+kafka:
+    host: 
+        - 172.16.99.124:9092
+        #- 44.60.24.8:9092
+    group_id: video_face_20200823194500
+    video_topic: videoMessage
+    face_topic: faceMessage
+# 不需要配置此项   
+redis_carface:
+    unix_socket_path: '/dev/shm/redis_slow.sock'
+    host: 44.60.24.9
+    port: 6380
+    password: yisa123456q
+    database: 0
+    queue_key_name: car_face_info
+# 配置此项
+redis_counter:
+    unix_socket_path: '/dev/shm/redis_counter.sock'
+    host: 127.0.0.1
+    port: 6384
+    password: yisa123456q
+    database: 0
+    queue_key_name:
+
+kafka_puerao:
+    host: 
+        #- 172.16.99.31:9192
+        - puerao_kafka:9192
+    group_id: video_face_20200823194500
+    #video_topic: videoMessage
+    face_topic: TRANSFER_CAMERA_REALTIME_CAPTURE

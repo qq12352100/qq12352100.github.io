@@ -1,0 +1,46 @@
+whl包：已经编译的包，类似于exe文件。
+tar包：源文件，只是打包在一起，还没有编译。
+tar.gz包：源文件，压缩并打包在一起，还没有编译。
+===================================================================【离线安装库】
+网址https://pypi.org/project/
+Windows环境：（命令窗口cd到指定目录，打开文件夹选中路径cmd回车）
+安装whl包： pip install  **.whl（前提是要安装好pip和wheel）
+安装tar.gz包：cd到解压后路径,python setup.py install（安装pip和wheel都可以参照这种方法）
+Linux环境：
+　　安装whl同上
+　　安装tar.gz:cd到解压后路径,./configure  -> make  -> make install
+-------------------------------------------------------------------------
+#正常环境会把所有安装的包都写入文档
+pip freeze > requirements.txt
+#下载python项目需要的所有的依赖包
+pip download -r requirements.txt
+#把site-packages文件夹复制到离线的机器上。然后安装。
+pip install --no-index --find-links=d:/test/python_package -r requirements.txt
+===================================================================
+在安装成功了pip之后，使用命令安装包的时候: pip install sklearn 报错：  no matching distribution found for sklearn。
+easy_install --upgrade pip
+===================================================================【配置pip国内源】
+pip config list                                                                 #查询当前源
+pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple        #配置清华大学源
+python -m pip install --upgrade pip                                             #更新pip   查看当前版本：pip show pip
+pip list -o                                                                     #查询可升级包 
+pip install --upgrade paramiko                                                  #更新某个包   pip install --upgrade 包名称==版本号
+===================================================================【安装p3.10】
+ll /usr/bin/|grep python   #查看本系统下python安装情况
+wget https://www.python.org/ftp/python/3.10.4/Python-3.10.4.tgz
+wget https://www.python.org/ftp/python/3.8.0/Python-3.8.0.tgz
+tar -zxvf Python-3.10.4.tgz
+cd Python-3.10.4
+mkdir /usr/local/python3.10
+./configure --prefix=/usr/local/python3.10
+make && make install
+#添加环境变量
+vim /etc/profile
+/usr/local/python3.10/bin
+source /etc/profile
+#备份
+mv /usr/bin/python3 /usr/bin/python3.bak
+ln -s /usr/local/python3.7/bin/python3 /usr/bin/python3
+
+
+yum install -y gcc patch libffi-devel python-devel  zlib-devel bzip2-devel openssl-devel ncurses-devel sqlite-devel readline-devel tk-devel gdbm-devel db4-devel libpcap-devel xz-devel -y

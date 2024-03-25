@@ -1,0 +1,21 @@
+<!DOCTYPE html><html><head><script>fetch('common_head.html').then(response=>response.text()).then(html=>{document.head.innerHTML+=html;});</script></head><body><p>
+
+wireshark能获取HTTP，也能获取HTTPS，但是不能解密HTTPS，所以wireshark看不懂HTTPS中的内容，总结，如果是处理HTTP,HTTPS 还是用Fiddler, 其他协议比如TCP,UDP 就用wireshark.
+
+or 与 ||     等效
+eq 与 ==     等效
+and 与 &&    等效
+
+排除arp包，如!arp   或者   not arp
+
+目的地址         ip.dst==192.168.101.8
+源地址为         ip.src==1.1.1.1
+目的端口为80     tcp.dstport==80
+源端口为80       tcp.srcport==80
+过滤get包        http.request.method=="GET",
+过滤post包       http.request.method=="POST"
+
+ip.addr == 119.75.217.26 and icmp 表示只显示ICPM协议且源主机IP或者目的主机IP为119.75.217.26的数据包。
+
+
+</p></body></html>

@@ -1,0 +1,30 @@
+------------------------------------------------------------------------------------------安装go语言
+下载目录：https://studygolang.com/dl
+
+wget https://studygolang.com/dl/golang/go1.16.4.linux-amd64.tar.gz
+tar -C /usr/local -xzf go1.16.4.linux-amd64.tar.gz
+#添加环境变量/etc/profile 
+export PATH=$PATH:/usr/local/go/bin
+source /etc/profile
+go version
+
+------------------------------------------------------------------------------------------安装gohttpserver
+开源地址：https://github.com/codeskyblue/gohttpserver
+下载地址：https://github.com/codeskyblue/gohttpserver/releases/
+
+./gohttpserver -r ./ --port 8000 --upload
+
+./gohttpserver -r ./ --port 8000 --auth-type http --auth-http bkk:bkk --upload --delete
+
+echo date >> foo.txt
+
+curl -F file=@foo.txt http://bkk:bkk@localhost:8000/somedir
+
+
+wget https://github.com/codeskyblue/gohttpserver/releases/download/1.1.0/gohttpserver_1.1.0_linux_amd64.tar.gz
+wget https://studygolang.com/dl/golang/go1.16.4.linux-amd64.tar.gz
+tar -C /usr/local -xzf go1.16.4.linux-amd64.tar.gz
+echo "export PATH=$PATH:/usr/local/go/bin" >> /etc/profile
+source /etc/profile
+go version
+./gohttpserver -r /usr/local/share/bkk --port 8000 --auth-type http --auth-http bkk:bkk --upload --delete

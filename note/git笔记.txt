@@ -1,0 +1,180 @@
+
+==========================================================================================下载别人代码
+git init
+git remote add origin https://github.com/codeskyblue/gohttpserver.git
+git remote -v
+git clone https://github.com/codeskyblue/gohttpserver.git
+==========================================================================================撤销本地
+git checkout . 【撤销本地所有未提交的修改】
+git reset HEAD 如果后面什么都不跟的话 就是上一次add 里面的全部撤销了 
+git reset HEAD XXX/XXX/XXX.java 就是对某个文件进行撤销了
+==========================================================================================配置文件
+/etc/gitconfig 对所有用户有效
+~/.gitconfig 对当前用户有效
+{工作目录}/.git/config 仅对当前项目有效
+$ git help
+$ git --help
+$ man git-
+比如，要学习 config 命令可以怎么用，可执行：
+$ git help config
+==========================================================================================git查看某个文件的修改历史
+一、切换到目录
+二、git log --pretty 例如：git log --pretty=oneline 文件名
+三、git show 例如：git show 356f6def9d3fb7f3b9032ff5aa4b9110d4cca87e
+--------------------------------------------------------------------------
+git log 查看commit的历史
+git show <commit-hash-id>查看某次commit的修改内容
+git log -p <filename>查看某个文件的修改历史
+git log -p -2查看最近2次的更新内容
+==========================================================================================github添加多个key
+一、创建两个key
+$ ssh-keygen
+Enter file in which to save the key (/c/Users/Administrator/.ssh/id_rsa):   //路径+文件名
+Enter passphrase (empty for no passphrase):                                 //密码（输入不会有提示）
+Enter same passphrase again:                                                //再输入一次密码
+
+二、查看系统ssh-key代理,执行如下命令
+$ ssh-add -l
+Could not open a connection to your authentication agent.
+如果发现上面的提示,说明系统代理里没有任何key,执行如下操作
+exec ssh-agent bash
+如果系统已经有ssh-key 代理 ,执行下面的命令可以删除
+$ ssh-add -D
+添加密钥到ssh-agent
+$ ssh-add ~/.ssh/keys/key_note
+$ ssh-add ~/.ssh/keys/test
+
+==========================================================================================github添加一个key
+1、检查是否已经存在KEY
+$ cd ~/.ssh
+$ ls
+config  id_rsa  id_rsa.pub  known_hosts
+$ mkdir key_backup
+$ cp id_rsa* key_backup
+$ rm id_rsa*
+注：windows7在C:\Users\ZDZ\.ssh目录下可以找到了
+
+2、生成SSH KEY
+ $ ssh-keygen -t rsa -C "qq12352100@163.com"
+ $ ssh-keygen -t ed25519 -C "qq12352100@163.com"
+
+3、将Public Key 添加到GitHub
+Account-->SSH keys 里面的 Add a new key ,  将你的public key（id_rsa.pub）的内容拷贝到SSH key文本框
+
+4、测试
+$ ssh git@github.com
+==========================================================================================
+$git clone git@github.com:qq12352100/note.git
+
+5.1 配置
+git config -l                                           //查看全局配置
+git config --global user.name "bkk"                     //设置用户名
+git config --global user.email "qq12352100@163.com"     //设置邮箱
+//暂时禁用
+git config --global --unset user.name
+git config --global --unset user.email
+
+5.2 创建Repository
+mkdir clrs
+cd clrs
+git init
+touch README
+git add README
+git commit -m 'first commit'
+git remote add origin git@github.com:qq12352100/note.git
+git push origin master
+
+git remote add origin git@github.com:qq12352100/note.git    //添加远程仓库
+git remote -v                                               //查看远程仓库
+git remote rm origin                                        //移除远程仓库
+
+5.3 提交已经存在的Repository
+cd existing_git_repo
+git remote add origin git@github.com:qq12352100/note.git
+git push origin master
+==================================================================================================================Git配置
+当前用户的Git配置文件放在用户主目录(c:/docments and settings/andministrator)下的一个隐藏文件.gitconfig中
+//git lg  设计log样式
+git config --global alias.lg "log --color --graph --pretty=format:'%Cred%h%Creset 
+-%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
+
+git config --global alias.last 'log -1'     //git last显示最后一次提交信息
+git config --global alias.st status         //告诉Git，以后st就表示status
+git add .gitignore                          //.gitignore内容为(*.zip文件 /WebRoot/WEB-INF/classes/文件夹)
+===================================================================================================================标签
+git tag v1.0                                        //切换到需要打标签的分支上,打一个新标签
+git tag -a v0.1 -m "version 0.1 released" 3628164   //-a指定标签名，-m指定说明文字
+git tag -d v0.1                                     //删除标签
+git push origin v1.0                                //推送某个标签到远程
+git push origin --tags                              //一次性推送全部尚未推送到远程的本地标签
+git push origin :refs/tags/v0.9                     //要删除远程标签，先从本地删除，远程删除命令也是push
+====================================================================================================================分支、工作现场
+git checkout -b dev     //创建分支dev（-b参数表示创建并切换 =$ git branch dev + $ git checkout dev）
+git branch              //查看当前分支
+git merge dev           //合并指定分支到当前分支
+git branch -d dev       //删除dev分支
+
+git branch              //列出本地已经存在的分支，并且当前分支会用*标记
+git branch -r           //查看远程版本库的分支列表
+git branch -a           //查看所有分支列表（包括本地和远程，remotes/开头的表示远程分支）
+git branch -v           //查看一个分支的最后一次提交
+git branch --merged     //查看哪些分支已经合并到当前分支
+git branch --no-merged  //查看所有未合并工作的分支
+
+git stash                   //当前工作现场“储藏”起来，等以后恢复现场后继续工作
+git stash list              //查看存储了几个工作现场
+git stash apply stash@{0}   //恢复特定的工作现场
+git stash apply             //恢复，但是恢复后，stash内容并不删除，你需要用git stash drop来删除；
+git stash pop               //恢复的同时把stash内容也删了：
+======================================================================================================================
+mkdir test01                    //创建目录
+cd test01                       //进入目录
+pwd                             //显示所在路径
+git init                        //初始化仓库，生成.git隐藏文件
+git add readme.txt              //添加文件（文件要在test01目录下面）
+git commit -m "first file"      //提交文件（形成一个快照，以便以后恢复，后面添加提交信息）
+git status                      //查看仓库状态
+git diff readme.txt             //查看文件与上次哪里不同
+git log --pretty=oneline        //查看日志
+git reset --hard HEAD^          //退回上个版本，用HEAD表示当前版本，上上一个版本就是HEAD^^
+git reset --hard 3628164        //退回指定版本（版本号不用写全，前几位就可以）
+git reflog                      //记录你的每一次命令
+git checkout -- readme.txt      //让这个文件回到最近一次git commit或git add时的状态
+git reset HEAD readme.txt       //把暂存区的修改撤销掉,重新放回工作区.把暂存区的修改回退到工作区
+
+rm test.txt                     //从本机删除文件
+git rm test.txt --cached        //从版本库中删除文件，但不删除文件  
+git rm image -r                 //删除指定目录所有文件
+
+git remote add origin git@github.com:qq12352100/note.git            //关联远程仓库
+git remote -v                                                       //查看远程仓库
+
+git push -u origin master                                           //推送到远程库上
+
+git clone git@github.com:qq12352100/note.git                        //克隆远程仓库
+cd gitskills    //进入目录
+ls              //查看文件
+
+三步曲=================================================================================================================
+git add .                   //添加文件（目录下面所有文件）
+git commit -m "first file"  //提交文件（形成一个快照，以便以后恢复，后面添加提交信息）
+git push -u origin master   //推送到远程库上
+=======================================================================================================================合并命令
+git pull origin master      //从远程获取最新版本并merge到本地,相当于git fetch 和 git merge
+git fetch origin master     //从远程获取最新版本到本地，不会自动merge
+
+git commit -am "first file" //提交文件,相当于git add . 和 git commit -m "first file"
+=======================================================================================================================问题
+问题：Please move or remove them before you switch branches.
+解决：git clean -dfx  强调一下,git clean是把你当前工作的分支所有东西保持和远程的分支一致，就是说你远程是怎么样的，执行这个命令后你本地的就是怎么样的，没有进入版本的文件会直接扔掉
+
+问题：fatal: Unable to create 'e:/git/Android/XXXXXX/.git/index.lock': File exists.
+解决：在.git同级目录，执行rm -f .git/index.lock （或者rm -f git/index.lock） 删除后可提交
+
+问题：fatal: remote origin already exists.
+解决：  
+    1、先输入$ git remote rm origin
+ 如果输入$ ssh -T git@github.com
+    出现错误提示：Permission denied (publickey).因为新生成的key不能加入ssh就会导致连接不上github。
+    解决办法如下：
+    1、先输入$ ssh-agent，再输入$ ssh-add ~/.ssh/id_key，这样就可以了。

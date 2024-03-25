@@ -1,0 +1,42 @@
+1、引入
+<dependency>
+    <groupId>io.springfox</groupId>
+    <artifactId>springfox-boot-starter</artifactId>
+    <version>3.0.0</version>
+</dependency>
+2、配置到WebMvcConfigurer
+@Bean
+public Docket createRestApi() {
+    return new Docket(DocumentationType.OAS_30)//
+            .apiInfo(apiInfo())//
+            .select()//
+            .apis(RequestHandlerSelectors.withMethodAnnotation(ApiOperation.class))//
+            .paths(PathSelectors.any())//
+            .build();
+}
+
+private ApiInfo apiInfo() {
+    return new ApiInfoBuilder().title("文档说明")// 文档说明
+            .description("描述")// 文档描述
+            .version("1.0.0")// 文档版本说明
+            .build();
+
+}
+3、注解到Controller上
+@Api(tags = "学生信息Controller")
+4、注解到方法上
+@ApiOperation(value ="json入参",notes = "注意点说明：接口通过id获取用户的详细信息，id必须传递")
+方式一.
+@ApiImplicitParams({
+        @ApiImplicitParam(name = "sid", value = "用户id", required = true, dataType = "String", paramType = "query",defaultValue = "01"),
+        @ApiImplicitParam(name = "sname", value = "用户姓名", required = false, dataType = "String", paramType = "query",defaultValue = "赵雷"),
+})
+方式二.
+findAllStudent(@ApiParam(value = "id",name="id",required = true,defaultValue = "01") String id){
+
+实体类注解：
+@ApiModelProperty(value = "用户名")
+private String username;
+
+5、
+访问http://localhost:8081/swagger-ui/index.html

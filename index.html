@@ -1,17 +1,4 @@
-<!DOCTYPE html>
-<html>
-<head>
-<script>
-        fetch('common_head.html')
-            .then(response => response.text())
-            .then(html => {
-                document.head.innerHTML += html;
-            });
-    </script>
-</head>
-<body>
-
-<p style="white-space: pre;margin-left: 3%;">
+<!DOCTYPE html><html><head><script>fetch('common_head.html').then(response=>response.text()).then(html=>{document.head.innerHTML+=html;});</script></head><body><p>
 ::默认编码格式为ANSI代表 GB2312 编码。
 ::不加@时，在运行时，会在窗口显示出这条命令,而加了@, 只会显示出 echo后面你要显示出的东西
 mode con cols=80 lines=20&color 0c  rem  cols宽 lines高  cmd里面键入:help color 查查看
@@ -103,6 +90,6 @@ for /f "tokens=* skip=2" %%A in ('ping %host% -n 1') do (
 sc create 服务名 binPath= "C:\win32srvDemo.exe"
 sc config 服务名 start=AUTO   rem AUTO(自动)DEMAND(手动)DISABLED(禁用)
 sc description Redis6.2.6 "This service runs the Redis server"
-</p>
-</body>
-</html>
+
+
+</p></body></html>

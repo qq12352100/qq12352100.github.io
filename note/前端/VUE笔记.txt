@@ -1,0 +1,79 @@
+Staticfile CDN（国内） : https://cdn.staticfile.org/vue/2.2.2/vue.min.js
+unpkg：https://unpkg.com/vue@2.6.14/dist/vue.min.js。
+cdnjs : https://cdnjs.cloudflare.com/ajax/libs/vue/2.1.8/vue.min.js
+
+NPM 方法安装：
+npm install -g cnpm --registry=https://registry.npmmirror.com
+npm -v
+npm install npm -g      #升级
+npm install express     #安装express  卸载：npm uninstall express 更新：npm update express 搜索：npm search express
+npm list -g             #查看所有全局安装的模块  npm ls -g
+
+#升级 npm
+cnpm install npm -g
+# 升级或安装 cnpm
+npm install cnpm -g
+
+# 最新稳定版
+$ cnpm install vue
+
+# 全局安装 vue-cli  手脚架
+$ cnpm install --global vue-cli
+# 创建一个基于 webpack 模板的新项目
+$ vue init webpack my-project
+# 这里需要进行一些配置，默认回车即可
+This will install Vue 2.x version of the template.
+For Vue 1.x use: vue init webpack#1.0 my-project
+? Project name my-project
+? Project description A Vue.js project
+? Author runoob <test@runoob.com>
+? Vue build standalone
+? Use ESLint to lint your code? Yes
+? Pick an ESLint preset Standard
+? Setup unit tests with Karma + Mocha? Yes
+? Setup e2e tests with Nightwatch? Yes
+   vue-cli · Generated "my-project".
+   To get started:   
+     cd my-project
+     npm install
+     npm run dev
+   Documentation can be found at https://vuejs-templates.github.io/webpack
+$ cd my-project
+$ cnpm install
+$ cnpm run dev
+ DONE  Compiled successfully in 4388ms
+
+> Listening at http://localhost:8080
+
+
+打包 Vue 项目使用以下命令：npm run build  会在 Vue 项目下生成一个 dist 目录，一般包含 index.html 文件及 static 目录，static 目录包含了静态文件 js、css 以及图片目录 images。
+
+------------------------------------------------------------------------------------------------------
+<slot>插槽
+
+
+------------------------------------------------------------------------------------------------------ES6语法
+
+// 1.1.放入两个参数
+const sum = (num1, num2) => {
+return num1 + num2
+}
+// 1.2.放入一个参数
+const power = num => {
+return num * num
+｝
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,96 @@
+linux下安装nginx:Centos6.5
+========================================================================================
+准备：依赖包安装顺序依次为:openssl、zlib、pcre, 然后安装Nginx包
+#yum install openssl zlib pcre
+安装nginx：
+#tar -zxvf nginx-1.5.9.tar.gz 
+#cd nginx-1.5.9
+#./configure && make && make install
+
+
+错误：
+./configure: error: the HTTP rewrite module requires the PCRE library.
+#yum -y install pcre-devel
+./configure: error: the HTTP gzip module requires the zlib library.
+#yum install -y zlib-devel
+./configure: error: the HTTP cache module requires md5 functions
+#yum -y install openssl openssl-devel
+
+启动操作：
+    /usr/local/nginx/sbin/nginx (/usr/local/nginx/sbin/nginx -t 查看配置信息是否正确)
+停止操作：
+    #ps -ef | grep nginx
+    从容停止Nginx：
+    #kill -QUIT 主进程号
+    快速停止Nginx：
+    #kill -TERM 主进程号
+    强制停止Nginx：
+    #pkill -9 nginx 
+重启：
+    nginx -s reload 
+
+========================================================================================【负载均衡配置】
+负载一个tomcat：
+    打开nginx.conf修改：
+    server_name localhost:8080;  
+      
+    location / {  
+        proxy_pass http://localhost:8080;
+    }
+
+负载多个tomcat：
+    upstream local_tomcat {
+        server localhost:8080;
+        server localhost:8081;  #访问机率server localhost:9999 weight=5; 
+    }
+
+    server{
+        location / {
+           proxy_pass http://local_tomcat;
+        }
+    }
+
+listen：表示当前的代理服务器监听的端口，默认的是监听80端口。注意，如果我们配置了多个server，这个listen要配置不一样，不然就不能确定转到哪里去了。
+server_name：表示监听到之后需要转到哪里去，这时我们直接转到本地，这时是直接到nginx文件夹内。
+location：表示匹配的路径，这时配置了/表示所有请求都被匹配到这里
+root：里面配置了root这时表示当匹配这个请求的路径时，将会在这个文件夹内寻找相应的文件，这里对我们之后的静态文件伺服很有用。
+index：当没有指定主页时，默认会选择这个指定的文件，它可以有多个，并按顺序来加载，如果第一个不存在，则找第二个，依此类推。
+
+========================================================================================【静态文件处理】
+一般都会把所有静态文件，html,htm,js,css等都放在同一个文件夹下，这样就不会有tomcat这样的情况了，因为tomcat下的是属于不同的项目，这个我们就没办法了。
+我们先要去掉之前配的location /，避免全部请求被拦截了。
+location ~ \.jsp$ {  
+        proxy_pass http://localhost:8080;  
+}  
+          
+location ~ \.(html|js|css|png|gif)$ {  
+    root D:/software/developerTools/server/apache-tomcat-7.0.8/webapps/ROOT;  
+}
+========================================================================================【session共享+负载权重】
+upstream myServer {   
+    server 127.0.0.1:9090 down; 
+    server 127.0.0.1:8080 weight=2; 
+    server 127.0.0.1:6060; 
+    server 127.0.0.1:7070 backup;
+    ip_hash;                        #session共享ip定向访问，要求nginx必须为最前端服务器
+    upstream_hash;                  #这个模块多数情况下是用作url_hash的,他会将ip加入x_forwarded_for这个http_header里，用upstream_hash可以用这个头做因子，将请求定向到指定的后端
+}
+down 表示单前的server暂时不参与负载 
+weight  默认为1.weight越大，负载的权重就越大。 
+max_fails ：允许请求失败的次数默认为1.当超过最大次数时，返回proxy_next_upstream 模块定义的错误 
+fail_timeout:max_fails 次失败后，暂停的时间。 
+backup： 其它所有的非backup机器down或者忙的时候，请求backup机器。所以这台机器压力会最轻。
+
+
+
+
+
+
+
+
+
+
+
+
+
+

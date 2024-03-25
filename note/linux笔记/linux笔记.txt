@@ -1,0 +1,612 @@
+cat file.txt | tr "\n" ","| sed -e 's/,$/\n/'     #行转列
+
+nohup java -jar /usr/local/share/bkk/bkk/HMKJ-0.0.1_BASE.jar >>/usr/local/share/bkk/log.file 2>&1 &
+ps -ef|grep java|grep -v color|awk '{print $2}' | xargs kill -9 & rm -f /usr/local/share/bkk/log.file
+nohup java -jar  >>log.file 2>&1 &
+
+>表示覆盖原文件内容
+>>表示追加内容（会另起一行）
+
+su - oracle 
+export DIDPLAY=10.61.228.74:0.0
+cd $ORACLE_HOME
+cd bin
+./dbca
+
+curl -s -L https://raw.githubusercontent.com/233boy/v2ray/master/install.sh | bash
+===========================================================================================【安装telnet】
+1、关闭防火墙；2、执行【rpm -qa |grep telnet】命令查看是否安装过相关软件包；3、执行【yum install telnet telnet-server】命令安装telnet即可。
+===========================================================================================【进程端口】
+lsof -i:22
+netstat -tunlp
+===========================================================================================【pam_tally2模块解锁被锁定用户命令】
+#pam_tally2 -u root         #查看失败次数
+#pam_tally2 -u root -r      #重置
+===========================================================================================【find命令】
+1. find   /  -name test  | xargs rm -rf      (这个命令可以查找test文件或者目录，并删除！)
+2. 用下面的命令可以查找 /home下最近两天修改过的文件：find /home -type f -mtime -2
+如果要把这些文件也删掉，那么可以：find /home -type f -mtime -2 -exec rm {} \;
+-type f  查找文件
+-type d 查找目录
+-mtime -2 修改时间在2天内
+-mtime +3 修改时间在3天前
+-exec rm {} \;   将找到的文件 （假定找到文件的名字为 a.txt)， 执行 rm a.txt 命令
+find有很多参数，有很强大的搜索功能，具体可以 man find 查看。
+
+find ./-type f -name consumer.xml -exec sed -i"s/aaaaaa/bbbbbb/g"{}\;
+-name参数指定查找的文件名
+-exec参数将查找到的内容传递给下一一个命令去继续执行相关逻辑
+sed命令主要对文件内容进行替换，这里会将consumer文件中的aaaaa替换成bbbbbb
+
+===========================================================================================【抓包】
+tcpdump tcp -ieth0 -t -S 0 -C 100 dst port 6060 and src net 192.168.1.0/24 -W test cap
+-i      #表示监听抓服务器上哪个网卡
+-t      #表示不显示时间戳
+-S      #可以抓到完整的数据包
+-C      #表示一共抓取多少次数据包
+dst port          #6060表示抓取目标端口是6060的数据包
+src net +网段     #表示数据包的来源网络地址为192.168.1.104
+
+===========================================================================================【wget下载】
+wget http://songjian:songjian@119.3.235.61:7005/bkk/tongji.sh
+===========================================================================================【curl上传】
+curl -F file=@20210115.txt http://songjian:songjian@10.52.223.3:36998/bkk/carFaceNum
+===========================================================================================【会话】
+yum install screen -y
+screen -S name  #创建一个name的session
+screen -R name  #打开name这个session
+screen -ls      #列出所有已经存在的session
+ctrl + a d      #退出当前的session
+===========================================================================================
+/etc/init.d/sshd start           【启动22端口ssh服务】service sshd start
+ssh 10.10.10.10 -p 22 -l root    【远程登录】
+passwd root                      【修改root密码】
+chapasswd [选项]　　批量更新密码。注意：命令内没有用户名和密码，回车后以"用户名:密码"的格式输入（密码一般为明文），chpasswd根据选项加密
+1)常用选项
+-c,--crypt-method METHOD 使用指定的方法加密。加密方法有DES，MD5，NONE，SHA256，SHA512
+-e,--encrypted 提供的密码已经加密
+-h,--help 帮助
+-m.--md5
+非交互式修改密码
+echo 123456 | passwd --stdin user002
+echo "user003:123456" | chpasswd
+alias cls='clear'                【别名来使用清屏命令】
+===========================================================================================
+cat log.txt|grep -A10 -B10 name  【查看log.txt中name前后10行】
+cat error.log | grep -C 5 'nick' 【显示file文件里匹配foo字串那行以及上下5行】
+cat error.log | grep -B 5 'nick' 【显示foo及前5行】
+cat error.log | grep -A 5 'nick' 【显示foo及后5行】
+ps -ef|grep java                 【查看运行中的java程序】
+netstat -tunpl | grep 端口       【查看端口占用】netstat -apn
+find / -name 'key' -type d       【查找目录】
+find / -name key -print          【查找文件】
+
+find /dbdata/apon2/ -name *.properties | xargs grep "jdbc:oracle"    【查找/dbdata/apon2/目录下所有properties文件，查找内容为jdbc:oracle并输出】
+
+===========================================================================================【系统属性】
+ntpdate -u ntp.api.bz             【同步时间】
+uname -a                          【查看32位64位】
+more /proc/cpuinfo                【查看cpu是多少位的】
+cat /proc/cpuinfo| grep "physical id"| sort| uniq| wc -l  【查看物理CPU个数(插槽)】
+cat /proc/cpuinfo| grep "processor"| wc -l                【查看逻辑CPU个数(虚拟)】
+cat /proc/cpuinfo| grep "cpu cores"| uniq                 【查看每个物理CPU中core的个数(即核数)】
+
+===========================================================================================【selinux】
+查看SELinux状态：cat /etc/selinux/config 或者 getenforce 来查看状态3个状态enforcing （执行中）、permissive （不执行但产生警告）、disabled（关闭）。
+临时关闭（重启机器后失效）：setenforce 0 
+永久关闭（需要重启机器）：sed -i s#SELINUX=enforcing#SELINUX=disabled# /etc/selinux/config
+===========================================================================================【关闭防火墙】
+1、查看
+iptables -nvL --line-number
+-L 查看当前表的所有规则，默认查看的是filter表，如果要查看NAT表，可以加上-t NAT参数
+-n 不对ip地址进行反查，加上这个参数显示速度会快很多
+-v 输出详细信息，包含通过该规则的数据包数量，总字节数及相应的网络接口
+–-line-number 显示规则的序列号，这个参数在删除或修改规则时会用到
+-------------------------------------------------------------------------------------
+vim /etc/sysconfig/iptables
+--------------------------------
+Redirecting to /bin/systemctl status  iptables.service
+Unit iptables.service could not be found.
+1、 使用systemctl
+#systemctl [start|stop|restart|save|status] iptables.service
+2. 安装iptables-services
+yum install iptables-services
+systemctl enable iptables.service //设置开机启动
+-----------------------------------------------------------------systemctl status firewalld #3内核以上
+查看状态： service iptables status 
+1) 重启后生效 
+开启： chkconfig iptables on 
+关闭： chkconfig iptables off 
+2) 即时生效，重启后失效 
+开启： service iptables start 
+关闭： service iptables stop 
+3）修改/etc/sysconfig/iptables 文件，添加以下内容： 
+-A RH-Firewall-1-INPUT -m state --state NEW -m tcp -p tcp --dport 80 -j ACCEPT 
+-A RH-Firewall-1-INPUT -m state --state NEW -m tcp -p tcp --dport 22 -j ACCEPT
+---------------------------------------------------------------------------------
+开启端口
+#firewall-cmd --zone=public --add-port=80/tcp --permanent
+#firewall-cmd --zone=public --add-port=8080-8081/tcp
+#firewall-cmd --zone=public --add-service=ftp --permanent
+#firewall-cmd --zone=public --add-source=56.200.18.1/24 --permanent
+#firewall-cmd --permanent --add-rich-rule="rule family="ipv4" source address="192.168.0.200" port protocol="tcp" port="80" reject"
+查询端口号80 是否开启：
+# firewall-cmd --query-port=80/tcp
+重启防火墙：
+# firewall-cmd --reload
+查询有哪些端口是开启的:
+# firewall-cmd --list-port
+命令含义：
+--zone #作用域
+--add-port=80/tcp #添加端口，格式为：端口/通讯协议
+--permanent #永久生效，没有此参数重启后失效
+关闭firewall：
+systemctl stop firewalld.service #停止firewall
+systemctl disable firewalld.service #禁止firewall开机启动
+===========================================================================================【使用iptables限制ping命令】
+iptables -A INPUT -p icmp --icmp-type 8 -s 0/0 -j DROP
+解除设置方法（即删除本规则）:
+iptables -D INPUT -p icmp --icmp-type 8 -s 0/0 -j DROP
+===========================================================================================【开机自启动】
+systemctl list-unit-files  #查看所有开机启动
+在/etc/rc.d/rc.local文件最后追加
+# start tomcat  
+/usr/local/apache-tomcat-7.0.68/bin/startup.
+===========================================================================================【本机端口转发】
+在Linux 环境下，配置tomcat使用80端口。用普通用户不能启动，提示木有权限；root用户可以正常启动。据说1024以内的端口都要root权限。
+通过Iptables端口实现80到8080的转发
+#iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 
+===========================================================================================【Xshell安装rz/sz命令】
+sz filename：下载
+rz ：上传 
+-y #覆盖 
+-a #如果是Dos格式的文件，会转换为unix格式
+
+安装命令：
+yum install lrzsz -y
+
+Xshell设置默认路径：右键会话 -> 属性 -> ZMODEM -> 接收文件夹
+===========================================================================================【linux之间互传文件】
+文件；#scp /home/space/music/1.mp3 root@192.168.1.50:/home/root/others/music       #scp file_source file_target 
+文件夹：#scp -r /test root@192.168.1.50:/test 
+===========================================================================================【互信】
+主机A:
+#ssh-keygen
+#cat id_rsa.pub >> authorized_keys
+#scp id_rsa.pub xxx.xxx.xxx.xxx:/root/.ssh
+主机B:
+#chattr -i authorized_keys  
+#rm -rf authorized_keys
+#cat id_rsa.pub >> authorized_keys
+
+#vi /etc/ssh/sshd_config
+RSAAuthentication yes
+PermitRootLogin yes
+PubkeyAuthentication yes
+#systemctl restart sshd.service
+authorized_keys的权限，它的权限严格要求是600，/home/xxx/.ssh目录的权限，它的权限须是700
+-------------------------------------------------------sshpass工具
+wget -c http://downloads.sourceforge.net/project/sshpass/sshpass/1.05/sshpass-1.05.tar.gz
+tar -xzvf sshpass-1.05.tar.gz
+cd sshpass-1.05
+./configure
+make && make install
+使用：
+sshpass -p "thepassword" ssh -p2222 man@123.123.123.123     #远程连接指定ssh的端口
+sshpass -f xxx.txt  ssh root@192.168.11.11                  #从密码文件读取文件内容作为密码去远程连接主机
+sshpass -p '123456' scp root@host_ip:/home/test/t ./tmp/    #从远程主机上拉取文件到本地
+===========================================================================================
+-------------------------------------------------------
+-------------------------常用命令----------------------
+-------------------------------------------------------
+ls -l > a.txt                                    【列表内容输出到a.txt中|覆盖|>>|追加】
+rm -f /var/log/httpd/access.log                    【将会强制删除/var/log/httpd/access.log这个文件】
+rm -rf /var/log/httpd/access                    【将会删除/var/log/httpd/access目录以及其下所有文件、文件夹】
+
+shutdown now     【关机】init 0
+reboot           【重启】
+env              【查看环境变量】
+history          【查看历史命令记录】
+ps -aux|more     【查看进程-->top动态查看】
+kill -9 1777     【强制杀死1777号进程】
+
+mount -参数 设备名称 挂载点  【挂载命令】挂载光驱直接mount /mnt/cdrom
+umount 设备名称              【卸载命令】
+        
+df 目录全路径        【查看某个目录是在哪个分区】
+df -l                【查看磁盘使用情况】
+fdisk -l             【查看系统分区的具体情况】
+
+ls                  【列出文件和目录】
+ls -a               【显示隐藏文件】
+ls -l               【显示长列表格式】
+ls -ahl             【查看文件的所有组】
+mv f1 f2            【修改文件名（移动文件）】
+cp f1 f2            【拷贝文件】-r 递归
+\cp f1 f2           【拷贝强制覆盖】
+find / -name a.txt  【查找根目录下的a.txt文件】 
+chown 用户名 文件名 【修改文件所有者】
+chgrp 组名 文件名   【修改文件所在组】
+
+pwd           【显示当前工作目录】
+cd            【改变目录】
+mkdir         【建立目录】-p 多级目录
+vi a.txt      【建立文件】
+touch a.txt
+rmdir 【删除空目录】 rm -rf 【强制删非空目录】
+more  【显示文件内容，带分页，空格下一页，】
+less  【显示文件内容带分页】
+grep  【在文本中查询内容】
+
+man 【help】
+|   【管道命令】
+umask 0022  【创建文件默认权限】
+setfacl /m u:boss:rwx -R /caiwubu   【设置特殊权限】drwxr-xr-x+ getfacl
+chattr +i /zhangben     【隐藏权限不能删不能改】 +a 只能追加不能删  lsattr 
+ln -s /etc/passwd ./passwd1     【软连接】硬链接不加-s 时刻与源文件同步 权限后面数据变2
+------------------------------------------------------------------------------------------------------------【chmod 7744 test.txt 给三个特殊权限】
+u+s 4 g+s 2 o+t 1
+chmod u+s，意思是就是针对某个程序任何用户都有读写这个程序的权限，可以像root用户一样操作，这个指令只对程序有效，如果用此权限放在路径上是无效的。
+chmod g+s，意思是强制将此群组里的目录下文件编入到此群组中，无论是哪个用户创建的文件。
+chmod o+t，意思是这个目录只有root和此目录的拥有者可以删除，其他用户全都不可以。
+-------------------------------------------------------
+二次操作后面加 -exec cp -rf {} /root/ \;  #{}是前条命令返回的结果集
+-------------------------------------------------------
+date +%F                    #2021-03-10
+date +"%Y-%m-%d %H:%M:%S"   #2021-03-10 12:29:22
+-------------------------------------------------------
+df -Th | tee file1 | grep boot | tr -s " " |cut -d " " -f 6  #磁盘信息存为file1|查找boot那行|多空格转一个|以空格分段取第6段
+-------------------------------------------------------【rpm软件包安装】
+rpm -ivh XXX.rpm  --force   #强制安装
+rpm -e XXX                  #卸载
+rpm -qf /usr/bin/touch      #查找这个从哪个包里
+rpm -qa |grep XXX           #查找已装软件
+-------------------------------------------------------
+ctrl + Z    #后台 fg唤出 jobs
+ctrl + D    #退出
+-------------------------------------------------------
+at      #一次性任务
+atq     #查看
+-------------------------------------------------------
+-----------------------用户管理------------------------
+-------------------------------------------------------
+/etc/shadow 
+#bin:*:17107:0:99999:7:::
+登录名:加密口令:最后次修改时间:最小时间间隔:最大时间间隔:警告时间:不活动时间:失效时间:标志
+bin:*:17107:0【用户名】【用户密码:密码最近一次修改时间】【最少多少天后才能改密码的天数（默认为0，表示可以在任何时间修改）】
+99999:7【最多多少天数系统会强制用户修改密码（默认为99999，改为1 也能让密码改不了）】【过期前多少天时间会被警告（改为-1 则永远不会提示）】
+:::【过期后多少天内账号变为inactive状态，可登陆，但不能操作】【多少天后账号会过期，无法登陆】【保留参数】
+date -d "1970-01-01 15776 days" +%Y/%m/%d 【算天数】
+
+/etc/passwd
+用户名:口令:用户标识号:组标识号:注释性描述:主目录:登录Shell
+
+
+useradd xiaoming   【添加用户xiaoming】
+passwd xiaoming    【修改xiaoming的密码】
+userdel xiaoming   【删除用户xiaoming】
+userdel -r xiaoming【删除用户以及用户主目录】
+id root            【查看用户信息】 who am i 查看当前登录用户
+
+useradd -g 组名 用户名   【创建用户并指定组】
+usermod -g 组名 用户名   【改变用户所在组】
+usermod -d 目录名 用户名 【改变用户登录的初始目录】
+---组命令-----
+groupadd 组名        【添加组】
+[cat|vi] /ect/group  【查看所有组】
+[cat|vi] /ect/passwd 【查看所有的用户信息】
+
+cut -d : -f 1 /etc/passwd                                    #查看系统中有哪些用户：
+cat /etc/passwd | grep -v /sbin/nologin | cut -d : -f 1        #查看可以登录系统的用户：
+
+监视特定用户==》top回车u回车然后输出用户名即可
+终止特定进程==》top回车k回车然后输入要杀死的ID
+指定系统状态更新时间==》top -d 10 十秒更新一次
+-------------------------------------------------------
+-------------------------linux分区---------------------
+-------------------------------------------------------
+/boot 分100M
+swp 交换分区 一般是你的物理内存的两倍 不要大于256
+/   根分区  尽可能大 
+-------------------------------------------------------
+---------------------修改配置错误----------------------
+-------------------------------------------------------
+进入grub引导界面时，输入e
+选中第二行，输入e
+输入 空格 1 【单用户级别】
+===========================================================================================【设置IP】
+vi /etc/sysconfig/network-scripts/ifcfg-eth0    
+BOOTPROTO="static"
+ONBOOT="yes"
+IPADDR="192.168.0.119"
+NETMASK="255.255.255.0"
+GATEWAY="192.168.0.1"
+/etc/rc.d/init.d/network restart                【重启网络配置】service network restart
+
+---修改ip地址---
+即时生效:
+# ifconfig eth0 10.188.217.84 netmask 255.255.255.0    
+重启生效:
+修改/etc/sysconfig/network-scripts/ifcfg-eth0
+---修改default gateway---
+即时生效:
+# route add default gw 192.168.1.1
+重启生效:
+修改/etc/sysconfig/network-scripts/ifcfg-eth0
+---修改dns---
+修改/etc/resolv.conf
+修改后即时生效，重启同样有效
+---修改host name---
+即时生效:
+# hostname test1
+重启生效:
+修改/etc/sysconfig/network
+===========================================================================================【无法修改resolv.conf的问题DNS】
+/etc/init.d/NetworkManager stop     #关闭NetworkManager服务
+vim /etc/resolv.conf                #修改或新增dns地址
+/etc/init.d/network restart            #重启网卡
+chkconfig NetworkManager off         #避免重启服务器后配置被清空
+===========================================================================================【桌面配置】
+startx                    #从命令行直接启动图形桌面环境
+echo $LANG                 #查看当前使用的系统语言
+locale                    #查看安装的语言包
+locale -a                 #查看支持的字符集:
+LANG="zh_CN.utf8"        #切换为中文
+vi /etc/sysconfig/i18n              #设置系统默认的语言配置
+yum groupinstall chinese-support     #安装中文语言包
+===========================================================================================【安装字体】
+把C:\Windows\Fonts下字体拷出来，MSYH.TTC（微软雅黑）上传到/usr/share/fonts/
+cd /usr/share/fonts/
+mkfontscale
+mkfontdir
+fc-cache
+===========================================================================================【卸载内核】
+rm rf /boot/*                   #卸载内核 
+rm -f /etc/fstab                #设备挂载点
+rm -f /etc/inittab              #id:5:initdefault  3以后的内核没有了
+rm -f /etc/rc.d/rc.sysinit
+rm -f /etc/rc.d/rc.local
+dd if=/dev/zero of=/dev/sda bs=446 count=l
+===========================================================================================【openssl升级教程】
+rm /usr/bin/openssl
+wget https://www.openssl.org/source/openssl-1.1.0k.tar.gz
+tar -zxvf openssl-1.1.0k.tar.gz
+cd openssl-1.1.0k
+./config
+make && make install　
+ln -s /usr/local/bin/openssl /usr/bin/openssl
+openssl version  --查看版本
+报错：openssl: error while loading shared libraries: libssl.so.1.1: cannot open shared object file: No such file or directory
+解决：
+ln -s /usr/local/lib64/libssl.so.1.1  /usr/lib64/libssl.so.1.1
+ln -s /usr/local/lib64/libcrypto.so.1.1  /usr/lib64/libcrypto.so.1.1
+----------------------------------------------------------------------------1.1升级3.0
+wget https://www.openssl.org/source/openssl-3.0.7.tar.gz --no-check-certificate
+cd openssl-3.0.7
+./config
+问题：Can't locate IPC/Cmd.pm
+解决:
+yum install perl-ExtUtils-CBuilder perl-ExtUtils-MakeMaker -y
+./config --prefix=/usr/local/ssl/
+make -j 4
+make install
+mv /usr/bin/openssl /usr/bin/openssl.old
+mv /usr/include/openssl/ /usr/include/openssl.old
+ln -s /usr/local/ssl/bin/openssl /usr/bin/openssl
+ln -s /usr/local/ssl/include/openssl /usr/include/openssl
+echo "/usr/local/ssl/lib64/" >> /etc/ld.so.conf
+ldconfig
+openssl version
+===========================================================================================【openssl降级教程】
+wget http://www.openssl.org/source/openssl-1.0.2k.tar.gz
+tar -xzf openssl-1.0.2k.tar.gz
+cd openssl-1.0.2k
+./config --prefix=/usr/local/openssl
+./config -t
+make && make install
+cd /usr/local
+ldd /usr/local/openssl/bin/openssl
+which openssl
+openssl version
+-----------------------卸载
+apt-get purge openssl
+rm -rf /etc/ssl #删除配置文件 
+============================================================================================【优化】
+1、备份：
+cp /etc/login.defs /etc/login.defs.bak.20220526
+cp /etc/pam.d/system-auth-ac /etc/pam.d/system-auth-ac.bak.20220526
+
+2、登录密码加固：
+sed -i 's/PASS_MAX_DAYS\(.*\)99999\(.*\)/PASS_MAX_DAYS\   90/g' /etc/login.defs
+sed -i 's/PASS_MIN_DAYS\(.*\)0\(.*\)/PASS_MIN_DAYS\   0/g' /etc/login.defs
+sed -i 's/PASS_MIN_LEN\(.*\)5\(.*\)/PASS_MIN_LEN\   5/g' /etc/login.defs
+sed -i 's/PASS_WARN_AGE\(.*\)7\(.*\)/PASS_WARN_AGE\   7/g' /etc/login.defs
+
+3、登录超时限制：
+/etc/pam.d/system-auth 配置
+auth        required      pam_tally2.so deny=5 unlock_time=300 even_deny_root root_unlock_time=10 
+
+4、超时断开设置：
+echo "export TMOUT=300" >> /etc/profile
+source /etc/profile
+
+5、防火墙策略（在服务器上限制本机的22端口只向固定服务器开发访问权限）
+/etc/sysconfig/iptables 配置
+iptables -I INPUT -s 10.3.10.17 -p tcp --dport 22 -j ACCEPT
+iptables -I INPUT -s 10.5.1.159 -p tcp --dport 22 -j ACCEPT
+iptables --line -nvL INPUT
+service iptables save
+service iptables restart 
+
+-------------------------------------------------------------------------------------------------------------------【Too manay open files】
+ “Too manay open files” 问题很明显啊，文件描述符超出限制导致无法打开文件或创建网络连接，这个问题又会导致一些其它问题的产生，肯定是ulimit没有优化,于是检查ulimit的设置；
+# ulimit -a
+core file size          (blocks, -c) 0
+data seg size           (kbytes, -d) unlimited
+scheduling priority             (-e) 0
+file size               (blocks, -f) unlimited
+pending signals                 (-i) 62819
+max locked memory       (kbytes, -l) 64
+max memory size         (kbytes, -m) unlimited
+open files                      (-n) 65535             =======看这
+pipe size            (512 bytes, -p) 8
+POSIX message queues     (bytes, -q) 819200
+real-time priority              (-r) 0
+stack size              (kbytes, -s) 10240
+cpu time               (seconds, -t) unlimited
+max user processes              (-u) 62819
+virtual memory          (kbytes, -v) unlimited
+file locks                      (-x) unlimited
+-------------------------------------------------------------------------------------------------------------------【CLOSE_WAIT太多】
+CLOSE_WAIT 状态的连接竟然有3853个，这太不正常了，这说明是客户端先关闭了连接，服务器端没有执行关闭连接的操作，导致服务器端一直维持在CLOSE_WAIT的状态，如果不对操作系统的keepalive做优化，这个状态默认会维持两个小时
+# netstat -n | awk '/^tcp/ {++state[$NF]} END {for(key in state) print key,"\t",state[key]}'
+CLOSE_WAIT        3853
+TIME_WAIT         40
+ESTABLISHED       285
+LAST_ACT          6
+# sysctl -a |grep keepalive
+net.ipv4.tcp_keepalive_time = 7200
+net.ipv4.tcp_keepalive_probes = 9
+net.ipv4.tcp_keepalive_intvl = 75
+
+-------------------------------------------------------------------------------------------------------------------【java.io.IOException: 断开的管道】临时解决，根本要优化代码，解决长短连接
+vim /etc/sysctl.conf，加入以下内容：然后执行 /sbin/sysctl -p 让参数生效.简单来说，就是打开系统的TIMEWAIT重用和快速回收。
+
+net.ipv4.tcp_syncookies = 1
+#表示开启SYN Cookies。当出现SYN等待队列溢出时，启用cookies来处理，可防范少量SYN攻击，默认为0，表示关闭；
+net.ipv4.tcp_tw_reuse = 1
+#表示开启重用。允许将TIME-WAIT sockets重新用于新的TCP连接，默认为0，表示关闭；
+net.ipv4.tcp_tw_recycle = 1
+#表示开启TCP连接中TIME-WAIT sockets的快速回收，默认为0，表示关闭。
+net.ipv4.tcp_fin_timeout = 30
+#修改系默认的 TIMEOUT 时间
+net.ipv4.tcp_keepalive_time = 1200
+#表示当keepalive起用的时候，TCP发送keepalive消息的频度。缺省是2小时，改为20分钟。
+net.ipv4.ip_local_port_range = 1024 65000
+#表示用于向外连接的端口范围。缺省情况下很小：32768到61000，改为1024到65000。
+net.ipv4.tcp_max_syn_backlog = 8192
+#表示SYN队列的长度，默认为1024，加大队列长度为8192，可以容纳更多等待连接的网络连接数。
+net.ipv4.tcp_max_tw_buckets = 5000
+#表示系统同时保持TIME_WAIT套接字的最大数量，如果超过这个数字，TIME_WAIT套接字将立刻被清除并打印警告信息。默认为180000，改为5000。对于Apache、Nginx等服务器，上几行的参数可以很好地减少TIME_WAIT套接字数量，但是对于 Squid，效果却不大。此项参数可以控制TIME_WAIT套接字的最大数量，避免Squid服务器被大量的TIME_WAIT套接字拖死。
+
+===========================================================================================【解压命令】
+tar -zxvf bbs.tar.zip -C /zzz/bbs
+前提要保证存在/zzz/bbs这个目录
+
+.tar 
+解包：tar xvf FileName.tar
+打包：tar cvf FileName.tar DirName
+（注：tar是打包，不是压缩！）
+———————————————
+.gz
+解压1：gunzip FileName.gz
+解压2：gzip -d FileName.gz
+压缩：gzip FileName
+
+.tar.gz 和 .tgz (tar zxvf  kleandisk-2.1.tar.gz －C /home/cao)解压到指定文件夹
+解压：tar zxvf FileName.tar.gz
+压缩：tar zcvf FileName.tar.gz DirName
+———————————————
+.bz2
+解压1：bzip2 -d FileName.bz2
+解压2：bunzip2 FileName.bz2
+压缩： bzip2 -z FileName
+
+.tar.bz2
+解压：tar jxvf FileName.tar.bz2
+压缩：tar jcvf FileName.tar.bz2 DirName
+———————————————
+.bz
+解压1：bzip2 -d FileName.bz
+解压2：bunzip2 FileName.bz
+压缩：未知
+
+.tar.bz
+解压：tar jxvf FileName.tar.bz
+压缩：未知
+———————————————
+.Z
+解压：uncompress FileName.Z
+压缩：compress FileName
+.tar.Z
+
+解压：tar Zxvf FileName.tar.Z
+压缩：tar Zcvf FileName.tar.Z DirName
+———————————————
+.zip
+解压：unzip FileName.zip
+压缩：zip FileName.zip DirName
+———————————————
+.rar
+解压：rar x FileName.rar
+压缩：rar a FileName.rar DirName
+———————————————
+.lha
+解压：lha -e FileName.lha
+压缩：lha -a FileName.lha FileName
+———————————————
+.rpm
+解包：rpm2cpio FileName.rpm | cpio -div
+———————————————
+.deb
+解包：ar p FileName.deb data.tar.gz | tar zxf -
+———————————————
+===========================================================================================【监控网卡流量】
+源码包路径：
+wget http://www.ex-parrot.com/%7Epdw/iftop/download/iftop-0.17.tar.gz
+tar zxvf iftop-0.17.tar.gz
+cd iftop-0.17
+./configure
+make && make install
+
+configure: error: can't find pcap.h
+You're not going to get very far without libpcap.
+那你需要先安装libpcap
+yum install flex byacc  libpcap ncurses ncurses-devel libpcap-devel -y
+
+1、iftop界面相关说明
+界面上面显示的是类似刻度尺的刻度范围，为显示流量图形的长条作标尺用的。
+中间的<= =>这两个左右箭头，表示的是流量的方向。
+TX：        发送流量
+RX：        接收流量
+TOTAL：总流量
+Cumm： 运行iftop到目前时间的总流量
+peak：    流量峰值
+rates：    分别表示过去 2s 10s 40s 的平均流量
+2、iftop相关参数
+常用的参数
+-i   设定监测的网卡，如：# iftop -i eth1
+-B 以bytes为单位显示流量(默认是bits)，如：# iftop -B
+-n 使host信息默认直接都显示IP，如：# iftop -n
+-N 使端口信息默认直接都显示端口号，如: # iftop -N
+-F 显示特定网段的进出流量，如# iftop -F 10.10.1.0/24或# iftop -F 10.10.1.0/255.255.255.0
+-h（display this message），帮助，显示参数信息
+-p 使用这个参数后，中间的列表显示的本地主机信息，出现了本机以外的IP信息;
+-b 使流量图形条默认就显示;
+-f  这个暂时还不太会用，过滤计算包用的;
+-P 使host信息及端口信息默认就都显示;
+-m设置界面最上边的刻度的最大值，刻度分五个大段显示，例：# iftop -m 100M
+进入iftop画面后的一些操作命令(注意大小写)
+按h切换是否显示帮助;
+按n切换显示本机的IP或主机名;
+按s切换是否显示本机的host信息;
+按d切换是否显示远端目标主机的host信息;
+按t切换显示格式为2行/1行/只显示发送流量/只显示接收流量;
+按N切换显示端口号或端口服务名称;
+按S切换是否显示本机的端口信息;
+按D切换是否显示远端目标主机的端口信息;
+按p切换是否显示端口信息;
+按P切换暂停/继续显示;
+按b切换是否显示平均流量图形条;
+按B切换计算2秒或10秒或40秒内的平均流量;
+按T切换是否显示每个连接的总流量;
+按l打开屏幕过滤功能，输入要过滤的字符，比如ip,按回车后，屏幕就只显示这个IP相关的流量信息;
+按L切换显示画面上边的刻度;刻度不同，流量图形条会有变化;
+按j或按k可以向上或向下滚动屏幕显示的连接记录;
+按1或2或3可以根据右侧显示的三列流量数据进行排序;
+按<根据左边的本机名或IP排序;
+按>根据远端目标主机的主机名或IP排序;
+按o切换是否固定只显示当前的连接;
+按f可以编辑过滤代码，这是翻译过来的说法，我还没用过这个！
+按!可以使用Shell命令，这个没用过！没搞明白啥命令在这好用呢！
+按q退出监控。
