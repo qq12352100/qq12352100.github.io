@@ -13,16 +13,14 @@ def getfiles():
     parent_directory = os.path.dirname(os.path.dirname(current_directory))
     # 遍历当前文件夹中的所有文件和子文件夹
     # recursive_files(parent_directory,i)
+    
+    # 绘制index首页
+    with open(os.path.dirname(parent_directory)+"/index.html", "w", encoding="utf-8") as file:
+        file.write("<!DOCTYPE html><html><head><script></script></head><body><p>"+generate_ul(parent_directory)+"</p></body></html>")
 
-    # 调用函数，传入要遍历的文件夹路径
-    html_content = generate_ul(parent_directory)
-    filename = os.path.dirname(parent_directory)+"/index.html"
-    with open(filename, "w", encoding="utf-8") as file:
-        file.write("<!DOCTYPE html><html><head><script></script></head><body><p>"+html_content+"</p></body></html>")
-        
+# 绘制index首页
 def generate_ul(directory,indent='note'):
     html = '<ul>\n'
-    
     # 遍历文件夹中的所有文件和子文件夹
     for item in os.listdir(directory):
         item_path = os.path.join(directory, item)
@@ -32,8 +30,8 @@ def generate_ul(directory,indent='note'):
             html += generate_ul(item_path, indent=indent+"/"+item)
         # 如果是文件，则直接添加到<ul>节点中
         else:
-            html += '<li><a href="{}">{}</a></li>\n'.format(indent+"/"+item,item)
-    
+            if item.endswith(".txt") :
+                html += '<li><a href="{}">{}</a></li>\n'.format(indent+"/"+item,item)
     # 结束<ul>节点
     html += '</ul>\n'
     return html
@@ -47,23 +45,24 @@ def recursive_files(file_directory, i):
             print("文件夹"+str(i)+":", filename)
             recursive_files(filepath,i+1)
         elif os.path.isfile(filepath):
-            print("文件filepath"+str(i)+":", filepath)
             print("文件"+str(i)+":", filename)
-            # operation_file(filepath, filename, i)#操作单个文件
+            operation_file(filepath, filename, i)#操作单个文件
         else:
             print("未知类型:", filename)
 
 #操作单个文件
 def operation_file(filepath, filename, i):
-    if filename.endswith(".txt") :#如果文件是txt结尾
-        modify_content(filepath, i)
-        # convert_to_utf8(filepath,filepath)
+    #如果文件是txt结尾
+    if filename.endswith(".txt") :
+        # modify_content(filepath, i)   #修改文件内容
+        # convert_to_utf8(filepath,filepath)  #将其他编码的文本文件转换为UTF-8格式
         # 读取文件内容，并检测编码
-        # with open(filepath, "rb") as file:
-            # content = file.read()
-            # result = chardet.detect(content)
-        # print("未知类型:", result['encoding'])
-    elif filename.endswith(".html") :#如果文件是html结尾
+        with open(filepath, "rb") as file:
+            content = file.read()
+            result = chardet.detect(content)
+        print("未知类型:", result['encoding'])
+    #如果文件是html结尾
+    elif filename.endswith(".html") :
         if os.path.exists(filepath):
             os.remove(filepath)
             print(filepath+"文件删除成功")
@@ -80,9 +79,9 @@ def modify_content(file_path, i):
     with open(file_path, "r", encoding="utf-8") as file:
         content = file.read()
     strend = "../"
-    for k in range(i):strend = strend+"../"
+    for k in range(i):strend = strend + "../"
     # 在头部增加内容
-    additional_content = "<!DOCTYPE html><html><head><script>fetch('"+strend+"note_common_head.html').then(response=>response.text()).then(html=>{document.head.innerHTML+=html;});</script></head><body><p>\n"
+    additional_content = "<!DOCTYPE html><html><head><script>fetch('" + strend + "note_common_head.html').then(response=>response.text()).then(html=>{document.head.innerHTML+=html;});</script></head><body><p>\n"
     content = additional_content + content +"\n</p></body></html>"
     # 写回到文件并修改后缀---源文件保留
     with open(file_path.replace(".txt", ".html"), "w", encoding="utf-8") as file:
