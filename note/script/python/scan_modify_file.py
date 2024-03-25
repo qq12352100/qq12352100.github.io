@@ -12,8 +12,32 @@ def getfiles():
     # 获取上两层目录的路径
     parent_directory = os.path.dirname(os.path.dirname(current_directory))
     # 遍历当前文件夹中的所有文件和子文件夹
-    recursive_files(parent_directory,i)
+    # recursive_files(parent_directory,i)
 
+    # 调用函数，传入要遍历的文件夹路径
+    html_content = generate_ul(parent_directory)
+    filename = os.path.dirname(parent_directory)+"/index.html"
+    with open(filename, "w", encoding="utf-8") as file:
+        file.write("<!DOCTYPE html><html><head><script></script></head><body><p>"+html_content+"</p></body></html>")
+        
+def generate_ul(directory,indent='note'):
+    html = '<ul>\n'
+    
+    # 遍历文件夹中的所有文件和子文件夹
+    for item in os.listdir(directory):
+        item_path = os.path.join(directory, item)
+        # 如果是文件夹，则递归调用generate_ul()函数生成对应的<ul>节点
+        if os.path.isdir(item_path):
+            html += '<li><a href="#">{}</a></li>\n'.format(item)
+            html += generate_ul(item_path, indent=indent+"/"+item)
+        # 如果是文件，则直接添加到<ul>节点中
+        else:
+            html += '<li><a href="{}">{}</a></li>\n'.format(indent+"/"+item,item)
+    
+    # 结束<ul>节点
+    html += '</ul>\n'
+    return html
+        
 #递归文件夹
 def recursive_files(file_directory, i):
     for filename in os.listdir(file_directory):
@@ -23,8 +47,9 @@ def recursive_files(file_directory, i):
             print("文件夹"+str(i)+":", filename)
             recursive_files(filepath,i+1)
         elif os.path.isfile(filepath):
+            print("文件filepath"+str(i)+":", filepath)
             print("文件"+str(i)+":", filename)
-            operation_file(filepath, filename, i)#操作单个文件
+            # operation_file(filepath, filename, i)#操作单个文件
         else:
             print("未知类型:", filename)
 

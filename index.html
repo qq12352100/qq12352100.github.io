@@ -1,95 +1,185 @@
-<!DOCTYPE html><html><head><script>fetch('common_head.html').then(response=>response.text()).then(html=>{document.head.innerHTML+=html;});</script></head><body><p>
-::默认编码格式为ANSI代表 GB2312 编码。
-::不加@时，在运行时，会在窗口显示出这条命令,而加了@, 只会显示出 echo后面你要显示出的东西
-mode con cols=80 lines=20&color 0c  rem  cols宽 lines高  cmd里面键入:help color 查查看
-TITLE Tomcat                        rem  设置窗口标题
-cmdow @ /top /mov 500 500           rem  移动窗口到某个位置 详见cmdow下载
-@echo off 
-@echo -- 输出文字 --                rem 跟在输出后面会输出
-::dir c:\*.* >a.txt                 rem 将c盘下所有文件名输出到a.txt中，如果没有a文件，则在bat同一目录下创建一个
-::md D:\test                        rem 在D盘下创建test文件夹
-::start http://www.baidu.com        rem 默认浏览器打开网页
-::cd /d %~dp0                       rem 打开当前路径
-@echo %AllUsersProfile%             rem    C:\ProgramData
-@echo %tmp%                         rem    C:\Users\admin\AppData\Local\Temp
-@echo %AppData%                     rem    C:\Users\admin\AppData\Roaming
-@echo %CommonProgramFiles%          rem    C:\Program Files\Common Files
-@echo %UserProfile%                 rem    C:\Users\admin
-@echo %CD%                          rem 代表当前目录的字符串
-@echo %DATE%                        rem 当前日期
-@echo %TIME%                        rem 当前时间
-
-set /p var=输入一个数:
-if %var% EQU 1 (                    rem EQU 等于 || NEQ 不等于 || LSS 小于 || LEQ 小于或等于 ||  GTR 大于 || GEQ 大于或等于
-    goto FIRST 
-) else (
-    goto SECOND 
-)
-:FIRST
-@echo I AM FIRST
-:SECOND
-@echo I AM SECOND
-:SECOND2
-@echo I AM SECOND2
-
-set a=aa1bb1aa2bb2
-@echo %a%
-set b=12
-@echo %b%
-set /a c=39/10           
-@echo %c%
-
-for  %%I in (A,B,C) do echo %%I     rem 循环
-for /f "skip=1 tokens=9 delims= " %a in ('ping 172.20.123.231') do @echo %a
-skip=1 #忽略第一行，默认显示所有行
-tokens=9 #显示第9列 类似于awk的 参数$9
-delims= #分隔符 本次分隔符为一个空格
-ping 172.20.123.231 #循环该命令所有行
-pause
-
-:: 新窗口启动 /k 不关闭窗口 /c 关闭窗口
-start cmd /k "c: && cd C:\Project\test-app-1 && npm start"
-:: 新窗口延迟 5 秒启动 test-app-2, 
-start cmd /k "timeout -nobreak 5 && c: && cd C:\Project\test-app-2 && npm start"
-:: 获取管理员权限
-runas /user:administrator cmd
-:: 判断文件是否存在
-if exist %SourceFile% (
-    if not exist %GenFile1% (
-) else (
-    //你要做的事情
-) 
-
-
-netsh -c interface ip dump
-netsh interface ip show config
-netsh interface ip set address "本地连接" static 37.136.6.210 255.255.255.0 37.136.6.254 1  rem 设置网卡IP 掩码 网关
-netsh interface set interface "本地连接" disabled rem 禁用网卡
-netsh interface set interface "本地连接" enabled  rem 启用网卡
-ncpa.cpl
-::Usage：第一条命令 | 第二条命令 [| 第三条命令...]将第一条命令的结果作为第二条命令的参数来使用，记得在unix中这种方式很常见。
-::Usage：第一条命令 || 第二条命令 [|| 第三条命令...]用这种方法可以同时执行多条命令，当碰到执行正确的命令后将不执行后面的命令，如果没有出现正确的命令则一直执行完所有命令；
-::Usage：第一条命令 & 第二条命令 [& 第三条命令...]用这种方法可以同时执行多条命令，而不管命令是否执行成功
-::Usage：第一条命令 && 第二条命令 [&& 第三条命令...]用这种方法可以同时执行多条命令，当碰到执行出错的命令后将不执行后面的命令，如果一直没有出错则一直执行完所有命令；
---------------------------------------------------一秒一个ping输出，超时5秒输出一个“请求超时。”#两个echo一个输出屏幕一个输出到文件
-@echo off 
-cd C:\Windows\System32
-set host=172.20.123.231
-set logfile=D:\ping_%host%.log
-if exist %logfile% (
-    del %logfile%
-)
-:loop
-for /f "tokens=* skip=2" %%A in ('ping %host% -n 1') do (
-    echo %date:~0,-3% %time:~0,-3% %%A >> %logfile%
-    echo %date:~0,-3% %time:~0,-3% %%A
-    timeout /t 1 /nobreak > nul
-    goto loop
-)
---------------------------------------------------添加服务 或 NSSM安装服务 https://nssm.cc/
-sc create 服务名 binPath= "C:\win32srvDemo.exe"
-sc config 服务名 start=AUTO   rem AUTO(自动)DEMAND(手动)DISABLED(禁用)
-sc description Redis6.2.6 "This service runs the Redis server"
-
-
+<!DOCTYPE html><html><head><script></script></head><body><p><ul>
+<li><a href="#">apache笔记</a></li>
+<ul>
+<li><a href="note/apache笔记/1_apache安装.png">1_apache安装.png</a></li>
+<li><a href="note/apache笔记/2_浏览网页时序图.png">2_浏览网页时序图.png</a></li>
+<li><a href="note/apache笔记/apache整合php+mysql+phpmyadmin.html">apache整合php+mysql+phpmyadmin.html</a></li>
+<li><a href="note/apache笔记/apache整合php+mysql+phpmyadmin.txt">apache整合php+mysql+phpmyadmin.txt</a></li>
+<li><a href="note/apache笔记/apache整合php_mysql_phpmyadmin.html">apache整合php_mysql_phpmyadmin.html</a></li>
+<li><a href="note/apache笔记/apache整合php_mysql_phpmyadmin.txt">apache整合php_mysql_phpmyadmin.txt</a></li>
+<li><a href="note/apache笔记/apache绑定多个域名.html">apache绑定多个域名.html</a></li>
+<li><a href="note/apache笔记/apache绑定多个域名.txt">apache绑定多个域名.txt</a></li>
+<li><a href="note/apache笔记/apache虚拟目录+虚拟主机.html">apache虚拟目录+虚拟主机.html</a></li>
+<li><a href="note/apache笔记/apache虚拟目录+虚拟主机.txt">apache虚拟目录+虚拟主机.txt</a></li>
+</ul>
+<li><a href="note/Docker笔记.html">Docker笔记.html</a></li>
+<li><a href="note/Docker笔记.txt">Docker笔记.txt</a></li>
+<li><a href="note/EXCEL笔记.html">EXCEL笔记.html</a></li>
+<li><a href="note/EXCEL笔记.txt">EXCEL笔记.txt</a></li>
+<li><a href="note/git笔记.html">git笔记.html</a></li>
+<li><a href="note/git笔记.txt">git笔记.txt</a></li>
+<li><a href="note/go笔记.html">go笔记.html</a></li>
+<li><a href="note/go笔记.txt">go笔记.txt</a></li>
+<li><a href="note/kafka笔记.html">kafka笔记.html</a></li>
+<li><a href="note/kafka笔记.txt">kafka笔记.txt</a></li>
+<li><a href="#">linux笔记</a></li>
+<ul>
+<li><a href="note/linux笔记/1_发展历史.png">1_发展历史.png</a></li>
+<li><a href="note/linux笔记/2_文件目录.png">2_文件目录.png</a></li>
+<li><a href="note/linux笔记/3_运行级别.png">3_运行级别.png</a></li>
+<li><a href="note/linux笔记/4_权限符号代表.png">4_权限符号代表.png</a></li>
+<li><a href="note/linux笔记/5_文件和目录的权限.png">5_文件和目录的权限.png</a></li>
+<li><a href="note/linux笔记/6_进程详解.png">6_进程详解.png</a></li>
+<li><a href="note/linux笔记/linux_fdisk.png">linux_fdisk.png</a></li>
+<li><a href="note/linux笔记/linux_NFS.html">linux_NFS.html</a></li>
+<li><a href="note/linux笔记/linux_NFS.txt">linux_NFS.txt</a></li>
+<li><a href="note/linux笔记/linux_SVN.html">linux_SVN.html</a></li>
+<li><a href="note/linux笔记/linux_SVN.txt">linux_SVN.txt</a></li>
+<li><a href="note/linux笔记/linux_环境搭建(yum).html">linux_环境搭建(yum).html</a></li>
+<li><a href="note/linux笔记/linux_环境搭建(yum).txt">linux_环境搭建(yum).txt</a></li>
+<li><a href="note/linux笔记/linux_环境搭建(软件包).html">linux_环境搭建(软件包).html</a></li>
+<li><a href="note/linux笔记/linux_环境搭建(软件包).txt">linux_环境搭建(软件包).txt</a></li>
+<li><a href="note/linux笔记/linux优化.html">linux优化.html</a></li>
+<li><a href="note/linux笔记/linux优化.txt">linux优化.txt</a></li>
+<li><a href="note/linux笔记/linux安装nginx.html">linux安装nginx.html</a></li>
+<li><a href="note/linux笔记/linux安装nginx.txt">linux安装nginx.txt</a></li>
+<li><a href="note/linux笔记/linux笔记.html">linux笔记.html</a></li>
+<li><a href="note/linux笔记/linux笔记.txt">linux笔记.txt</a></li>
+<li><a href="note/linux笔记/shell编程.html">shell编程.html</a></li>
+<li><a href="note/linux笔记/shell编程.txt">shell编程.txt</a></li>
+<li><a href="note/linux笔记/任务调度.html">任务调度.html</a></li>
+<li><a href="note/linux笔记/任务调度.txt">任务调度.txt</a></li>
+</ul>
+<li><a href="note/MAVEN笔记.html">MAVEN笔记.html</a></li>
+<li><a href="note/MAVEN笔记.txt">MAVEN笔记.txt</a></li>
+<li><a href="note/nginx笔记.html">nginx笔记.html</a></li>
+<li><a href="note/nginx笔记.txt">nginx笔记.txt</a></li>
+<li><a href="note/OA项目笔记.html">OA项目笔记.html</a></li>
+<li><a href="note/OA项目笔记.txt">OA项目笔记.txt</a></li>
+<li><a href="#">php笔记</a></li>
+<ul>
+<li><a href="note/php笔记/php.html">php.html</a></li>
+<li><a href="note/php笔记/php.txt">php.txt</a></li>
+<li><a href="note/php笔记/进制转换.jpg">进制转换.jpg</a></li>
+</ul>
+<li><a href="note/projectProblem.html">projectProblem.html</a></li>
+<li><a href="note/projectProblem.txt">projectProblem.txt</a></li>
+<li><a href="note/python笔记.html">python笔记.html</a></li>
+<li><a href="note/python笔记.txt">python笔记.txt</a></li>
+<li><a href="note/ruoyi笔记.html">ruoyi笔记.html</a></li>
+<li><a href="note/ruoyi笔记.txt">ruoyi笔记.txt</a></li>
+<li><a href="#">script</a></li>
+<ul>
+<li><a href="#">python</a></li>
+<ul>
+<li><a href="note/script/python/clinkM.py">clinkM.py</a></li>
+<li><a href="note/script/python/dataoke.py">dataoke.py</a></li>
+<li><a href="note/script/python/ding.py">ding.py</a></li>
+<li><a href="note/script/python/scanPort.py">scanPort.py</a></li>
+<li><a href="note/script/python/scan_modify_file.py">scan_modify_file.py</a></li>
+<li><a href="note/script/python/yxlm.py">yxlm.py</a></li>
+</ul>
+<li><a href="#">shell</a></li>
+<ul>
+<li><a href="note/script/shell/autoUpdate.sh">autoUpdate.sh</a></li>
+<li><a href="note/script/shell/backup_mysql.sh">backup_mysql.sh</a></li>
+<li><a href="note/script/shell/gogttpserver.sh">gogttpserver.sh</a></li>
+<li><a href="note/script/shell/localhostlog.sh">localhostlog.sh</a></li>
+<li><a href="note/script/shell/log_to_ftp.sh">log_to_ftp.sh</a></li>
+<li><a href="note/script/shell/sh_mysql.sh">sh_mysql.sh</a></li>
+<li><a href="note/script/shell/start.sh">start.sh</a></li>
+<li><a href="note/script/shell/Superbench.sh">Superbench.sh</a></li>
+<li><a href="note/script/shell/SuperUpdate.sh">SuperUpdate.sh</a></li>
+<li><a href="#">视频网</a></li>
+<ul>
+<li><a href="#">message</a></li>
+<ul>
+<li><a href="note/script/shell/视频网/message/config.yaml">config.yaml</a></li>
+<li><a href="note/script/shell/视频网/message/test.py">test.py</a></li>
+<li><a href="note/script/shell/视频网/message/yisa_face_info_to_yitu.py">yisa_face_info_to_yitu.py</a></li>
+</ul>
+<li><a href="#">to_ftp</a></li>
+<ul>
+<li><a href="note/script/shell/视频网/to_ftp/config.yaml">config.yaml</a></li>
+<li><a href="note/script/shell/视频网/to_ftp/hik_sdk_to_ftp4.py">hik_sdk_to_ftp4.py</a></li>
+<li><a href="note/script/shell/视频网/to_ftp/yisa_put_file_to_ftp.py">yisa_put_file_to_ftp.py</a></li>
+</ul>
+</ul>
+</ul>
+</ul>
+<li><a href="note/Spring注释笔记.html">Spring注释笔记.html</a></li>
+<li><a href="note/Spring注释笔记.txt">Spring注释笔记.txt</a></li>
+<li><a href="note/Swagger3笔记.html">Swagger3笔记.html</a></li>
+<li><a href="note/Swagger3笔记.txt">Swagger3笔记.txt</a></li>
+<li><a href="note/test.bat">test.bat</a></li>
+<li><a href="note/tomcat笔记.html">tomcat笔记.html</a></li>
+<li><a href="note/tomcat笔记.txt">tomcat笔记.txt</a></li>
+<li><a href="#">UtilConfig</a></li>
+<ul>
+<li><a href="note/UtilConfig/allQuikKey.xlsx">allQuikKey.xlsx</a></li>
+<li><a href="note/UtilConfig/eclipse+notepad快捷键.html">eclipse+notepad快捷键.html</a></li>
+<li><a href="note/UtilConfig/eclipse+notepad快捷键.txt">eclipse+notepad快捷键.txt</a></li>
+<li><a href="note/UtilConfig/notepad++字体样式.html">notepad++字体样式.html</a></li>
+<li><a href="note/UtilConfig/notepad++字体样式.txt">notepad++字体样式.txt</a></li>
+<li><a href="note/UtilConfig/VisualStudioCode.html">VisualStudioCode.html</a></li>
+<li><a href="note/UtilConfig/VisualStudioCode.txt">VisualStudioCode.txt</a></li>
+<li><a href="note/UtilConfig/win10.html">win10.html</a></li>
+<li><a href="note/UtilConfig/win10.txt">win10.txt</a></li>
+<li><a href="note/UtilConfig/WindTerm配置.html">WindTerm配置.html</a></li>
+<li><a href="note/UtilConfig/WindTerm配置.txt">WindTerm配置.txt</a></li>
+</ul>
+<li><a href="#">前端</a></li>
+<ul>
+<li><a href="note/前端/bootstrap笔记.html">bootstrap笔记.html</a></li>
+<li><a href="note/前端/bootstrap笔记.txt">bootstrap笔记.txt</a></li>
+<li><a href="note/前端/easyUI笔记.html">easyUI笔记.html</a></li>
+<li><a href="note/前端/easyUI笔记.txt">easyUI笔记.txt</a></li>
+<li><a href="note/前端/freemarker.html">freemarker.html</a></li>
+<li><a href="note/前端/freemarker.txt">freemarker.txt</a></li>
+<li><a href="note/前端/Hamibot.html">Hamibot.html</a></li>
+<li><a href="note/前端/Hamibot.txt">Hamibot.txt</a></li>
+<li><a href="note/前端/JavaScript.html">JavaScript.html</a></li>
+<li><a href="note/前端/JavaScript.txt">JavaScript.txt</a></li>
+<li><a href="note/前端/NodeJS笔记.html">NodeJS笔记.html</a></li>
+<li><a href="note/前端/NodeJS笔记.txt">NodeJS笔记.txt</a></li>
+<li><a href="note/前端/Thymeleaf笔记.html">Thymeleaf笔记.html</a></li>
+<li><a href="note/前端/Thymeleaf笔记.txt">Thymeleaf笔记.txt</a></li>
+<li><a href="note/前端/VUE笔记.html">VUE笔记.html</a></li>
+<li><a href="note/前端/VUE笔记.txt">VUE笔记.txt</a></li>
+<li><a href="note/前端/WX_start.html">WX_start.html</a></li>
+<li><a href="note/前端/WX_start.txt">WX_start.txt</a></li>
+</ul>
+<li><a href="note/抓包笔记.html">抓包笔记.html</a></li>
+<li><a href="note/抓包笔记.txt">抓包笔记.txt</a></li>
+<li><a href="#">数据库笔记</a></li>
+<ul>
+<li><a href="note/数据库笔记/kettle笔记.html">kettle笔记.html</a></li>
+<li><a href="note/数据库笔记/kettle笔记.txt">kettle笔记.txt</a></li>
+<li><a href="note/数据库笔记/mariadb的yum安装.html">mariadb的yum安装.html</a></li>
+<li><a href="note/数据库笔记/mariadb的yum安装.txt">mariadb的yum安装.txt</a></li>
+<li><a href="note/数据库笔记/mongod笔记.html">mongod笔记.html</a></li>
+<li><a href="note/数据库笔记/mongod笔记.txt">mongod笔记.txt</a></li>
+<li><a href="note/数据库笔记/msyql笔记.html">msyql笔记.html</a></li>
+<li><a href="note/数据库笔记/msyql笔记.txt">msyql笔记.txt</a></li>
+<li><a href="note/数据库笔记/mysql主从配置.html">mysql主从配置.html</a></li>
+<li><a href="note/数据库笔记/mysql主从配置.txt">mysql主从配置.txt</a></li>
+<li><a href="note/数据库笔记/mysql解压版安装说明.html">mysql解压版安装说明.html</a></li>
+<li><a href="note/数据库笔记/mysql解压版安装说明.txt">mysql解压版安装说明.txt</a></li>
+<li><a href="note/数据库笔记/oracle入门题.html">oracle入门题.html</a></li>
+<li><a href="note/数据库笔记/oracle入门题.txt">oracle入门题.txt</a></li>
+<li><a href="note/数据库笔记/oracle笔记.html">oracle笔记.html</a></li>
+<li><a href="note/数据库笔记/oracle笔记.txt">oracle笔记.txt</a></li>
+<li><a href="note/数据库笔记/PL_SQL.html">PL_SQL.html</a></li>
+<li><a href="note/数据库笔记/PL_SQL.txt">PL_SQL.txt</a></li>
+<li><a href="note/数据库笔记/redis笔记.html">redis笔记.html</a></li>
+<li><a href="note/数据库笔记/redis笔记.txt">redis笔记.txt</a></li>
+<li><a href="note/数据库笔记/sql优化.html">sql优化.html</a></li>
+<li><a href="note/数据库笔记/sql优化.txt">sql优化.txt</a></li>
+</ul>
+<li><a href="#">网络笔记</a></li>
+<ul>
+<li><a href="note/网络笔记/frp笔记.html">frp笔记.html</a></li>
+<li><a href="note/网络笔记/frp笔记.txt">frp笔记.txt</a></li>
+</ul>
+</ul>
 </p></body></html>
