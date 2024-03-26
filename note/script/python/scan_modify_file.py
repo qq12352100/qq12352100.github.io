@@ -15,7 +15,7 @@ def getfiles():
     # recursive_files(parent_directory,i)
     
     with open(os.path.dirname(parent_directory)+"/index.html", "w", encoding="utf-8") as file:
-        file.write('<!DOCTYPE html><html><head><link rel="stylesheet" href="index.css"><script src="script.js" defer></script>'\
+        file.write('<!DOCTYPE html><html><head><link rel="stylesheet" href="index.css"><script src="index.js" defer></script>'\
             '</head><body><div class="left_div">'\
             +generate_ul(parent_directory)+'</div><div class="rgith_div"><iframe name="myFrame"></iframe></div></body></html>')
 
