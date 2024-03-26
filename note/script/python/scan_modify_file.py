@@ -14,26 +14,37 @@ def getfiles():
     # 遍历当前文件夹中的所有文件和子文件夹
     # recursive_files(parent_directory,i)
     
-    # 绘制index首页
     with open(os.path.dirname(parent_directory)+"/index.html", "w", encoding="utf-8") as file:
-        file.write('<!DOCTYPE html><html><head><script></script></head><body><div style="float: left;width:20%;">'\
-            +generate_ul(parent_directory)+'</div><div style="float: left;width: 80%;"><iframe name="myFrame" style="width: 100%;height: 700px;"></iframe></div></body></html>')
+        file.write('<!DOCTYPE html><html><head><link rel="stylesheet" href="index.css"><script src="script.js" defer></script>'\
+            '</head><body><div class="left_div">'\
+            +generate_ul(parent_directory)+'</div><div class="rgith_div"><iframe name="myFrame"></iframe></div></body></html>')
 
 # 绘制index首页
 def generate_ul(directory,indent='note'):
-    html = '<ul>\n'
-    # 遍历文件夹中的所有文件和子文件夹
+    # 初始化存储文件和文件夹的列表
+    files = []
+    directories = []
+    # 遍历目录中的所有项目
     for item in os.listdir(directory):
         item_path = os.path.join(directory, item)
-        # 如果是文件夹，则递归调用generate_ul()函数生成对应的<ul>节点
-        if os.path.isdir(item_path):
-            html += '<li><a href="#">{}</a></li>\n'.format(item)
-            html += generate_ul(item_path, indent=indent+"/"+item)
-        # 如果是文件，则直接添加到<ul>节点中
-        else:
+        # 如果是文件，则添加到文件列表中
+        if os.path.isfile(item_path):
             if item.endswith(".txt") :
-                html += '<li><a href="{}" target="myFrame">{}</a></li>\n'.format(indent+"/"+item,item)
-    # 结束<ul>节点
+                files.append(item)
+        # 如果是文件夹，则递归调用本函数，并将结果添加到文件夹列表中
+        elif os.path.isdir(item_path):
+            directories.append(item)
+    # 对文件和文件夹列表进行排序
+    files.sort()
+    directories.sort()
+    html = '<ul>\n'
+    # 输出文件和文件夹列表
+    for file in files:
+        html += '<li><a href="{}" target="myFrame">{}</a></li>\n'.format(indent+"/"+file,file)
+    for directory_name in directories:
+        html += '<li class="up">{}</li>\n'.format(directory_name)
+        # 递归调用本函数，并将结果添加到当前层的HTML字符串中
+        html += generate_ul(os.path.join(directory, directory_name),indent =indent+"/"+directory_name)
     html += '</ul>\n'
     return html
         
