@@ -16,7 +16,7 @@ def getfiles():
     
     with open(os.path.dirname(parent_directory)+"/index.html", "w", encoding="utf-8") as file:
         file.write('<!DOCTYPE html><html><head><link rel="stylesheet" href="index.css"><script src="index.js" defer></script>'\
-            '</head><body><div class="left_div">'\
+            '</head><body><div onclick="toggle_left_div()">show</div><div class="left_div">'\
             +generate_ul(parent_directory)+'</div><div class="rgith_div"><iframe name="myFrame"></iframe></div></body></html>')
 
 # 绘制index首页
@@ -33,7 +33,8 @@ def generate_ul(directory,indent='note'):
                 files.append(item)
         # 如果是文件夹，则递归调用本函数，并将结果添加到文件夹列表中
         elif os.path.isdir(item_path):
-            directories.append(item)
+            if 'script' not in item_path:
+                directories.append(item)
     # 对文件和文件夹列表进行排序
     files.sort()
     directories.sort()
@@ -42,7 +43,7 @@ def generate_ul(directory,indent='note'):
     for file in files:
         html += '<li><a href="{}" target="myFrame">{}</a></li>\n'.format(indent+"/"+file,file)
     for directory_name in directories:
-        html += '<li class="up">{}</li>\n'.format(directory_name)
+        html += '<li class="folder" onclick="toggle_ul(this)">{}</li>\n'.format(directory_name)
         # 递归调用本函数，并将结果添加到当前层的HTML字符串中
         html += generate_ul(os.path.join(directory, directory_name),indent =indent+"/"+directory_name)
     html += '</ul>\n'

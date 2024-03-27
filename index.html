@@ -1,4 +1,5 @@
-<!DOCTYPE html><html><head><link rel="stylesheet" href="index.css"><script src="index.js" defer></script></head><body><div class="left_div"><ul>
+<!DOCTYPE html><html><head><link rel="stylesheet" href="index.css"><script src="index.js" defer></script></head><body><div onclick="toggle_left_div()">show</div><div class="left_div"><ul>
+<li><a href="note/A_常用.txt" target="myFrame">A_常用.txt</a></li>
 <li><a href="note/Docker笔记.txt" target="myFrame">Docker笔记.txt</a></li>
 <li><a href="note/EXCEL笔记.txt" target="myFrame">EXCEL笔记.txt</a></li>
 <li><a href="note/MAVEN笔记.txt" target="myFrame">MAVEN笔记.txt</a></li>
@@ -14,7 +15,7 @@
 <li><a href="note/ruoyi笔记.txt" target="myFrame">ruoyi笔记.txt</a></li>
 <li><a href="note/tomcat笔记.txt" target="myFrame">tomcat笔记.txt</a></li>
 <li><a href="note/抓包笔记.txt" target="myFrame">抓包笔记.txt</a></li>
-<li class="up">UtilConfig</li>
+<li class="folder" onclick="toggle_ul(this)">UtilConfig</li>
 <ul>
 <li><a href="note/UtilConfig/VisualStudioCode.txt" target="myFrame">VisualStudioCode.txt</a></li>
 <li><a href="note/UtilConfig/WindTerm配置.txt" target="myFrame">WindTerm配置.txt</a></li>
@@ -22,14 +23,14 @@
 <li><a href="note/UtilConfig/notepad++字体样式.txt" target="myFrame">notepad++字体样式.txt</a></li>
 <li><a href="note/UtilConfig/win10.txt" target="myFrame">win10.txt</a></li>
 </ul>
-<li class="up">apache笔记</li>
+<li class="folder" onclick="toggle_ul(this)">apache笔记</li>
 <ul>
 <li><a href="note/apache笔记/apache整合php+mysql+phpmyadmin.txt" target="myFrame">apache整合php+mysql+phpmyadmin.txt</a></li>
 <li><a href="note/apache笔记/apache整合php_mysql_phpmyadmin.txt" target="myFrame">apache整合php_mysql_phpmyadmin.txt</a></li>
 <li><a href="note/apache笔记/apache绑定多个域名.txt" target="myFrame">apache绑定多个域名.txt</a></li>
 <li><a href="note/apache笔记/apache虚拟目录+虚拟主机.txt" target="myFrame">apache虚拟目录+虚拟主机.txt</a></li>
 </ul>
-<li class="up">linux笔记</li>
+<li class="folder" onclick="toggle_ul(this)">linux笔记</li>
 <ul>
 <li><a href="note/linux笔记/linux_NFS.txt" target="myFrame">linux_NFS.txt</a></li>
 <li><a href="note/linux笔记/linux_SVN.txt" target="myFrame">linux_SVN.txt</a></li>
@@ -41,29 +42,11 @@
 <li><a href="note/linux笔记/shell编程.txt" target="myFrame">shell编程.txt</a></li>
 <li><a href="note/linux笔记/任务调度.txt" target="myFrame">任务调度.txt</a></li>
 </ul>
-<li class="up">php笔记</li>
+<li class="folder" onclick="toggle_ul(this)">php笔记</li>
 <ul>
 <li><a href="note/php笔记/php.txt" target="myFrame">php.txt</a></li>
 </ul>
-<li class="up">script</li>
-<ul>
-<li class="up">python</li>
-<ul>
-</ul>
-<li class="up">shell</li>
-<ul>
-<li class="up">视频网</li>
-<ul>
-<li class="up">message</li>
-<ul>
-</ul>
-<li class="up">to_ftp</li>
-<ul>
-</ul>
-</ul>
-</ul>
-</ul>
-<li class="up">前端</li>
+<li class="folder" onclick="toggle_ul(this)">前端</li>
 <ul>
 <li><a href="note/前端/Hamibot.txt" target="myFrame">Hamibot.txt</a></li>
 <li><a href="note/前端/JavaScript.txt" target="myFrame">JavaScript.txt</a></li>
@@ -75,7 +58,7 @@
 <li><a href="note/前端/easyUI笔记.txt" target="myFrame">easyUI笔记.txt</a></li>
 <li><a href="note/前端/freemarker.txt" target="myFrame">freemarker.txt</a></li>
 </ul>
-<li class="up">数据库笔记</li>
+<li class="folder" onclick="toggle_ul(this)">数据库笔记</li>
 <ul>
 <li><a href="note/数据库笔记/PL_SQL.txt" target="myFrame">PL_SQL.txt</a></li>
 <li><a href="note/数据库笔记/kettle笔记.txt" target="myFrame">kettle笔记.txt</a></li>
@@ -89,7 +72,7 @@
 <li><a href="note/数据库笔记/redis笔记.txt" target="myFrame">redis笔记.txt</a></li>
 <li><a href="note/数据库笔记/sql优化.txt" target="myFrame">sql优化.txt</a></li>
 </ul>
-<li class="up">网络笔记</li>
+<li class="folder" onclick="toggle_ul(this)">网络笔记</li>
 <ul>
 <li><a href="note/网络笔记/frp笔记.txt" target="myFrame">frp笔记.txt</a></li>
 </ul>
