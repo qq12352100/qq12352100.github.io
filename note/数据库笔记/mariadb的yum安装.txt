@@ -49,9 +49,9 @@ select User, Host, Password from mysql.user;
 创建用户命令
 mysql>create user root@localhost identified by 'root';
 直接创建用户并授权的命令
-mysql>grant all on *.* to root@localhost indentified by 'root';
+mysql>grant all privileges on *.* to 'root'@'localhost' identified by 'root' with grant option;
 授予外网登陆权限 
-mysql>grant all privileges on *.* to root@'%' identified by 'root';
+mysql>grant all privileges on *.* to 'root'@'%' identified by 'root';
 授予权限并且可以授权
 mysql>grant all privileges on *.* to root@'hostname' identified by 'root' with grant option;
 

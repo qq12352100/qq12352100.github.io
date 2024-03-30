@@ -12,6 +12,13 @@ export DIDPLAY=10.61.228.74:0.0
 cd $ORACLE_HOME
 cd bin
 ./dbca
+----------------------------------------
+command1 ; command2         #它们将按照顺序执行，不管前一个命令是否成功
+command1 && command2        #只有当前一个命令执行成功后,才会执行后续的命令
+command1 || command2        #只有当前一个命令执行失败后,才会执行后续的命令
+command1 | command2         #将一个命令的输出作为另一个命令的输入
+command &                   #用于在后台运行命令，使得命令在后台运行而不占用当前终端的控制权
+----------------------------------------
 
 curl -s -L https://raw.githubusercontent.com/233boy/v2ray/master/install.sh | bash
 ===========================================================================================【安装telnet】
@@ -95,14 +102,19 @@ cat /proc/cpuinfo| grep "cpu cores"| uniq                 【查看每个物理C
 查看SELinux状态：cat /etc/selinux/config 或者 getenforce 来查看状态3个状态enforcing （执行中）、permissive （不执行但产生警告）、disabled（关闭）。
 临时关闭（重启机器后失效）：setenforce 0 
 永久关闭（需要重启机器）：sed -i s#SELINUX=enforcing#SELINUX=disabled# /etc/selinux/config
-===========================================================================================【关闭防火墙】
+===========================================================================================【防火墙】
+两个最常见的防火墙软件是 iptables 和 firewalld。
+systemctl status firewalld
+systemctl status iptables
+service iptables status     #内核较老
+---------------------------------------------------------------------------------【iptables】
 1、查看
 iptables -nvL --line-number
 -L 查看当前表的所有规则，默认查看的是filter表，如果要查看NAT表，可以加上-t NAT参数
 -n 不对ip地址进行反查，加上这个参数显示速度会快很多
 -v 输出详细信息，包含通过该规则的数据包数量，总字节数及相应的网络接口
 –-line-number 显示规则的序列号，这个参数在删除或修改规则时会用到
--------------------------------------------------------------------------------------
+-----------------------------------------------------------------
 vim /etc/sysconfig/iptables
 --------------------------------
 Redirecting to /bin/systemctl status  iptables.service
@@ -112,8 +124,7 @@ Unit iptables.service could not be found.
 2. 安装iptables-services
 yum install iptables-services
 systemctl enable iptables.service //设置开机启动
------------------------------------------------------------------systemctl status firewalld #3内核以上
-查看状态： service iptables status 
+-----------------------------------------------------------------
 1) 重启后生效 
 开启： chkconfig iptables on 
 关闭： chkconfig iptables off 
@@ -123,13 +134,16 @@ systemctl enable iptables.service //设置开机启动
 3）修改/etc/sysconfig/iptables 文件，添加以下内容： 
 -A RH-Firewall-1-INPUT -m state --state NEW -m tcp -p tcp --dport 80 -j ACCEPT 
 -A RH-Firewall-1-INPUT -m state --state NEW -m tcp -p tcp --dport 22 -j ACCEPT
----------------------------------------------------------------------------------
+---------------------------------------------------------------------------------【firewalld】
 开启端口
 #firewall-cmd --zone=public --add-port=80/tcp --permanent
 #firewall-cmd --zone=public --add-port=8080-8081/tcp
 #firewall-cmd --zone=public --add-service=ftp --permanent
 #firewall-cmd --zone=public --add-source=56.200.18.1/24 --permanent
+拒绝来自 IP 地址为 192.168.0.200，目标端口为 80 的 TCP 数据包
 #firewall-cmd --permanent --add-rich-rule="rule family="ipv4" source address="192.168.0.200" port protocol="tcp" port="80" reject"
+关闭端口
+#firewall-cmd --zone=public --remove-port=80/tcp
 查询端口号80 是否开启：
 # firewall-cmd --query-port=80/tcp
 重启防火墙：
@@ -141,7 +155,7 @@ systemctl enable iptables.service //设置开机启动
 --add-port=80/tcp #添加端口，格式为：端口/通讯协议
 --permanent #永久生效，没有此参数重启后失效
 关闭firewall：
-systemctl stop firewalld.service #停止firewall
+systemctl stop firewalld.service #关闭firewall
 systemctl disable firewalld.service #禁止firewall开机启动
 ===========================================================================================【使用iptables限制ping命令】
 iptables -A INPUT -p icmp --icmp-type 8 -s 0/0 -j DROP
