@@ -2,6 +2,16 @@ General error: 1665 Cannot execute statement: impossible to write to binary log 
 永久生效，需要修改my.ini
 binlog_format=ROW
 
+---------------------------------------------------------------------------------------【忘记密码】
+1、sudo systemctl stop mysql  # 或者  sudo service mysql stop
+2、sudo mysqld_safe --skip-grant-tables &
+3、另开一个终端窗口，无需密码直接登录MySQL：
+mysql -u root
+USE mysql;
+ALTER USER 'root'@'localhost' IDENTIFIED BY 'GkFjrpWgUP';
+FLUSH PRIVILEGES;
+4、sudo systemctl start mysql  # 或者  sudo service mysql start
+---------------------------------------------------------------------------------------
 /*[mysqld]*/
 character-set-server=utf8
 ---------------------------------------------------------------------------------------
@@ -31,10 +41,7 @@ INSERT INTO _user(username) VALUES (RAND()*10);
 更新
 UPDATE _user SET int_=5 WHERE int_ IS NULL ;
 --------------------------------------------------------------------------------------------------------【授权】 
-查看用户
-#select User, Host, authentication_string from mysql.user;
-授权
-#grant all privileges on *.* to 'root'@'%' identified by 'root' with grant option;
+#grant all privileges on *.* to 'root'@'%' identified by 'yangxin123456' with grant option;
 all privileges：表示将所有权限授予给用户。也可指定具体的权限，如：SELECT、CREATE、DROP等。
 on：表示这些权限对哪些数据库和表生效，格式：数据库名.表名，这里写“*”表示所有数据库，所有表。如果我要指定将权限应用到test库的user表中，可以这么写：test.user
 to：将权限授予哪个用户。格式：”用户名”@”登录IP或域名”。%表示没有限制，在任何主机都可以登录。比如：”yangxin”@”192.168.0.%”，表示yangxin这个用户只能在192.168.0IP段登录
@@ -48,8 +55,8 @@ with grant option：表示该用户可以将自己拥有的权限授权给别人
 #select host,user,Password,password_expired from user;
 #drop user 'yangxin'@'localhost';
 修改密码use mysql;
-mysql5.7之前#update user set password=password('root') where user='root';
-mysql5.7之后#update user set authentication_string=password('root') where user='root';
+mysql5.7之前#update user set password=password('GkFjrpWgUP') where user='root';
+mysql5.7之后#update user set authentication_string=password('GkFjrpWgUP') where user='root';
 -----------------------------------------------------------------------------------------------------------------
 在创建表时，就插入另一张表里面的某些数据
 create table user_b AS select * from user_a where id < 10;

@@ -12,13 +12,6 @@ export DIDPLAY=10.61.228.74:0.0
 cd $ORACLE_HOME
 cd bin
 ./dbca
-----------------------------------------
-command1 ; command2         #它们将按照顺序执行，不管前一个命令是否成功
-command1 && command2        #只有当前一个命令执行成功后,才会执行后续的命令
-command1 || command2        #只有当前一个命令执行失败后,才会执行后续的命令
-command1 | command2         #将一个命令的输出作为另一个命令的输入
-command &                   #用于在后台运行命令，使得命令在后台运行而不占用当前终端的控制权
-----------------------------------------
 
 curl -s -L https://raw.githubusercontent.com/233boy/v2ray/master/install.sh | bash
 ===========================================================================================【安装telnet】
@@ -42,8 +35,10 @@ find有很多参数，有很强大的搜索功能，具体可以 man find 查看
 
 find ./-type f -name consumer.xml -exec sed -i"s/aaaaaa/bbbbbb/g"{}\;
 -name参数指定查找的文件名
--exec参数将查找到的内容传递给下一一个命令去继续执行相关逻辑
+-exec参数将查找到的内容传递给下一一个命令去继续执行相关逻辑   1、文件名中包含特殊字符或空格，使用 xargs。2、高效处理大量文件，xargs 通常比 -exec 更好。3、对于简单的操作，-exec 更直观易懂。
 sed命令主要对文件内容进行替换，这里会将consumer文件中的aaaaa替换成bbbbbb
+
+find . -name "*.tmp" -print0 | xargs -0 rm -v               #删除.tmp文件，这里的 -print0 和 -0 选项使用 NUL 字符作为分隔符，以避免文件名中包含空格或其他特殊字符的问题。
 
 ===========================================================================================【抓包】
 tcpdump tcp -ieth0 -t -S 0 -C 100 dst port 6060 and src net 192.168.1.0/24 -W test cap
@@ -65,6 +60,8 @@ screen -R name  #打开name这个session
 screen -ls      #列出所有已经存在的session
 ctrl + a d      #退出当前的session
 ===========================================================================================
+su - postgres   会加载 postgres 用户的环境配置文件，并且完全模拟 postgres 用户的新 shell 会话。
+su postgres     只会改变当前 shell 的用户 ID 为 postgres，但不会加载 postgres 用户的环境配置。
 /etc/init.d/sshd start           【启动22端口ssh服务】service sshd start
 ssh 10.10.10.10 -p 22 -l root    【远程登录】
 passwd root                      【修改root密码】
@@ -102,19 +99,14 @@ cat /proc/cpuinfo| grep "cpu cores"| uniq                 【查看每个物理C
 查看SELinux状态：cat /etc/selinux/config 或者 getenforce 来查看状态3个状态enforcing （执行中）、permissive （不执行但产生警告）、disabled（关闭）。
 临时关闭（重启机器后失效）：setenforce 0 
 永久关闭（需要重启机器）：sed -i s#SELINUX=enforcing#SELINUX=disabled# /etc/selinux/config
-===========================================================================================【防火墙】
-两个最常见的防火墙软件是 iptables 和 firewalld。
-systemctl status firewalld
-systemctl status iptables
-service iptables status     #内核较老
----------------------------------------------------------------------------------【iptables】
+===========================================================================================【关闭防火墙】
 1、查看
 iptables -nvL --line-number
 -L 查看当前表的所有规则，默认查看的是filter表，如果要查看NAT表，可以加上-t NAT参数
 -n 不对ip地址进行反查，加上这个参数显示速度会快很多
 -v 输出详细信息，包含通过该规则的数据包数量，总字节数及相应的网络接口
 –-line-number 显示规则的序列号，这个参数在删除或修改规则时会用到
------------------------------------------------------------------
+-------------------------------------------------------------------------------------
 vim /etc/sysconfig/iptables
 --------------------------------
 Redirecting to /bin/systemctl status  iptables.service
@@ -124,7 +116,8 @@ Unit iptables.service could not be found.
 2. 安装iptables-services
 yum install iptables-services
 systemctl enable iptables.service //设置开机启动
------------------------------------------------------------------
+-----------------------------------------------------------------systemctl status firewalld #3内核以上
+查看状态： service iptables status 
 1) 重启后生效 
 开启： chkconfig iptables on 
 关闭： chkconfig iptables off 
@@ -134,16 +127,13 @@ systemctl enable iptables.service //设置开机启动
 3）修改/etc/sysconfig/iptables 文件，添加以下内容： 
 -A RH-Firewall-1-INPUT -m state --state NEW -m tcp -p tcp --dport 80 -j ACCEPT 
 -A RH-Firewall-1-INPUT -m state --state NEW -m tcp -p tcp --dport 22 -j ACCEPT
----------------------------------------------------------------------------------【firewalld】
-开启端口
+---------------------------------------------------------------------------------
+开启端口--需要重启firewall-cmd --reload
 #firewall-cmd --zone=public --add-port=80/tcp --permanent
 #firewall-cmd --zone=public --add-port=8080-8081/tcp
 #firewall-cmd --zone=public --add-service=ftp --permanent
 #firewall-cmd --zone=public --add-source=56.200.18.1/24 --permanent
-拒绝来自 IP 地址为 192.168.0.200，目标端口为 80 的 TCP 数据包
 #firewall-cmd --permanent --add-rich-rule="rule family="ipv4" source address="192.168.0.200" port protocol="tcp" port="80" reject"
-关闭端口
-#firewall-cmd --zone=public --remove-port=80/tcp
 查询端口号80 是否开启：
 # firewall-cmd --query-port=80/tcp
 重启防火墙：
@@ -155,7 +145,7 @@ systemctl enable iptables.service //设置开机启动
 --add-port=80/tcp #添加端口，格式为：端口/通讯协议
 --permanent #永久生效，没有此参数重启后失效
 关闭firewall：
-systemctl stop firewalld.service #关闭firewall
+systemctl stop firewalld.service #停止firewall
 systemctl disable firewalld.service #禁止firewall开机启动
 ===========================================================================================【使用iptables限制ping命令】
 iptables -A INPUT -p icmp --icmp-type 8 -s 0/0 -j DROP
@@ -209,13 +199,27 @@ make && make install
 sshpass -p "thepassword" ssh -p2222 man@123.123.123.123     #远程连接指定ssh的端口
 sshpass -f xxx.txt  ssh root@192.168.11.11                  #从密码文件读取文件内容作为密码去远程连接主机
 sshpass -p '123456' scp root@host_ip:/home/test/t ./tmp/    #从远程主机上拉取文件到本地
+===========================================================================================【添加一个超级管理员】
+adduser superuser               # useradd -o -u 0 superuser    -u 0指定了用户的UID为0   
+passwd superuser                #  lL2#oOk-Ec^%+!mY
+vi /etc/passwd                  # x后面的第一个数改为0
+usermod -a -G wheel superuser   # 加入 wheel 组的用户可以使用 sudo 命令以超级用户权限执行命令，而不需要将这些用户设置为完整的 root 用户
+visudo
+在root    ALL=(ALL)       ALL下面增加
+superuser   ALL=(ALL)  ALL
+-----------------------------使用 visudo 命令来编辑 /etc/sudoers 文件，这是一个特殊的文件，只能通过 visudo 命令来编辑，或给特殊权限
+chmod -v u+w /etc/sudoers
+vi  /etc/sudoers
+找到root那行添加
+superuser   ALL=(ALL)  ALL
+chmod -v u-w /etc/sudoers 
 ===========================================================================================
 -------------------------------------------------------
 -------------------------常用命令----------------------
 -------------------------------------------------------
 ls -l > a.txt                                    【列表内容输出到a.txt中|覆盖|>>|追加】
-rm -f /var/log/httpd/access.log                    【将会强制删除/var/log/httpd/access.log这个文件】
-rm -rf /var/log/httpd/access                    【将会删除/var/log/httpd/access目录以及其下所有文件、文件夹】
+rm -f /var/log/httpd/access.log                  【将会强制删除/var/log/httpd/access.log这个文件】
+rm -rf /var/log/httpd/access                     【将会删除/var/log/httpd/access目录以及其下所有文件、文件夹】
 
 shutdown now     【关机】init 0
 reboot           【重启】
@@ -246,18 +250,18 @@ pwd           【显示当前工作目录】
 cd            【改变目录】
 mkdir         【建立目录】-p 多级目录
 vi a.txt      【建立文件】
-touch a.txt
-rmdir 【删除空目录】 rm -rf 【强制删非空目录】
-more  【显示文件内容，带分页，空格下一页，】
-less  【显示文件内容带分页】
-grep  【在文本中查询内容】
+touch a.txt   【创建文件，该文件已存在，则只会更新其访问和修改时间】
+rmdir         【删除空目录】 rm -rf 【强制删非空目录】
+more          【显示文件内容，带分页，空格下一页，】
+less          【显示文件内容带分页】
+grep          【在文本中查询内容】
 
-man 【help】
-|   【管道命令】
+man         【help】
+|           【管道命令】
 umask 0022  【创建文件默认权限】
 setfacl /m u:boss:rwx -R /caiwubu   【设置特殊权限】drwxr-xr-x+ getfacl
-chattr +i /zhangben     【隐藏权限不能删不能改】 +a 只能追加不能删  lsattr 
-ln -s /etc/passwd ./passwd1     【软连接】硬链接不加-s 时刻与源文件同步 权限后面数据变2
+chattr +i /zhangben                 【隐藏权限不能删不能改】 +a 只能追加不能删  lsattr 
+ln -s /etc/passwd ./passwd1         【软连接】硬链接不加-s 时刻与源文件同步 权限后面数据变2
 ------------------------------------------------------------------------------------------------------------【chmod 7744 test.txt 给三个特殊权限】
 u+s 4 g+s 2 o+t 1
 chmod u+s，意思是就是针对某个程序任何用户都有读写这个程序的权限，可以像root用户一样操作，这个指令只对程序有效，如果用此权限放在路径上是无效的。

@@ -1,3 +1,4 @@
+::大多数 Windows 外部命令（如 dir, ping, ipconfig 等）不区分大小写
 ::默认编码格式为ANSI代表 GB2312 编码。
 ::不加@时，在运行时，会在窗口显示出这条命令,而加了@, 只会显示出 echo后面你要显示出的东西
 mode con cols=80 lines=20&color 0c  rem  cols宽 lines高  cmd里面键入:help color 查查看
@@ -17,6 +18,7 @@ cmdow @ /top /mov 500 500           rem  移动窗口到某个位置 详见cmdow下载
 @echo %CD%                          rem 代表当前目录的字符串
 @echo %DATE%                        rem 当前日期
 @echo %TIME%                        rem 当前时间
+timeout /t 10 /nobreak              rem 睡眠10s   /NOBREAK        忽略按键并等待指定的时间（延时期间，不允许用户按任意键终端延时）。
 
 set /p var=输入一个数:
 if %var% EQU 1 (                    rem EQU 等于 || NEQ 不等于 || LSS 小于 || LEQ 小于或等于 ||  GTR 大于 || GEQ 大于或等于
@@ -46,7 +48,7 @@ delims= #分隔符 本次分隔符为一个空格
 ping 172.20.123.231 #循环该命令所有行
 pause
 
-:: 新窗口启动 /k 不关闭窗口 /c 关闭窗口
+:: 新窗口启动 /k 执行完指定的命令后，不关闭命令提示符窗口。 /c 执行完指定的命令后，关闭命令提示符窗口。 /b 立即启动任务而不创建新的窗口。
 start cmd /k "c: && cd C:\Project\test-app-1 && npm start"
 :: 新窗口延迟 5 秒启动 test-app-2, 
 start cmd /k "timeout -nobreak 5 && c: && cd C:\Project\test-app-2 && npm start"
@@ -85,10 +87,66 @@ for /f "tokens=* skip=2" %%A in ('ping %host% -n 1') do (
     timeout /t 1 /nobreak > nul
     goto loop
 )
---------------------------------------------------添加服务 或 NSSM安装服务 https://nssm.cc/
-sc create 服务名 binPath= "C:\win32srvDemo.exe"
-sc config 服务名 start=AUTO   rem AUTO(自动)DEMAND(手动)DISABLED(禁用)
-sc description Redis6.2.6 "This service runs the Redis server"
+-------------cmd要以管理员运行----------【添加服务 或 NSSM安装服务 https://nssm.cc/】
+sc create frp_service binPath= "D:\AAA\frp_0.57.0_windows_amd64\frpc.exe -c D:\AAA\frp_0.57.0_windows_amd64\frpc.toml"
+sc config frp_service start=AUTO    rem AUTO(自动)DEMAND(手动)DISABLED(禁用)
+sc description frp_service "This service runs the frp client"
+
+net start MyFRPService      rem 启动服务
+sc query MyFRPService       rem 查看启动是否启动成功
+net stop MyFRPService       rem 停止服务
+sc delete MyFRPService      rem 删除服务
+
+
+
+sc config MyService start= [auto| demand | disabled | boot | system] rem auto：在系统启动时自动启动。demand：被标记为手动启动，即需要手动启动服务。disabled：服务被禁用，不会自动启动，也无法手动启动。boot：在系统引导时启动。system：在系统初始化时启动。
+sc config MyService binPath= [PathToExecutable]                      rem 指定服务的可执行文件的路径。
+sc config MyService obj= [UserOrGroup]                               rem 指定服务运行时所使用的用户或组帐户。
+sc config MyService tagBits= [TagBits]                               rem 设置服务的标签位。
+sc config MyService display= [DisplayName]                           rem 设置服务的显示名称。
+sc config MyService error= [normal| severe| critical| ignore]        rem 设置服务失败时的系统反应。normal：默认动作。severe：严重错误。critical：致命错误。ignore：忽略错误。
+sc config MyService group= [LoadOrderGroup]                          rem 设置服务的加载顺序组。
+sc config MyService depend= [DependentServiceNames]                  rem 设置服务依赖的其他服务名称。
+sc config MyService Type= [ownShare| share| interact| kernel| kernelDriver| fileSystemDriver] rem ownShare：服务拥有自己的进程空间。share：服务与其他服务共享进程空间。interact：服务可以与桌面交互。kernel：内核驱动程序。kernelDriver：内核驱动程序。fileSystemDriver：文件系统驱动程序。
+
+下载https://nssm.cc/，解压之后管理员身份启动cmd切换到解压目录
+nssm install FrpService "D:\AAA\frp_0.57.0_windows_amd64\frpc.exe" -c "D:\AAA\frp_0.57.0_windows_amd64\frpc.toml"
+
+NSSM: The non-sucking service manager
+Version 2.24 64-bit, 2014-08-31
+Usage: nssm <option> [<args> ...]
+
+To show service installation GUI:
+        nssm install [<servicename>]
+To install a service without confirmation:
+        nssm install <servicename> <app> [<args> ...]
+To show service editing GUI:
+        nssm edit <servicename>
+To retrieve or edit service parameters directly:
+        nssm get <servicename> <parameter> [<subparameter>]
+        nssm set <servicename> <parameter> [<subparameter>] <value>
+        nssm reset <servicename> <parameter> [<subparameter>]
+To show service removal GUI:
+        nssm remove [<servicename>]
+To remove a service without confirmation:
+        nssm remove <servicename> confirm
+To manage a service:
+        nssm start <servicename>
+        nssm stop <servicename>
+        nssm restart <servicename>
+        nssm status <servicename>
+        nssm rotate <servicename>
+
+
+
+
+
+
+
+
+
+
+
 
 
 

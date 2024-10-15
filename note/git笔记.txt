@@ -55,7 +55,7 @@ $ rm id_rsa*
 注：windows7在C:\Users\ZDZ\.ssh目录下可以找到了
 
 2、生成SSH KEY
- $ ssh-keygen -t rsa -C "qq12352100@163.com"
+ $ ssh-keygen -t ssh-rsa -C "qq12352100@163.com"
  $ ssh-keygen -t ed25519 -C "qq12352100@163.com"
 
 3、将Public Key 添加到GitHub
@@ -109,14 +109,16 @@ git push origin v1.0                                //推送某个标签到远�
 git push origin --tags                              //一次性推送全部尚未推送到远程的本地标签
 git push origin :refs/tags/v0.9                     //要删除远程标签，先从本地删除，远程删除命令也是push
 ====================================================================================================================分支、工作现场
-git checkout -b dev     //创建分支dev（-b参数表示创建并切换 =$ git branch dev + $ git checkout dev）
-git branch              //查看当前分支
-git merge dev           //合并指定分支到当前分支
-git branch -d dev       //删除dev分支
+git checkout -b dev             //创建分支dev（-b参数表示创建并切换 =$ git branch dev + $ git checkout dev）
+git branch                      //查看当前分支
+git merge dev                   //合并指定分支到当前分支
+git branch -d dev               //删除本地dev分支
+git push origin --delete dev    //删除远程dev分支  简写 git push origin :dev
+git fetch -v                    //获取远程仓库的变化信息到本地仓库
 
 git branch              //列出本地已经存在的分支，并且当前分支会用*标记
-git branch -r           //查看远程版本库的分支列表
 git branch -a           //查看所有分支列表（包括本地和远程，remotes/开头的表示远程分支）
+git branch -r           //查看远程版本库的分支列表
 git branch -v           //查看一个分支的最后一次提交
 git branch --merged     //查看哪些分支已经合并到当前分支
 git branch --no-merged  //查看所有未合并工作的分支
@@ -136,6 +138,7 @@ git commit -m "first file"      //提交文件（形成一个快照，以便以�
 git status                      //查看仓库状态
 git diff readme.txt             //查看文件与上次哪里不同
 git log --pretty=oneline        //查看日志
+git log -10 --format="%H %ad %an %ar %s" --date=short      //最近10次提交的日志
 git reset --hard HEAD^          //退回上个版本，用HEAD表示当前版本，上上一个版本就是HEAD^^
 git reset --hard 3628164        //退回指定版本（版本号不用写全，前几位就可以）
 git reflog                      //记录你的每一次命令
@@ -148,6 +151,7 @@ git rm image -r                 //删除指定目录所有文件
 
 git remote add origin git@github.com:qq12352100/note.git            //关联远程仓库
 git remote -v                                                       //查看远程仓库
+git remote remove origin                                            //取消关联远程仓库
 
 git push -u origin master                                           //推送到远程库上
 
@@ -178,3 +182,14 @@ git commit -am "first file" //提交文件,相当于git add . 和 git commit -m 
     出现错误提示：Permission denied (publickey).因为新生成的key不能加入ssh就会导致连接不上github。
     解决办法如下：
     1、先输入$ ssh-agent，再输入$ ssh-add ~/.ssh/id_key，这样就可以了。
+
+控制台中文乱码
+git config --global core.quotepath false
+
+
+
+
+
+
+
+

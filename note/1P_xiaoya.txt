@@ -1,0 +1,39 @@
+获取阿里云盘 Open Token（335位长）阿里云盘app扫码
+https://alist.nn.ci/tool/aliyundrive/request.html
+
+阿里云盘 Token（32位长）阿里云盘app扫码
+https://alist.nn.ci/zh/guide/drivers/aliyundrive.html#%E5%88%B7%E6%96%B0%E4%BB%A4%E7%89%8C
+
+阿里云盘转存目录folder id: 网页打开阿里云盘，资源库中新建一个文件夹，地址栏最后的663e236f1e0671968b644353b0bcaca07cc6233e
+
+---------------------------------------------------------------------------------------------------------------------
+1、安装1panel面板管理工具--上传离线包/opt/路径下xiaoya.tar.gz+alist.tar.gz+xiaoyakeeper.tar.gz
+ 官方文档：https://1panel.cn/docs/installation/online_installation/
+2、安装alist
+（1）在1panel的应用商城安装
+（2）开放端口5244
+（3）在1panel容器中设置密码（默认账号名admin），输入：./alist admin set 123456
+（4）挂载网盘（按需进行）--配置阿里云盘open
+一键脚本3、4步骤
+wget -qO pi.sh https://cafe.cpolar.cn/wkdaily/zero3/raw/branch/main/zero3/pi.sh && chmod +x pi.sh && ./pi.sh
+3、安装小雅alist
+4、安装小雅转存清理工具
+
+
+使用potplayer挂载
+（1）新建专辑，选择"FTP/WebDAV.."的选项
+-->协议选择"WebDAV"
+-->主机路径公网IP/dav
+-->端口5678
+-->用户: guest 密码: guest_Api789
+
+TvBox官网:
+http://tvbox.clbug.com/
+AList-TvBox配置:
+https://github.com/power721/alist-tvbox/blob/master/doc/README_zh.md
+准备工作：安装Docker
+安装AList-TvBox：
+sudo bash -c "$(curl -fsSL https://d.har01d.cn/update_xiaoya.sh)"
+打开管理界面：http://your-ip:4567/#/accounts 默认用户名：admin 密码：admin
+获取并填写阿里token、开放token
+将订阅地址http://your-ip:4567/sub/0 输入到TvBox配置

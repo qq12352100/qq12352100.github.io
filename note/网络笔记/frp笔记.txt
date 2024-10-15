@@ -9,8 +9,8 @@ tar -zxvf frp_0.41.0_linux_amd64.tar.gz
 bind_port = 7000
 #当代理出来的是web服务时，在外网访问http://vps的IP:7001
 vhost_https_port = 7001
-authentication_method = token
-token = admin123
+authentication_method = token  新  auth.method = "token"
+token = admin123               新  auth.token = "admin123"
 
 #dashboard_port状态以及代理统计信息展示,网址:7500可查看详情
 dashboard_port = 7500

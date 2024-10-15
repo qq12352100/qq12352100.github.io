@@ -41,6 +41,9 @@ source /etc/profile
 #备份
 mv /usr/bin/python3 /usr/bin/python3.bak
 ln -s /usr/local/python3.7/bin/python3 /usr/bin/python3
-
-
+===================================================================【requests代理socks】
+python requests使用socks5报：ModuleNotFoundError: No module named 'socks'
+使用前先更新requests版本为支持socks的版本。
+pip install -U requests[socks]
+===================================================================
 yum install -y gcc patch libffi-devel python-devel  zlib-devel bzip2-devel openssl-devel ncurses-devel sqlite-devel readline-devel tk-devel gdbm-devel db4-devel libpcap-devel xz-devel -y
