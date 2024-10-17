@@ -1,11 +1,12 @@
 ---------------------------------------------【Windows】
 administrator
-mstsc                     #远程
-telnet 192.168.0.10 3306  #查看端口是否通
-tracert 192.168.0.1       #路由追踪
-netstat -r                #显示路由表
-netstat -t                #仅显示 TCP 连接  -a  所有活动连接和监听端口  "SYN_SENT "表示有计算机请求连接你的计算机."ESTABLISHED"表示连接成功
-tracert wwww.baidu.com    #路由跟踪
+mstsc                        #远程
+telnet 192.168.0.10 3306     #查看端口是否通
+tracert 192.168.0.1          #路由追踪
+netstat -r                   #显示路由表
+netstat -t                   #仅显示 TCP 连接  -a  所有活动连接和监听端口  "SYN_SENT "表示有计算机请求连接你的计算机."ESTABLISHED"表示连接成功
+netstat -ano |findstr "3306" #查看端口
+tracert wwww.baidu.com       #路由跟踪
 
 ---------------------------------------------【linux】
 free -h ; df -h                 #查看内存与硬盘
@@ -13,4 +14,4 @@ systemctl status firewalld      #查看防火墙状态
 systemctl list-unit-files       #查看所有开机启动
 scp /home/1.mp3 root@192.168.1.50:/home/music       #传文件  -r 传文件夹
 traceroute www.baidu.com        #路由跟踪
-netstat -tunpl                  #查看端口   lsof -i:22
+netstat -tunpl                  #查看端口   lsof -i:22         ss -tnl
