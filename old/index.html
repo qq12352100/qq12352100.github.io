@@ -20,7 +20,7 @@
 <!--导航-->
 
 <div class="nav">
-    <a href="/getkey"><img src="images/logo2.png" alt="LOGO" class="logo"></a>
+    <a href="/getkey"><img src="images/logo2.png" alt="LOGO" class="logo" style="width: 8%;"></a>
     <ul class="ul1">
         <li class="list"><a href="index.html">首页<span>HOME</span></a></li>
         <li class="list"><a href="#case.html">客户案例<span>CASE</span></a></li>
@@ -51,11 +51,6 @@
                 <li><a href="/alist">Alist</a></li>
             </ul>
         </li>
-        <li class="list">
-			<a href="http://wpa.qq.com/msgrd?v=3&amp;uin=584066697&amp;site=qq&amp;menu=yes"><img src="images/8r68row3_03.png" width=30 height=30>
-				<span>584066697</span>
-			</a>
-		</li>
     </ul>
     <div class="cl"></div>
 </div>
@@ -64,7 +59,7 @@
 <!--banner-->
 <div class="banner">
     <img src="images/banner-bg.png" alt="banner">
-    <p style="top: 150px; opacity: 1;">微信公众号软件定制研发，告诉我你的需求</p>
+    <p style="top: 150px; opacity: 1;">微信公众号小程序定制研发，满足您的个性化需求。</p>
 </div>
 <!--banner完-->
 
@@ -284,8 +279,10 @@
 <div class="celan">
     <div id="cs_box">
         <div class="cs_btn">
-            <i><img src="images/8r68row3_03.png"></i>
-            <p>584066697</p>
+            <a target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin=584066697&site=qq&menu=yes" > 
+                <i><img src="images/8r68row3_03.png"></i>
+                <p>584066697</p>
+            </a>
         </div>
     </div>   
     <div class="ruturn_top text-center" id="ruturn_top" style="display: none">
@@ -300,16 +297,6 @@
 <script>
 $(document).ready(function(){
 
-//滚动到底部
-function scrollToEnd(){
-	var h = $(document).height()-$(window).height();
-	$(document).scrollTop(h); 
-}
-myEvent(window,'load',function(){
-    cs_box.set({
-        qq : '584066697'	//设置QQ号码
-    });
-});
 });
 </script>
 
