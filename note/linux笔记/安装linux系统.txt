@@ -1,0 +1,56 @@
+阿里云所有镜像：https://developer.aliyun.com/mirror/
+
+--------------------------------安装CentOS 7--------------------------------
+阿里云镜像  https://mirrors.aliyun.com/centos/7.9.2009/isos/x86_64/
+官网镜像    https://vault.centos.org/7.9.2009/isos/x86_64/
+
+CentOS 7 的最后一个版本是 CentOS Linux 7.9.2207，该版本发布于2022年7月，生命周期直到2024年6月30日。
+CentOS-7-x86_64-Minimal-2207-02.iso  包含了安装一个基本功能的操作系统所必需的软件包。镜像1GB。
+CentOS-7-x86_64-DVD-2207-02.iso  包含了几乎所有的官方软件包，包括图形界面、开发工具、服务器应用程序等。镜像4.4GB。
+
+========>>第一步制作启动盘：https://rufus.ie/zh/
+Rufus允许选择不同的写入模式（例如 ISO 模式 vs DD 模式）。对于大多数 Linux 发行版的 ISO 文件，应该选择 ISO 模式。
+
+========>>第二步分区：
+/boot：存放引导加载程序（如 GRUB）所需的文件，包括内核映像。这个分区通常较小（约500MB到1GB）
+swap：交换分区或交换文件，作为虚拟内存的一部分，当物理 RAM 不足时，Linux 可以使用 swap 来增加可用内存。它的大小通常建议为物理 RAM 的1-2倍
+
+lsblk 
+lsblk -f
+blkid
+
+fdisk /dev/sdb  # 输入 d 来删除分区，输入 w 保存更改并退出
+
+sudo mkfs.ext4 /dev/sda
+mkdir /usr/disk500
+mount /dev/sdb1 /usr/disk500
+
+vi /etc/fstab
+UUID=6fd571d6-2c2d-4f70-831f-eacd1318c201    /    ext4    defaults    0    0
+/dev/sdb1    /    ext4    defaults    0    0
+第一个值为 0 表示不进行备份，而 1 则表示应进行备份。
+第二个值对于根文件系统 (/)，这个值通常是 1，表示它将是第一个被检查的文件系统。对于其他文件系统，可以设置为 2，表示它们将在根文件系统之后被检查。设置为 0 表示不会在启动时自动检查该文件系统。
+#刷新分区
+sudo mount -a
+========>>第三步联网：
+ip addr命令查看查看网卡名和是否有网络
+vi /etc/sysconfig/network-scripts/ifcfg-enp2s0
+
+动态分配：
+BOOTPROTO=dhcp
+ONBOOT=yes
+systemctl restart network  #重启网络服务
+
+静态地址：
+BOOTPROTO=static
+ONBOOT=yes
+IPADDR=192.168.68.200
+NETMASK=255.255.255.0
+GATEWAY=192.168.68.1
+DNS1=223.5.5.5
+DNS2=223.6.6.6
+
+========>>第四步换yum源：
+夸克网盘中
+yum clean all
+yum makecache

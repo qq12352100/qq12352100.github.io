@@ -1,0 +1,12 @@
+
+vim /etc/nginx/nginx.conf
+
+vim /etc/nginx/sites-available/default
+
+    location /py/ {
+        proxy_pass http://127.0.0.1:5000/;   # 注意末尾的斜杠，它会将请求直接转发到根路径,保持原始的 /py/ 前缀，而不是将其去除，你可以省略 proxy_pass 中的末尾斜杠
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }

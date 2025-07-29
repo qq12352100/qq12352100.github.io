@@ -1,0 +1,272 @@
+
+===============================================================================================================【Notepad快捷键】
+设置 --> 首选项 --> 制表符设置 --> 转换为空格打钩
+设置 --> 首选项 --> 文件列表面板 --> 勾选 显示 + 勾选 隐藏副件名排序列
+按住 Alt 拖动鼠标       # 块编辑
+Ctrl + U                # 转换小写        
+Ctrl + Shift + U        # 转换大写        
+Ctrl + K                # 添加注释 <!--  -->        E:Ctrl + Shift + C
+Ctrl + Shift + K        # 取消注释        
+Ctrl + Q                # 添加/取消注释 //          E:Ctrl + /
+Ctrl + Alt + F3         # 快速查找下一个            E:Ctrl + K
+Ctrl + G                # 行定位                    E:Ctrl + L         
+Ctrl + END              # 到文件末尾      
+Ctrl + Shift + up       # 上移下移                  E:Alt + up
+Ctrl + Alt + Enter      # 上插入空行
+Ctrl + L                # 删除行
+Alt  + C                # 列编辑1-9数字
+Alt  + W                # 列所有文件
+===============================================================================================================【VScode快捷键】
+Ctrl + Shift + P          # 打开命令面板
+Ctrl + K 再按 Ctrl + S    # 快捷键设置
+Ctrl + /                  # 注释行
+Shift + Alt + A           # 注释多行
+Ctrl + X                  # 剪切行
+Ctrl + Shift + K          # 删除行
+Ctrl + Alt + 上/下箭头    # 块编辑
+Alt + 上/下箭头           # 移动当前行
+Alt + Shift + 上/下箭头   # 复制当前行
+===============================================================================================================【Navicat primium快捷键】
+Ctrl + R            # 运行查询窗口的sql语句
+Ctrl + Shift + R    # 只运行选中的sql语句
+Ctrl + Q            # 打开查询窗口
+Ctrl + /            # 注释sql语句
+Ctrl + Shift + /    # 解除注释
+Ctrl + L            # 删除行
+Ctrl + N            # 打开一个新的查询窗口
+===============================================================================================================【DBreaver快捷键】
+Ctrl + Enter        # 执行SQL
+Ctrl + \            # 执行SQL,保留之前窗口结果
+Ctrl + /            # 行注释
+Ctrl + D            # 删除当前行
+Ctrl + Shift + F    # 对SQL语句进行格式化
+===============================================================================================================【SQLyog快捷键】
+F9                  # 执行SQL 光标放到所在行  (F8 可修改结果)
+Ctrl + Shift + C    # 注释   R 取消
+Ctrl + Shift + U    # 大写   L 小写
+Ctrl + Alt   + C    # 结果导出 选 Excel XML 文件命名为 1.xlsx
+Alt  + Shift + I    # insert语句   U-更新语句 S-查询语句 D-删除语句
+
+===============================================================================================================【VIM快捷键】
+0 #光标移至行首
+$ #光标移至行尾
+i #在光标前插内内容         I 行首插入
+a #在光标后插入内容         A 行末插入
+o #在所在行下一行插入新行   O 上一行插入空行
+p #在所在行下一行粘贴       P 上一行粘贴
+u #取消上一次操作
+
+d0 #删除光标至行首的内容
+d$ #删除光标至行尾的内容
+ZZ #保存退出 wq
+ZQ #不保存退出 q!
+
+gg #移动到文首
+G  #移动到文尾
+dd #删除/剪切整行    5dd删除5行
+yy #复制整行         5yy复制5行
+
+:s/p1/p2/g  #在当前行，将p1替换成p2
+:n1,n2 d    #将n1至n2行删除
+:数字       #定位到指定行
+:set nu     #显示行号
+:set nonu   #取消行号
+
+:set ff     #显示ff=fileformat不能执行
+:set ff=unix
+
+Ctrl+z挂起fg再回车就可以将后台挂起程序切换的前台来。
+
+telnet---->>Ctrl+],然后再按q就可以退出了。
+===============================================================================================================【idea快捷键】
+
+按两下Shift唤出全局搜索
+
+Ctrl + Q              查看函数文档
+Ctrl + P              查看函数入参
+Ctrl + W              选中整个单词
+Ctrl + D              复制选中行
+Ctrl + Y              删除选中行
+Ctrl + E              最近打开的文件
+Ctrl + 减号           折叠代码
+Ctrl + 等号           展开代码
+Ctrl + F12            查看类结构
+
+Alt + J       选择html中对称符号
+
+Shift + F6    重命名变量名
+
+Ctrl + Shift + 空格     智能提示  Tab 替换后面的值
+Ctrl + Shift + 回车     代码补全
+Ctrl + Shift + 减号     折叠整个类代码
+Ctrl + Shift + 等号     展开整个类代码
+Ctrl + Shift + ↑        上下移动方法
+Ctrl + Shift + DELETE   删除代码包围块
+Ctrl + Shift + F        查找
+Ctrl + Shift + R        替换      Alt + D 当前目录替换
+
+Ctrl + Alt + Shift + L  格式化代码
+
+Alt + Shift + ↑        上下移动选中行
+
+Ctrl + Alt + T         包围代码块
+
+===============================================================================================================【eclipse快捷键】
+
+去除空行:在Find输入框中输入：^\s*\n 
+
+F12                 定位到编辑器
+Ctrl + F7           切换块视图Console、Package Explorer、Servers、##全屏编辑器Ctrl + F7按两下（Servers放第一个）Ctrl + Alt + D(S停止) 重启当前debug模式
+Ctrl + F8           切换大视图java EE、Debug、synchronizing
+Ctrl + F10          显示系统菜单
+Ctrl + 3            快速进入
+
+Ctrl + Shift + E    打开所有编辑器列表（Ctrl + E）
+Ctrl + Shift + T    找java文件
+Ctrl + Shift + R    找所有文件
+Ctrl + Shift + F    格式化文件Format Document。
+Ctrl + Shift + O    作用是缺少的Import
+Ctrl + Shift + /    在代码窗口中是这种/*~*/注释，在JSP文件窗口中是 <!--~-->。 
+Ctrl + Shift + C    快速行注释
+Ctrl + Shift + X    转为大写
+Ctrl + Shift + Y    转为小写
+Ctrl + Shift + ->   快速选中右边一块
+Ctrl + Shift + G    查找类、方法和属性的引用
+
+Alt + F5            Update Maven Project
+Alt + Shift + S     快速生成geter和seter(按R)、重写toString(按S)、生成无参构造函数(按C)、生成有参构造函数(按O)
+Alt + Shift + W     快速在左边定位show In。。。
+Alt + Shift + A     进入块选择
+Alt + Shift + J     快速注释方法头上/**  */
+Alt + Shift + Z     为选中代码添加try/cath,if
+Alt + Shift + R     重命名 
+Alt + Shift + M     将选中行抽取成一个方法
+Alt + Shift + C     修改函数结构(比较实用,有N个函数调用了这个方法,修改一次搞定) 
+
+Ctrl + E            快速转换编辑器
+Ctrl + L            快速定位到某行
+Ctrl + K            快速查找当前单词下一个的位置
+Ctrl + H            整个项目中查找关键词
+Ctrl + O            显示当前类的属性与方法
+
+Alt + Enter                打开工程属性
+syst 然后 Alt  +   /    打印当前方法
+syso 然后 Alt  +   /    打印
+main 然后 Alt  +   /    生成main方法
+---------------------------------------------------------------------------------------------------------------将velocity当做html进行高亮显示
+window > preference > Content type > Text > Html  > Add  搜索Content
+在输入框中输入 *.vm  点击OK ，选中新加入得*.vm   
+在下面的 DefuAlt encoding 中输入 "utf-8“ 单击 update
+---------------------------------------------------------------------------------------------------------------设置一行的代码长度
+java：java->code style->formatter->edit->line wrapping->maximum line width 修改140  搜索 formatter
+XML：XML->XML Files->Editor-> line width 修改成140        搜索 xml
+html：Web->HTML Files->Editor-> line width 修改成140    搜索 html
+---------------------------------------------------------------------------------------------------------------为SVN设置快捷键
+1、Window-->Preferences-->General-->Keys
+2、搜索SVN。
+3、Binding中同时按住你想设定的快捷键。(更新)Alt + Z (提交)Alt + A
+4、把When选择为“In Windows”。
+---------------------------------------------------------------------------------------------------------------删除SVN用户名密码
+1. 查看你的Eclipse中使用的是什么SVN Interface
+windows > preference > Team > SVN #SVN Interface
+2. 如果是用的JavaHL, 找到以下目录并删除auth目录.
+    XP    C:\Documents and Settings\[YourUserName]\Application Data\Subversion\
+    WIN7  C:\Users\[YourUserName]\AppData\Roaming\Subversion\
+3. 如果你用的SVNKit, 找到以下目录并删除.keyring文件.
+    [eclipse]\configuration\org.eclipse.core.runtime
+---------------------------------------------------------------------------------------------------------------设置注释格式
+选择Window/Preferences/Java/Code Style/Code Templates/Comments/Types（Methods） 默认是当前系统的用户名
+/**
+ * @author bkk 
+ * @version ${date}${time}
+ */
+---------------------------------------------------------------------------------------------------------------比较文件
+右键菜单上就有compare with-->each other,比较两个文件之间的不同。
+右键菜单上就有compare with-->local history,可以比较任意两次保存之后，文件有什么不同。
+---------------------------------------------------------------------------------------------------------------xml进行拼写检查
+在eclipse下的Window--Preference输入spell，然后把第一个复选框“Enable spell checking“给去掉就可以了
+---------------------------------------------------------------------------------------------------------------设置不格式化注释
+Windows -> Preferces -> Java -> Code Style -> Formatter -> Edit -> Comments
+取消勾选“Enable Javadoc comment formatting”.
+---------------------------------------------------------------------------------------------------------------jdk版本问题
+eclipse默认用自带的JDK，最高版本是1.6，如果想用自己安装的JDK1.7，设置方法：
+菜单window--->Preferences--->Java--->Installed JREs，把默认JDK1.6的改为自己新安装的JDK1.7。
+这时在java project中会警告：
+Description Resource Path Location Type Build path specifies execution environment JavaSE-1.6. 
+There are no JREs installed in the workspace that are strictly compatible with this environment.
+communication  Build  path JRE System Library Problem
+去除警告方法：工程名称上右键菜单：Properties--->Java Build Path--->Libraries，
+选中"JRE System Library[JavaSE-1.6]"，
+选择右侧按钮“Edit"，打开新界面中选择"Workspace default JRR (JDK1.7......)"即可。
+---------------------------------------------------------------------------------------------------------------新建maven webapp后无法添加src/main/java和src/main/test
+1.eclipse->window>preferences->java->compiler->选择本地要用的Java版本
+2.eclipse->window>preferences->java->installJars->修改为本地jdk
+3.项目右键->buildPath configure Build Path->点击选项卡Libraries->选中JRE System Library->
+点击edit->选中Alternate JRE->选择jdk
+4.点击finish，点击ok，自动出现src/main/java和src/test/java
+---------------------------------------------------------------------------------------------------------------控制台中的中文输出乱码问题
+1、首先在Run-Run Configration-Tomcat-Arguments,在VM arguments中添加-Dfile.encoding=UTF-8
+2、Common tab页，在Console encoding中选择UTF-8
+---------------------------------------------------------------------------------------------------------------tomcat部署目录
+workspace\.metadata\.plugins\org.eclipse.wst.server.core
+---------------------------------------------------------------------------------------------------------------git同步ignore设置
+1、eclipse->window>preferences->Version Control(Team)->Git->Configration
+2、选择User Setting 然后 add Entry
+core.excludesfile
+D:/AAA/eclipse/Java.gitignore
+3、重启eclipse
+---------------------------------------------------------------------------------------------------------------git问题
+--使用Ecplise git commit时出现"There are no stages files"
+进入Window——Preferences——Team——Git——Committing，
+取消 [] use staging view to commit instead of commit dialog
+--push 单个文件或者文件夹
+点team---add to Index--Commit and Push
+---------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------
+===============================================================================================================插件
+-------------------------------------------------------------------------------------------------------spring boot插件
+打开eclipse----Help----Eclipse Marketplace----在Find搜索框中输入spring----回车搜索spring-tool-suite 或者 sts
+安装Spring Tool Suite (STS) for Eclipse 3.8.4.RELEASE
+-------------------------------------------------------------------------------------------------------python插件
+Eclipse -> Help -> Install New SoftWare -> Add 
+Name: python
+Location: http://pydev.org/updates
+三个全选
+-------------------------------------------------------------------------------------------------------Properties Editor插件
+Help-->Install New software-->add
+Name: Properties Editor
+Location: http://propedit.sourceforge.jp/eclipse/updates/
+安装最后一个
+Editors-->File Association        *.properties
+
+-------------------------------------------------------------------------------------------------------反编译插件
+官网地址 http://java-decompiler.github.io/
+打开eclispe，在eclipse的菜单栏上选择Help->Install New Software 
+在对话框中点击add按钮
+Name：jd-eclipse_update_site
+Location：http://jd.benow.ca/jd-eclipse/update
+重启之后，在窗口菜单栏点击Widow->Preference->General->Editors->File Associations,
+将FileType里的*.class和*.class without source的Associated editors下面的Class File Editor设置成default即可
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

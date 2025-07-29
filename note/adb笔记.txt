@@ -1,0 +1,142 @@
+ADB（Android Debug Bridge）是一个通用命令行工具，允许您与连接到计算机的Android设备进行通信通过ADB，您可以执行各种操作，如安装和调试应用程序、复制文件、运行shell命令等
+
+以下是一些常见的ADB命令及其用途：
+
+USB连接
+adb usb #查看是否连接成功
+
+wifi连接
+adb tcpip 5555
+adb connect 192.168.10.31:5555
+
+adb shell wm size                           # 获取手机分辨率
+adb shell getprop ro.build.version.release  # 获取系统的版本号
+adb shell getprop ro.build.version.sdk      # 获取API 级别（SDK 版本）
+
+-----------------【连接设备】
+adb devices                          # 列出所有连接的设备
+adb connect <device_ip_address>      # 连接到通过Wi-Fi连接的设备
+-----------------【管理应用程序】
+adb install <path_to_apk>            # 安装一个APK文件到设备上
+adb uninstall <package_name>         # 卸载一个应用程序
+adb shell pm list packages           # 列出设备上的所有包
+-----------------【文件系统操作】    
+adb push <local> <remote>            # 将文件或目录从计算机复制到设备
+adb pull <remote> [<local>]          # 将文件或目录从设备复制到计算机
+-----------------【运行Shell命令】   
+adb shell                            # 启动交互式shell会话
+adb shell <command>                  # 在设备上运行单个shell命令
+-----------------【日志管理】        
+adb logcat                           # 查看和获取设备的日志输出
+-----------------【屏幕操作】
+adb shell input keyevent <key_code>                     #模拟按键事件
+adb shell input touchscreen swipe <x1> <y1> <x2> <y2>   #模拟滑动动作
+adb shell input text "text"                             #输入文本
+adb shell input tap <x> <y>                             #模拟点击屏幕
+-----------------【截屏和录屏】
+adb shell screencap -p /sdcard/screen.png   # 捕捉屏幕并保存为图片
+adb pull /sdcard/screen.png                 # 将截图拉取到电脑 运行adb的目录下
+adb shell screenrecord /sdcard/demo.mp4     # 开始录制屏幕
+adb shell screenrecord --stop               # 停止录屏
+-----------------【重启设备】
+adb reboot              # 重启设备
+adb reboot bootloader   # 重启设备进入bootloader模式
+adb reboot recovery     # 重启设备进入恢复模式
+-----------------【其他命令】
+adb kill-server         # 停止ADB服务器
+adb start-server        # 启动ADB服务器
+adb version             # 显示ADB版本信息
+-------------------------------------------------------------------------------------
+启动淘宝 
+adb shell monkey -p com.taobao.taobao -c android.intent.category.LAUNCHER 1
+adb shell am start -n com.taobao.taobao/com.taobao.tao.welcome.Welcome
+启动钉钉
+adb shell monkey -p com.alibaba.android.rimet -c android.intent.category.LAUNCHER 1
+
+adb shell input keyevent KEYCODE_HOME           # 回到主屏幕
+adb shell input keyevent KEYCODE_BACK           # 返回
+adb shell input keyevent KEYCODE_POWER          # 电源键
+adb shell input keyevent KEYCODE_MENU           # 菜单键
+adb shell input keyevent KEYCODE_VOLUME_UP      # 音量加
+adb shell input keyevent KEYCODE_VOLUME_DOWN    # 音量减
+-------------------------------------------------------------------------------------【拨打电话】
+adb shell am start -a android.intent.action.DIAL -d tel:17346559443     # 把电话号码输入到拨号界面
+adb shell input keyevent KEYCODE_CALL                                   # 按下拨号键
+或
+adb shell am start -a android.intent.action.CALL -d tel:17346559443     # 直接打电话
+-------------------------------------------------------------------------
+
+adb shell input swipe 540 1620 540 540 1000 #上滑1秒  adb shell input swipe <start_x> <start_y> <end_x> <end_y> [<duration>]
+
+adb shell am stack list # 列出后台进程
+
+adb shell am force-stop com.taobao.taobao   # 关闭淘宝
+adb shell am force-stop com.android.browser # 关闭浏览器
+
+--------------------------------------------------------------------------------------
+KEYCODE_0 to KEYCODE_9          数字键 0-9 (7到16)
+KEYCODE_A to KEYCODE_Z          字母键 A-Z (29到54)
+KEYCODE_STAR                    * 键 (17)
+KEYCODE_POUND                   # 键 (18)
+KEYCODE_DPAD_UP                 方向键上 (19)
+KEYCODE_DPAD_DOWN               方向键下 (20)
+KEYCODE_DPAD_LEFT               方向键左 (21)
+KEYCODE_DPAD_RIGHT              方向键右 (22)
+KEYCODE_DPAD_CENTER             方向键中心/确认 (23)
+KEYCODE_VOLUME_UP               音量增大 (24)
+KEYCODE_VOLUME_DOWN             音量减小 (25)
+KEYCODE_POWER                   电源键 (26)
+KEYCODE_CAMERA                  相机快门键 (27)
+KEYCODE_CLEAR                   清除键 (28)
+KEYCODE_BACK                    返回键 (4)
+KEYCODE_CALL                    拨打电话键 (5)
+KEYCODE_ENDCALL                 挂断电话键 (6)
+KEYCODE_ENTER                   回车键 (66)
+KEYCODE_SEARCH                  搜索键 (84)
+KEYCODE_MEDIA_PLAY_PAUSE        播放/暂停媒体键 (85)
+KEYCODE_MEDIA_STOP              停止媒体播放键 (86)
+KEYCODE_MEDIA_NEXT              下一首媒体键 (87)
+KEYCODE_MEDIA_PREVIOUS          上一首媒体键 (88)
+KEYCODE_MEDIA_REWIND            快退键 (89)
+KEYCODE_MEDIA_FAST_FORWARD      快进键 (90)
+KEYCODE_MUTE                    音键 (91)
+KEYCODE_PAGE_UP                 向上翻页键 (92)
+KEYCODE_PAGE_DOWN               向下翻页键 (93)
+KEYCODE_MOVE_HOME               移动到文本开头键 (122)
+KEYCODE_MOVE_END                移动到文本结尾键 (123)
+KEYCODE_INSERT                  插入键 (124)
+KEYCODE_TAB                     Tab键 (61)
+KEYCODE_ESCAPE                  Esc键 (111)
+KEYCODE_SCROLL_LOCK             Scroll Lock键 (116)
+KEYCODE_NUM_LOCK                Num Lock键 (143)
+KEYCODE_CAPS_LOCK               Caps Lock键 (115)
+KEYCODE_BREAK                   Break键 (117)
+KEYCODE_MENU                    菜单键 (82)
+KEYCODE_NOTIFICATION            通知键 (83)
+KEYCODE_SETTINGS                设置键 (176)
+KEYCODE_DEL                     删除键 (67)
+KEYCODE_FORWARD_DEL             向前删除键 (112)
+KEYCODE_SPACE                   空格键 (62)
+KEYCODESYM_SHIFT_LEFT           左Shift键 (59)
+KEYCODE_SYM_SHIFT_RIGHT         右Shift键 (60)
+KEYCODE_CTRL_LEFT               左Ctrl键 (113)
+KEYCODE_CTRL_RIGHT              右Ctrl键 (114)
+KEYCODE_ALT_LEFT                左Alt键 (57)
+KEYCODE_ALT_RIGHT               右Alt键 (58)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

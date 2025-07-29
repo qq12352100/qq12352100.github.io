@@ -1,6 +1,9 @@
+下载地址：
+http://download.redis.io/releases/
+
 安装
 tar zxvf redis-2.4.16.tar.gz
-make 
+make && sudo make install
 src/redis-server        #Redis服务器的daemon启动程序
 src/redis-cli           #Redis命令行操作工具。或者通过telnet进行纯文本协议操作
 src/redis-benchmark     #Redis性能测试工具，测试Redis在你的系统及你的配置下的读写性能

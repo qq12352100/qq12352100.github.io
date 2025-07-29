@@ -2,9 +2,9 @@
 E32 in Sheet2!$B1:$C6 取$B1:$C6的第一列值 FASLE=精确匹配
 
 ==============================================================================================================================================================================================================================================excel 宏开发
-开发工具-->>插入-->>按钮
-我们按快捷键Ctrl+G调出立即窗口（用来显示debug.print输出值和调试输出）
-批量注释：在VBE窗口中，“视图”――“工具”――“编辑”――“设置注释块”  【或解除注释块】
+1、按下 Alt + F11 打开VBA编辑器。在VBA编辑器中，点击菜单栏的 插入 > 模块，创建一个新模块。开始写vb代码。
+2、按快捷键Ctrl+G调出立即窗口（用来显示debug.print输出值和调试输出） Debug.Print "Sheet1最后一行: " & lastRow1
+3、批量注释：在VBE窗口中，“视图”――“工具”――“编辑”――“设置注释块”  【或解除注释块】
 ------------------------------------------------------------------------------------------------------------------------------问题：
 1、无法运行“a. xlsx!按钮”宏。可能是因为该宏在此工作簿中不可用，或者所有的宏都被禁用。【解决】：开发者工具--宏安全性--启用所有宏
 
@@ -233,4 +233,92 @@ AutoFIle     代表指定工作表的自动筛选
 Filters      由多个Fileter对象组成的集合，这些对象代表自动筛选区域内的所有的筛选  
 Filter       代表单个列的筛选
 
+----------------------------------------------------------------------------------------------根据sheet1中的名字，去sheet2中找，匹配之后把第8列值给sheet1的indexGrade列
+Sub MatchAndCopyValues()
+    Dim ws1 As Worksheet, ws2 As Worksheet
+    Dim lastRow1 As Long, lastRow2 As Long
+    Dim i As Long, j As Long, indexGrade As Long
+    Dim nameInSheet1 As String
+    Dim nameInSheet2 As String
+    Dim valueToCopy As Variant
+    
+    indexGrade = 4 '成绩写入第几列 索引1开始
+    
+    Set ws1 = ThisWorkbook.Sheets("Sheet1")
+    Set ws2 = ThisWorkbook.Sheets("Sheet2")
+    
+    Debug.Print "Sheet1最后一行: " & lastRow1
+    
+    ' 获取Sheet1和Sheet2的最后一行
+    lastRow1 = ws1.Cells(ws1.Rows.Count, 1).End(xlUp).Row
+    lastRow2 = ws2.Cells(ws2.Rows.Count, 8).End(xlUp).Row
+  
+    ' 遍历Sheet1中的每一行,第二行开始
+    For i = 2 To lastRow1
+        nameInSheet1 = ws1.Cells(i, 1).Value        ' 获取Sheet1中第1列的人名
+        valueToCopy = ""
+
+        For j = 1 To lastRow2                       ' 在Sheet2中查找匹配的人名
+            nameInSheet2 = ws2.Cells(j, 9).Value    ' 获取Sheet2中第9列的人名
+            If nameInSheet1 = nameInSheet2 Then     ' 如果找到匹配项，获取Sheet2中第8列的值
+                valueToCopy = ws2.Cells(j, 8).Value
+                Exit For                            ' 找到后退出内层循环
+            End If
+        Next j
+
+        ws1.Cells(i, indexGrade).Value = valueToCopy  ' 将匹配到的值写入Sheet1的第indexGrade列
+        'Exit For                                     ' 类似于break ，循环一次
+    Next i
+
+    MsgBox "匹配完成！", vbInformation
+End Sub
+
+
+----------------------------------------------------------------------------------------------成绩录入模版
+Sub 查找并赋值()
+    Dim ws1 As Worksheet, ws2 As Worksheet
+    Dim lastRow1 As Long, lastRow2 As Long
+    Dim i As Long, j As Long, indexGrade As Long
+    Dim nameInSheet1 As String
+    Dim nameInSheet2 As String
+    Dim pingshiGrade As Variant
+    Dim qimoGrade As Variant
+    
+    ' 设置工作表
+    Set ws1 = ThisWorkbook.Sheets("学生成绩录入模板")
+    Set ws2 = ThisWorkbook.Sheets("Sheet1")
+    
+    
+    ' 获取Sheet1和Sheet2的最后一行
+    lastRow1 = ws1.Cells(ws1.Rows.Count, 1).End(xlUp).Row
+    lastRow2 = ws2.Cells(ws2.Rows.Count, 8).End(xlUp).Row
+    
+   
+    Debug.Print "Sheet1最后一行: " & lastRow1
+    Debug.Print "Sheet1最后一行: " & lastRow2
+    
+    
+    For i = 2 To lastRow1                           ' 遍历Sheet1,第2行开始
+        nameInSheet1 = ws1.Cells(i, 4).Value        ' 获取Sheet1中第4列的人名
+        pingshiGrade = ""
+        qimoGrade = ""
+
+        For j = 6 To lastRow2                           ' 遍历Sheet2,第6行开始--查找匹配的人名
+            nameInSheet2 = ws2.Cells(j, 2).Value        ' 获取Sheet2中第2列的人名
+            If nameInSheet1 = nameInSheet2 Then         ' 如果找到匹配项
+                pingshiGrade = ws2.Cells(j, 7).Value    ' 获取Sheet2中第7列的值
+                qimoGrade = ws2.Cells(j, 8).Value       ' 获取Sheet2中第8列的值
+                Exit For                                ' 找到后退出内层循环
+            End If
+        Next j
+
+        ws1.Cells(i, 5).Value = pingshiGrade          ' 将匹配到的值写入Sheet1的第5列
+        ws1.Cells(i, 6).Value = qimoGrade             ' 将匹配到的值写入Sheet1的第6列
+        'Exit For                                     ' 类似于break ，循环一次
+    Next i
+
+    MsgBox "匹配完成！", vbInformation
+    
+    
+End Sub
 

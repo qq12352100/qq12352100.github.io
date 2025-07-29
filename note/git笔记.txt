@@ -1,4 +1,17 @@
 
+git branch -a                       #所有分支
+git fetch origin                    #拉取远程分支
+git reset --hard origin/branch-name #重置到远程分支
+==========================================================================================代理
+http://用户名:密码@127.0.0.1:10809
+
+git -c http.proxy='http://127.0.0.1:10809' clone https://github.com/qq12352100/qq12352100.github.io.git    #临时代理克隆
+git -c http.proxy='http://127.0.0.1:10809' push origin master                                               #临时代理推送
+
+git config --global https.proxy 'http://127.0.0.1:10809'        #全局设置 HTTPS 代理
+git config --global --unset https.proxy                         #取消HTTPS代理
+git config --global http.proxy 'http://127.0.0.1:10809'         #全局设置 HTTPS 代理
+git config --global --unset http.proxy                          #取消HTTP代理
 ==========================================================================================下载别人代码
 git init
 git remote add origin https://github.com/codeskyblue/gohttpserver.git
@@ -17,6 +30,8 @@ $ git --help
 $ man git-
 比如，要学习 config 命令可以怎么用，可执行：
 $ git help config
+git config --list --global      #查看全局配置的所有设置
+git config --list               #查看本地仓库的所有配置设置
 ==========================================================================================git查看某个文件的修改历史
 一、切换到目录
 二、git log --pretty 例如：git log --pretty=oneline 文件名
@@ -109,12 +124,13 @@ git push origin v1.0                                //推送某个标签到远�
 git push origin --tags                              //一次性推送全部尚未推送到远程的本地标签
 git push origin :refs/tags/v0.9                     //要删除远程标签，先从本地删除，远程删除命令也是push
 ====================================================================================================================分支、工作现场
-git checkout -b dev             //创建分支dev（-b参数表示创建并切换 =$ git branch dev + $ git checkout dev）
-git branch                      //查看当前分支
-git merge dev                   //合并指定分支到当前分支
-git branch -d dev               //删除本地dev分支
-git push origin --delete dev    //删除远程dev分支  简写 git push origin :dev
-git fetch -v                    //获取远程仓库的变化信息到本地仓库
+git checkout -b dev                 //创建分支dev（-b参数表示创建并切换 =$ git branch dev + $ git checkout dev）
+git checkout -b tyzf origin/tyzf    //创建并检出远程分支,并切换到该分支
+git branch                          //查看当前分支
+git merge dev                       //合并指定分支到当前分支
+git branch -d dev                   //删除本地dev分支
+git push origin --delete dev        //删除远程dev分支  简写 git push origin :dev
+git fetch -v                        //获取远程仓库的变化信息到本地仓库
 
 git branch              //列出本地已经存在的分支，并且当前分支会用*标记
 git branch -a           //查看所有分支列表（包括本地和远程，remotes/开头的表示远程分支）
@@ -182,9 +198,12 @@ git commit -am "first file" //提交文件,相当于git add . 和 git commit -m 
     出现错误提示：Permission denied (publickey).因为新生成的key不能加入ssh就会导致连接不上github。
     解决办法如下：
     1、先输入$ ssh-agent，再输入$ ssh-add ~/.ssh/id_key，这样就可以了。
-
+=======================================================================================================================
 控制台中文乱码
 git config --global core.quotepath false
+=======================================================================================================================fatal: CRLF would be replaced by LF in
+git config --global core.autocrlf input
+git config --global core.eol lf
 
 
 

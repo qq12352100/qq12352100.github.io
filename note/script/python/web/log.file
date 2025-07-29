@@ -1,0 +1,36 @@
+2025-05-22 07:56:58,190 - INFO - _internal.py 97 - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.3.101:5000
+2025-05-22 07:56:58,190 - INFO - _internal.py 97 - [33mPress CTRL+C to quit[0m
+2025-05-22 07:56:58,194 - INFO - _internal.py 97 -  * Restarting with stat
+2025-05-22 07:57:01,964 - WARNING - _internal.py 97 -  * Debugger is active!
+2025-05-22 07:57:01,970 - INFO - _internal.py 97 -  * Debugger PIN: 860-522-016
+2025-05-22 07:57:07,289 - INFO - _internal.py 97 - 127.0.0.1 - - [22/May/2025 07:57:07] "GET /getstock HTTP/1.1" 200 -
+2025-05-22 07:57:10,358 - INFO - _internal.py 97 - 127.0.0.1 - - [22/May/2025 07:57:10] "[33mGET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1[0m" 404 -
+2025-05-22 07:57:10,746 - INFO - _internal.py 97 - 127.0.0.1 - - [22/May/2025 07:57:10] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2025-05-22 07:57:57,486 - INFO - _internal.py 97 -  * Detected change in 'D:\\Program Files\\PortableGit\\test\\note\\note\\script\\python\\web\\stock.py', reloading
+2025-05-22 07:57:57,717 - INFO - _internal.py 97 -  * Restarting with stat
+2025-05-22 07:58:01,265 - WARNING - _internal.py 97 -  * Debugger is active!
+2025-05-22 07:58:01,270 - INFO - _internal.py 97 -  * Debugger PIN: 860-522-016
+2025-05-22 07:58:02,395 - INFO - _internal.py 97 - 127.0.0.1 - - [22/May/2025 07:58:02] "GET /getstock HTTP/1.1" 200 -
+2025-05-22 07:58:02,445 - INFO - _internal.py 97 - 127.0.0.1 - - [22/May/2025 07:58:02] "[33mGET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1[0m" 404 -
+2025-05-22 07:58:38,596 - INFO - _internal.py 97 -  * Detected change in 'D:\\Program Files\\PortableGit\\test\\note\\note\\script\\python\\web\\stock.py', reloading
+2025-05-22 07:58:38,805 - INFO - _internal.py 97 -  * Restarting with stat
+2025-05-22 07:58:42,489 - WARNING - _internal.py 97 -  * Debugger is active!
+2025-05-22 07:58:42,493 - INFO - _internal.py 97 -  * Debugger PIN: 860-522-016
+2025-05-22 07:58:44,388 - INFO - _internal.py 97 - 127.0.0.1 - - [22/May/2025 07:58:44] "GET /getstock HTTP/1.1" 200 -
+2025-05-22 07:58:44,423 - INFO - _internal.py 97 - 127.0.0.1 - - [22/May/2025 07:58:44] "[33mGET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1[0m" 404 -
+2025-05-22 08:04:14,166 - INFO - _internal.py 97 -  * Detected change in 'D:\\Program Files\\PortableGit\\test\\note\\note\\script\\python\\web\\stock.py', reloading
+2025-05-22 08:04:14,424 - INFO - _internal.py 97 -  * Restarting with stat
+2025-05-22 08:04:18,075 - WARNING - _internal.py 97 -  * Debugger is active!
+2025-05-22 08:04:18,079 - INFO - _internal.py 97 -  * Debugger PIN: 860-522-016
+2025-05-22 08:04:21,178 - INFO - _internal.py 97 - 127.0.0.1 - - [22/May/2025 08:04:21] "GET /getstock HTTP/1.1" 200 -
+2025-05-22 08:04:23,415 - INFO - _internal.py 97 - 127.0.0.1 - - [22/May/2025 08:04:23] "[33mGET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1[0m" 404 -
+2025-05-22 08:07:44,147 - INFO - _internal.py 97 - 127.0.0.1 - - [22/May/2025 08:07:44] "GET /getstock HTTP/1.1" 200 -
+2025-05-22 08:07:44,566 - INFO - _internal.py 97 - 127.0.0.1 - - [22/May/2025 08:07:44] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2025-05-22 08:07:46,680 - INFO - _internal.py 97 - 127.0.0.1 - - [22/May/2025 08:07:46] "[33mGET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1[0m" 404 -
+2025-05-22 08:08:37,163 - INFO - _internal.py 97 -  * Detected change in 'D:\\Program Files\\PortableGit\\test\\note\\note\\script\\python\\web\\stock.py', reloading
+2025-05-22 08:08:37,462 - INFO - _internal.py 97 -  * Restarting with stat
+2025-05-22 08:08:41,475 - WARNING - _internal.py 97 -  * Debugger is active!
+2025-05-22 08:08:41,480 - INFO - _internal.py 97 -  * Debugger PIN: 860-522-016

@@ -23,8 +23,8 @@ vi /etc/my.cnf.d/mysql-clients.cnf  #在[mysql]中添加    default-character-se
 
 systemctl restart mariadb
 
-mysql -uroot -proot@qwer
-grant all privileges on *.* to 'root'@'%' identified by 'root@qwer' with grant option;
+mysql -uroot -plL2oOkEc
+grant all privileges on *.* to 'root'@'%' identified by 'lL2oOkEc' with grant option;
 flush privileges;
 show variables like "%character%";show variables like "%collation%";
 
@@ -40,8 +40,11 @@ systemctl start nginx.service
 
 #------------------------------配置gohttpserver
 wget -P /usr/local/src/ https://github.com/codeskyblue/gohttpserver/releases/download/1.1.0/gohttpserver_1.1.0_linux_amd64.tar.gz
+https://github.com/codeskyblue/gohttpserver/releases/download/1.3.0/gohttpserver_1.3.0_linux_amd64.tar.gz
+
 tar -C /usr/local -xzf gohttpserver_1.1.0_linux_amd64.tar.gz
-wget -P /usr/local/src/ https://studygolang.com/dl/golang/go1.16.4.linux-amd64.tar.gz
+wget -P /usr/local/src/ https://go.dev/dl/go1.24.3.linux-amd64.tar.gz  #https://go.dev/dl/go1.24.3.linux-amd64.tar.gz
+
 tar -C /usr/local -xzf go1.16.4.linux-amd64.tar.gz
 echo "export PATH=$PATH:/usr/local/go/bin" >> /etc/profile
 source /etc/profile
@@ -49,6 +52,20 @@ go version
 mkdir /usr/local/share/bkk/ & cd /usr/local
 screen -S svn
 ./gohttpserver -r /usr/local/share/bkk --port 8000 --auth-type http --auth-http bkk:bkk --upload --delete
+=======通过域名访问配置nginx
+
+./gohttpserver -r /usr/local/share/bkk --auth-type http --auth-http bkk:bkk --upload --delete --prefix /svn --addr :8000 --xheaders
+
+location /svn {
+    proxy_pass http://127.0.0.1:8000; # here need to change
+    proxy_redirect off;
+    proxy_set_header  Host    $host;
+    proxy_set_header  X-Real-IP $remote_addr;
+    proxy_set_header  X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header  X-Forwarded-Proto $scheme;
+
+    client_max_body_size 0; # disable upload limit
+}
 
 #------------------------------配置frp
 wget -P /usr/local/src/ https://github.com/fatedier/frp/releases/frp_0.43.0_linux_amd64.tar.gz
@@ -61,12 +78,36 @@ nohup java -jar master_base-0.0.1_BASE.jar >>log.file 2>&1 &
 
 
 
+#------------------------------Ubuntu配置postgresql  官方文档：https://www.postgresql.org/download/linux/
+1、apt install postgresql
+2、编辑主配置文件 /etc/postgresql/<version>/main/postgresql.conf 和客户端认证文件 /etc/postgresql/<version>/main/pg_hba.conf。
+修改 postgresql.conf：
+listen_addresses = '*'
+编辑 pg_hba.conf：添加一行
+host    all             all             0.0.0.0/0               md5
+3、ALTER USER postgres PASSWORD 'lL2oOkEc';
+sudo -i -u postgres
+systemctl restart postgresql
+psql -U postgres -d postgres
 
 
+#------------------------------配置alist小雅   官方文档：https://alistgo.com/zh
+curl -fsSL "https://alist.nn.ci/v3.sh" -o v3.sh && bash v3.sh
 
+vim /etc/nginx/sites-available/default
 
-
-
+location /alist {
+  proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+  proxy_set_header X-Forwarded-Proto $scheme;
+  proxy_set_header Host $http_host;
+  proxy_set_header X-Real-IP $remote_addr;
+  proxy_set_header Range $http_range;
+  proxy_set_header If-Range $http_if_range;
+  proxy_redirect off;
+  proxy_pass http://127.0.0.1:5244;
+  # the max size of file to upload
+  client_max_body_size 20000m;
+}
 
 
 

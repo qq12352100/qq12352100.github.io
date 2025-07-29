@@ -3,7 +3,7 @@
 ::不加@时，在运行时，会在窗口显示出这条命令,而加了@, 只会显示出 echo后面你要显示出的东西
 mode con cols=80 lines=20&color 0c  rem  cols宽 lines高  cmd里面键入:help color 查查看
 TITLE Tomcat                        rem  设置窗口标题
-cmdow @ /top /mov 500 500           rem  移动窗口到某个位置 详见cmdow下载
+cmdow @ /top /mov 500 500           rem  移动窗口到某个位置 详见cmdow下载 https://github.com/ritchielawrence/cmdow/releases/tag/v1.4.8  将 cmdow.exe 文件复制到 C:\Windows\System32
 @echo off 
 @echo --  输出文字       --         rem 跟在输出后面会输出
 ::dir c:\*.* >a.txt                 rem 将c盘下所有文件名输出到a.txt中，如果没有a文件，则在bat同一目录下创建一个
@@ -19,7 +19,9 @@ cmdow @ /top /mov 500 500           rem  移动窗口到某个位置 详见cmdow下载
 @echo %DATE%                        rem 当前日期
 @echo %TIME%                        rem 当前时间
 timeout /t 10 /nobreak              rem 睡眠10s   /NOBREAK        忽略按键并等待指定的时间（延时期间，不允许用户按任意键终端延时）。
-
+timeout /t 10 /nobreak >nul         rem 控制台不会输出倒计时
+timeout /t 10 /nobreak >nul 2>&1    rem 既不想看到正常输出也不想看到错误信息  2>&1 发生错误也不输出
+-------------------------------------------判断执行哪一步
 set /p var=输入一个数:
 if %var% EQU 1 (                    rem EQU 等于 || NEQ 不等于 || LSS 小于 || LEQ 小于或等于 ||  GTR 大于 || GEQ 大于或等于
     goto FIRST 
@@ -33,14 +35,49 @@ if %var% EQU 1 (                    rem EQU 等于 || NEQ 不等于 || LSS 小于 || LE
 :SECOND2
 @echo I AM SECOND2
 
+-------------------------------------------函数运行环境设置
+:: 设置一个全局变量
+set globalVar=这是全局变量的值
+
+:: 开始局部环境
+setlocal
+:: 修改全局变量
+set globalVar=这是局部环境中的新值
+echo 在局部环境中: globalVar=%globalVar%
+
+:: 结束局部环境
+endlocal
+
+:: 检查全局变量的值是否恢复
+echo 在局部环境外: globalVar=%globalVar%
+
+:: 输出
+:: 在局部环境中: globalVar=这是局部环境中的新值
+:: 在局部环境外: globalVar=这是全局变量的值
+-------------------------------------------函数
+:: 调用函数 后面要跟exit /b，不然进入递归
+call :tap_screen 1 534 1297
+call :tap_screen 1 534 1297
+exit /b
+
+:: 声明函数
+:tap_screen
+    set delay=%1
+    set x=%2
+    set y=%3
+    echo %delay% %x% %y%
+exit /b
+-------------------------------------------变量声明
 set a=aa1bb1aa2bb2
 @echo %a%
 set b=12
 @echo %b%
-set /a c=39/10           
+set /a c=39/10    rem 整数除法       
 @echo %c%
 
-for  %%I in (A,B,C) do echo %%I     rem 循环
+-------------------------------------------循环
+for  %%I in (A,B,C) do echo %%I     
+
 for /f "skip=1 tokens=9 delims= " %a in ('ping 172.20.123.231') do @echo %a
 skip=1 #忽略第一行，默认显示所有行
 tokens=9 #显示第9列 类似于awk的 参数$9
@@ -48,6 +85,7 @@ delims= #分隔符 本次分隔符为一个空格
 ping 172.20.123.231 #循环该命令所有行
 pause
 
+-------------------------------------------新窗口启动
 :: 新窗口启动 /k 执行完指定的命令后，不关闭命令提示符窗口。 /c 执行完指定的命令后，关闭命令提示符窗口。 /b 立即启动任务而不创建新的窗口。
 start cmd /k "c: && cd C:\Project\test-app-1 && npm start"
 :: 新窗口延迟 5 秒启动 test-app-2, 
@@ -87,6 +125,11 @@ for /f "tokens=* skip=2" %%A in ('ping %host% -n 1') do (
     timeout /t 1 /nobreak > nul
     goto loop
 )
+--------------------------------------------------【NirCmd】修改文件的创建时间与修改时间
+打开下拉到最下面下载  https://www.nirsoft.net/utils/nircmd.html  
+
+nircmd.exe setfiletime "D://1.txt" "24-06-2003 17:57:11" "22-11-2005 10:21:56"
+
 -------------cmd要以管理员运行----------【添加服务 或 NSSM安装服务 https://nssm.cc/】
 sc create frp_service binPath= "D:\AAA\frp_0.57.0_windows_amd64\frpc.exe -c D:\AAA\frp_0.57.0_windows_amd64\frpc.toml"
 sc config frp_service start=AUTO    rem AUTO(自动)DEMAND(手动)DISABLED(禁用)

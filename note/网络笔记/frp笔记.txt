@@ -1,4 +1,5 @@
 下载地址：https://github.com/fatedier/frp/releases
+文档：https://gofrp.org/zh-cn/docs/
 
 简介：frp是有一个客户端，一个服务器端。首先配置服务器端的frp配置；frpc后门跟着一个c，大家应该知道是client的首字母，frps也是一样server；
 
@@ -74,3 +75,17 @@ use_compression = true
 use_encryption = true
 pool_count = 2
 
+------------------------------------------------安全认证
+# frps.toml
+bindPort = 7000
+auth.token = "BKK@admin"
+
+# frpc.toml
+auth.token = "BKK@admin"
+------------------------------------------------服务端 Dashboard 使用户可以通过浏览器查看 frp 的状态以及代理统计信息。
+# 默认为 127.0.0.1，如果需要公网访问，需要修改为 0.0.0.0。
+webServer.addr = "0.0.0.0"
+webServer.port = 7500
+# dashboard 用户名密码，可选，默认为空
+webServer.user = "admin"
+webServer.password = "admin"

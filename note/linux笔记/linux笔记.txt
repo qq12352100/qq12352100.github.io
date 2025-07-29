@@ -14,6 +14,8 @@ cd bin
 ./dbca
 
 curl -s -L https://raw.githubusercontent.com/233boy/v2ray/master/install.sh | bash
+curl -s -L https://gitee.com/qq12352100/linux-shell/raw/master/sysinfo.sh | bash
+wget -O TOTP.py https://raw.githubusercontent.com/qq12352100/note/master/note/script/python/web/TOTP.py
 ===========================================================================================【安装telnet】
 1、关闭防火墙；2、执行【rpm -qa |grep telnet】命令查看是否安装过相关软件包；3、执行【yum install telnet telnet-server】命令安装telnet即可。
 ===========================================================================================【进程端口】
@@ -213,6 +215,58 @@ vi  /etc/sudoers
 找到root那行添加
 superuser   ALL=(ALL)  ALL
 chmod -v u-w /etc/sudoers 
+===========================================================================================【注册为服务】
+# 使用 yum 安装 systemd（CentOS/RHEL）
+yum install systemd
+# 使用 apt 安装 systemd（Debian/Ubuntu）
+apt install systemd
+# 创建frps.service服务 创建并编辑该文件
+vim /etc/systemd/system/frps.service
+#重新加载服务配置
+systemctl daemon-reload
+#启动服务
+systemctl start myapp
+#设置开机自启
+systemctl enable myapp
+#检查服务状态
+systemctl status myapp
+
+[Unit]
+# 服务名称，可自定义
+Description = frp server
+After = network.target syslog.target
+Wants = network.target
+[Service]
+Type = simple
+# 启动命令，改为实际存放frps的路径
+ExecStart = /path/to/frps -c /path/to/frps.toml
+[Install]
+WantedBy = multi-user.target
+
+vim /etc/systemd/system/pyweb.service
+[Unit]
+Description=pyweb
+After = network.target syslog.target
+Wants = network.target
+
+[Service]
+User=yourusername
+WorkingDirectory=/usr/local/py
+ExecStart=/usr/bin/python3 /usr/local/py/app.py
+Restart=always
+StandardOutput=file:/usr/local/py/log/logfile.log
+StandardError=file:/usr/local/py/log/errorlog.log
+
+[Install]
+WantedBy=multi-user.target
+
+当服务通过 systemd 启动时，其标准输出和标准错误通常会被重定向到 journald 日志系统.
+#查看实时控制台输出
+journalctl -u pyweb -f
+#查看包含特定关键字
+journalctl --since "2024-12-25 00:00:00" --until "2024-12-25 23:59:59" | grep <keyword>
+journalctl -g "<pattern>"    #正则匹配
+
 ===========================================================================================
 -------------------------------------------------------
 -------------------------常用命令----------------------
@@ -507,6 +561,11 @@ net.ipv4.tcp_max_syn_backlog = 8192
 net.ipv4.tcp_max_tw_buckets = 5000
 #表示系统同时保持TIME_WAIT套接字的最大数量，如果超过这个数字，TIME_WAIT套接字将立刻被清除并打印警告信息。默认为180000，改为5000。对于Apache、Nginx等服务器，上几行的参数可以很好地减少TIME_WAIT套接字数量，但是对于 Squid，效果却不大。此项参数可以控制TIME_WAIT套接字的最大数量，避免Squid服务器被大量的TIME_WAIT套接字拖死。
 
+===========================================================================================【root登录】
+echo root:rootpasswd |sudo chpasswd root
+sudo sed -i 's/^#\?PermitRootLogin.*/PermitRootLogin yes/g' /etc/ssh/sshd_config;
+sudo sed -i 's/^#\?PasswordAuthentication.*/PasswordAuthentication yes/g' /etc/ssh/sshd_config;
+sudo reboot
 ===========================================================================================【解压命令】
 tar -zxvf bbs.tar.zip -C /zzz/bbs
 前提要保证存在/zzz/bbs这个目录

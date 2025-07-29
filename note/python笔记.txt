@@ -1,6 +1,8 @@
 whl包：已经编译的包，类似于exe文件。
 tar包：源文件，只是打包在一起，还没有编译。
 tar.gz包：源文件，压缩并打包在一起，还没有编译。
+===================================================================【PIP】
+pip install "akshare==1.16.81" "aiohttp==3.11.13"
 ===================================================================【离线安装库】
 网址https://pypi.org/project/
 Windows环境：（命令窗口cd到指定目录，打开文件夹选中路径cmd回车）
@@ -9,7 +11,8 @@ Windows环境：（命令窗口cd到指定目录，打开文件夹选中路径cm
 Linux环境：
 　　安装whl同上
 　　安装tar.gz:cd到解压后路径,./configure  -> make  -> make install
--------------------------------------------------------------------------
+-------------------------------------------------------------------------# python --version     #查看版本号
+
 #正常环境会把所有安装的包都写入文档
 pip freeze > requirements.txt
 #下载python项目需要的所有的依赖包
@@ -25,7 +28,7 @@ pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple        
 python -m pip install --upgrade pip                                             #更新pip   查看当前版本：pip show pip
 pip list -o                                                                     #查询可升级包 
 pip install --upgrade paramiko                                                  #更新某个包   pip install --upgrade 包名称==版本号
-===================================================================【安装p3.10】
+===================================================================【Linux 安装p3.10】
 ll /usr/bin/|grep python   #查看本系统下python安装情况
 wget https://www.python.org/ftp/python/3.10.4/Python-3.10.4.tgz
 wget https://www.python.org/ftp/python/3.8.0/Python-3.8.0.tgz
@@ -45,5 +48,39 @@ ln -s /usr/local/python3.7/bin/python3 /usr/bin/python3
 python requests使用socks5报：ModuleNotFoundError: No module named 'socks'
 使用前先更新requests版本为支持socks的版本。
 pip install -U requests[socks]
+===================================================================【创建虚拟环境】
+python -m venv myenv            #会在当前目录下创建一个名为 myenv 的文件夹
+myenv\Scripts\activate          #激活虚拟环境
+deactivate                      #停用虚拟环境  如果不再需要某个虚拟环境，可以直接删除文件夹
 ===================================================================
 yum install -y gcc patch libffi-devel python-devel  zlib-devel bzip2-devel openssl-devel ncurses-devel sqlite-devel readline-devel tk-devel gdbm-devel db4-devel libpcap-devel xz-devel -y
+
+===================================================================【python数据类型】
+基本类型
+int      整数      10, -5
+float    浮点数    3.14, -0.01
+complex  复数      3+4j, -1j
+bool     布尔值    True, False
+str      字符串    "hello", 'world'
+容器类型
+list     有序、可变的集合      [1, 2, 3]
+tuple    有序、不可变的集合    (1, 2, 3)
+set      无序、不重复的集合    {1, 2, 3}
+dict     键值对的集合          {"a": 1, "b": 2}
+特殊类型
+NoneType   空值                None
+range      数字序列            range(5)
+bytes      不可变的二进制数据  b"hello"
+bytearray  可变的二进制数据    bytearray(b"world")
+高级数据类型：枚举（Enum）、数据类（dataclass）、自定义数据类型
+数据类型的判断:type(x)、print(isinstance(x, int)) 
+
+
+
+
+
+
+
+
+
+

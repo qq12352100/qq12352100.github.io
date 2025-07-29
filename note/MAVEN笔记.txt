@@ -7,6 +7,7 @@ dzjkkTool.jar放在apache-maven-3.5.3\bin下然后cmd
 D:\apache-maven-3.5.3\bin>mvn install:install-file -Dfile=dzjkkTool.jar -DgroupId=com.bkk -DartifactId=dzjkkTool -Dversion=1.0.0 -Dpackaging=jar
 mvn install:install-file -Dfile=aliyun-java-sdk-core-4.4.1.jar -DgroupId=com.aliyun -DartifactId=sm-java-sdk-core -Dversion=4.4.1 -Dpackaging=jar
 mvn install:install-file -Dfile=sm-encrypt-bigdata.jar -DgroupId=com.bkk -DartifactId=sm-encrypt-bigdata -Dversion=1.0.0 -Dpackaging=jar
+mvn install:install-file -Dfile=orai18n-11.2.0.3.jar -DgroupId=com.oracle -DartifactId=orai18n -Dversion=11.2.0.3 -Dpackaging=jar
 
 
 <dependency>

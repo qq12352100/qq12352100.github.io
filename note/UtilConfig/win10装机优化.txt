@@ -1,0 +1,70 @@
+sysdm.cpl       #系统属性 SystemPropertiesAdvanced.exe  高级环境变量
+mstsc           #远程桌面
+services.msc    #服务
+regedit         #注册表
+calc            #计算器
+gpedit.msc      #组策略
+
+============装机
+1、火绒安装C，向日葵安装C，安装QQ拼音C（皮肤，桌面助手设置可隐藏小箭头）
+2、chrom浏览器安装C，挂VNP登录同步油猴
+3、Everything,Ditto设置开机启动
+
+=================================================================
+【激活win10】
+右键开始菜单--Windows PowerShell--依次执行
+slmgr.vbs -skms zh.us.to
+slmgr -ipk M7XTQ-FN8P6-TTKYV-9D4CC-J462D
+slmgr -skms kms.03k.org
+slmgr -ato
+
+优化：
+0、右键个性化-（主题-桌面图标显示-计算机+锁屏界面+开始-显示应用列表+任务栏-通知）  ===控制面板-通知-关闭通知
+1、右键开始-计算机管理-服务-关闭Windows Update + Windows Search + windows update medic service
+2、右键电脑属性-系统保护-禁用-删除所有还原点
+3、右键C盘属性-工具-碎片整理优化-计划关闭
+4、文件夹选项-取消勾选“在快速访问中显示最近使用的文件”、“在快速访问中显示常用文件夹”
+5、关闭睡眠hiberfil.sys删除，Windows PowerShell（管理员）执行 powercfg -h off
+6、搜索“管理应用执行别名”
+
+【windows update medic service服务无法禁用】计算机\HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\WaaSMedicSvc
+在右侧把 start由4（禁用）改为2（自动）
+【Security Center服务无法禁用】计算机\HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\wscsvc
+在右侧把 start由4（禁用）改为2（自动）
+【右键新建里面的值】计算机\HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Discardable\PostSetup\ShellNew
+修改Classes值与顺序
+
+【删除桌面IE图标】
+cmd--gpedit.msc--用户配置--管理桌面--桌面--隐藏桌面上的 Internet Explorer 图标
+右键个性化-主题-右边左面图标设置
+
+【删除我的电脑右边文件夹】
+cmd--regedit--计算机\HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\MyComputer\NameSpace\DelegateFolders
+{f86fa3ab-70d2-4fc7-9c99-fcbf05467f3a}--对应的是“视频”文件夹；
+{d3162b92-9365-467a-956b-92703aca08af}--对应的是“文档”文件夹；
+{B4BFCC3A-DB2C-424C-B029-7FE99A87C641}--对应的是“桌面”文件夹；
+{24ad3ad4-a569-4530-98e1-ab02f9417aa8}--对应的是“图片”文件夹；
+{088e3905-0323-4b02-9826-5d99428e115f}--对应的是“下载”文件夹；
+{3dfdf296-dbec-4fb4-81d1-6a3438bcf4de}--对应的是“音乐”文件夹；
+{0DB7E03F-FC29-4DC6-9020-FF41B59E513A}--对应的是“3D对象”文件夹；
+
+【关闭防火墙】
+win+e --点击地址栏向下箭头--进入控制面板--关闭防火墙
+
+【截图工具】
+开始--附件--右键点击“截图工具”快捷方式图标，选择“属性”，在弹出的窗口中“快捷方式”栏目下有“快捷键”一项，直接按键盘上的字母键，即可形成快捷键
+
+【去掉文件夹今天昨天分割线】右键分组选择无
+===================================================================快捷键
+win + i         #打开设置
+win + x         #右键开始  按俩U关机
+win + b         #焦点到右下角
+win + 上下左右  #最大化，最小化，靠右占半边，靠左占半边
+win + 加号减号  #放大镜放大缩小    win + ESC 退出放大镜
+win + r         #运行
+win + d         #展示桌面
+win + s         #搜索
+
+
+
+

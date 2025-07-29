@@ -1,0 +1,33 @@
+win + s    搜账户控制   改为从不通知
+win + e    菜单栏三个点---选项---打开资源管理器时---此电脑
+桌面右键--个性化--主题--桌面图标设置
+
+火绒              https://www.huorong.cn/
+夸克网盘          https://pan.quark.cn/
+    qq拼音皮肤、酷我音乐、不限速迅雷
+    
+腾讯桌面助手       https://guanjia.qq.com/product/zmzl/
+potplayer播放器    https://potplayer.tv/?lang=zh_CN
+微信               https://pc.weixin.qq.com/
+360压缩            https://yasuo.360.cn/
+WPS                https://www.wps.cn/
+Geek               https://geekuninstaller.com/download
+git                https://git-scm.com/downloads
+fireFox            https://www.mozilla.org/zh-CN/firefox/all/desktop-release/win64-msi/zh-CN/
+QQ                 https://im.qq.com/pcqq/index.shtml
+python             https://www.python.org/downloads/release/python-3120/
+apipost            https://www.apipost.cn/
+dbeaver            https://dbeaver.io/download/
+java               https://www.oracle.com/cn/java/technologies/downloads/#jdk24-windows
+向日葵             https://sunlogin.oray.com/
+截图贴图            https://zh.snipaste.com/
+
+win + shift + s  自带截图--图片
+
+
+
+
+
+
+
+
