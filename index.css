@@ -30,3 +30,6 @@ color: #FF6347; /* 设置圆点颜色 */
 font-weight: bold; /* 可选：使圆点加粗 */
 margin-right: 5px; /* 可选：调整圆点与文本之间的距离 */
 }
+.common_top a {
+    margin-left: 1%;
+}
