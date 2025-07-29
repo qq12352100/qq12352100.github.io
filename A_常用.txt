@@ -1,18 +1,18 @@
----------------------------------------------¡¾Windows¡¿
+---------------------------------------------ã€Windowsã€‘
 administrator
-mstsc                        #Ô¶³Ì
-telnet 192.168.0.10 3306     #²é¿´¶Ë¿ÚÊÇ·ñÍ¨
-tracert 192.168.0.1          #Â·ÓÉ×·×Ù
-netstat -r                   #ÏÔÊ¾Â·ÓÉ±í
-netstat -t                   #½öÏÔÊ¾ TCP Á¬½Ó  -a  ËùÓĞ»î¶¯Á¬½ÓºÍ¼àÌı¶Ë¿Ú  "SYN_SENT "±íÊ¾ÓĞ¼ÆËã»úÇëÇóÁ¬½ÓÄãµÄ¼ÆËã»ú."ESTABLISHED"±íÊ¾Á¬½Ó³É¹¦
-netstat -ano |findstr "3306" #²é¿´¶Ë¿Ú
-tracert wwww.baidu.com       #Â·ÓÉ¸ú×Ù
-dxdiag                       #¿´ÏÔ¿¨
-msinfo32                     #¿´ÏµÍ³ĞÅÏ¢
----------------------------------------------¡¾linux¡¿
-free -h ; df -h                 #²é¿´ÄÚ´æÓëÓ²ÅÌ
-systemctl status firewalld      #²é¿´·À»ğÇ½×´Ì¬
-systemctl list-unit-files       #²é¿´ËùÓĞ¿ª»úÆô¶¯
-scp /home/1.mp3 root@192.168.1.50:/home/music       #´«ÎÄ¼ş  -r ´«ÎÄ¼ş¼Ğ
-traceroute www.baidu.com        #Â·ÓÉ¸ú×Ù
-netstat -tunpl                  #²é¿´¶Ë¿Ú   lsof -i:22         ss -tnl
+mstsc                        #è¿œç¨‹
+telnet 192.168.0.10 3306     #æŸ¥çœ‹ç«¯å£æ˜¯å¦é€š
+tracert 192.168.0.1          #è·¯ç”±è¿½è¸ª
+netstat -r                   #æ˜¾ç¤ºè·¯ç”±è¡¨
+netstat -t                   #ä»…æ˜¾ç¤º TCP è¿æ¥  -a  æ‰€æœ‰æ´»åŠ¨è¿æ¥å’Œç›‘å¬ç«¯å£  "SYN_SENT "è¡¨ç¤ºæœ‰è®¡ç®—æœºè¯·æ±‚è¿æ¥ä½ çš„è®¡ç®—æœº."ESTABLISHED"è¡¨ç¤ºè¿æ¥æˆåŠŸ
+netstat -ano |findstr "3306" #æŸ¥çœ‹ç«¯å£
+tracert wwww.baidu.com       #è·¯ç”±è·Ÿè¸ª
+dxdiag                       #çœ‹æ˜¾å¡
+msinfo32                     #çœ‹ç³»ç»Ÿä¿¡æ¯
+---------------------------------------------ã€linuxã€‘
+free -h ; df -h                 #æŸ¥çœ‹å†…å­˜ä¸ç¡¬ç›˜
+systemctl status firewalld      #æŸ¥çœ‹é˜²ç«å¢™çŠ¶æ€
+systemctl list-unit-files       #æŸ¥çœ‹æ‰€æœ‰å¼€æœºå¯åŠ¨
+scp /home/1.mp3 root@192.168.1.50:/home/music       #ä¼ æ–‡ä»¶  -r ä¼ æ–‡ä»¶å¤¹
+traceroute www.baidu.com        #è·¯ç”±è·Ÿè¸ª
+netstat -tunpl                  #æŸ¥çœ‹ç«¯å£   lsof -i:22         ss -tnl
