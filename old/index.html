@@ -1,296 +1,345 @@
 <!DOCTYPE html>
-<html lang="zh-CN"><head>
-    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta charset="utf-8">
-    <title>可了可网络科技中心</title>
-    <link rel="stylesheet" href="css/weixinxin.css">
-    <link rel="stylesheet" href="css/bootstrap.css">
-    <link rel="shortcut icon" href="favicon.ico">
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>可了可网络 - 微信公众号与小程序定制研发</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#1677ff',
+                        secondary: '#36bffa',
+                        dark: '#1d2129',
+                        light: '#f2f3f5'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+            .text-shadow {
+                text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            }
+            .transition-transform {
+                transition-property: transform;
+                transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+                transition-duration: 300ms;
+            }
+        }
+    </style>
+    <!-- 优化的图标样式 -->
+    <style>
+        .icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 24px;
+            height: 24px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        
+        .icon-code {
+            font-family: monospace;
+        }
+        
+        .icon-weixin::before { content: "微"; }
+        .icon-mobile::before { content: "📱"; }
+        .icon-check::before { content: "✓"; }
+        .icon-qq::before { content: "QQ"; }
+        .icon-mail::before { content: "✉"; }
+        .icon-weibo::before { content: "微"; }
+        .icon-menu::before { content: "☰"; }
+        .icon-circle-check::before { content: "✓"; }
+    </style>
 </head>
-<style>
-.foot .w_1 {
-    width: 250px;
-}
-.foot .w_2 {
-    width: 300px;
-}
-</style>
-<body>
-<!--导航-->
-
-<div class="nav">
-    <a href="/getkey"><img src="images/logo2.png" alt="LOGO" class="logo" style="width: 8%;"></a>
-    <ul class="ul1">
-        <li class="list"><a href="/2025rili.png">首页<span>HOME</span></a></li>
-        <li class="list"><a href="#case.html">客户案例<span>CASE</span></a></li>
-        <li class="list list1">
-            <a href="#services.html">服务项目<span>SERVICES</span></a>
-            <ul>
-                <li>
-                    <a href="#wangzhanjianshe.html">网站建设</a>
-                </li>
-                <li>
-                    <a href="#App.html">APP</a>
-                </li>
-                <li>
-                    <a href="#weixin.html">微信公众号</a>
-                </li>
-                <li>
-                    <a href="#xiaochengxu.html">微信小程序</a>
-                </li>
-                <li>
-                    <a href="#yunyingweihu.html">网站运营维护</a>
-                </li>
-            </ul>
-        </li>
-        <li class="list"><a href="#about.html">关于我们<span>ABOUT US</span></a></li>
-        <li class="list list1"><a href="/note/bkk">联系我们<span>CONTACT US</span></a>
-            <ul>
-                <li><a href="/svn">File Server</a></li>
-                <li><a href="/alist">Alist</a></li>
-            </ul>
-        </li>
-    </ul>
-    <div class="cl"></div>
-</div>
-<!--导航 end-->
-
-<!--banner-->
-<div class="banner">
-    <img src="images/banner-bg.png" alt="banner">
-    <p style="top: 150px; opacity: 1;">微信公众号小程序定制研发，满足您的个性化需求。</p>
-</div>
-<!--banner完-->
-
-<!--jieshao-->
-<div class="jieshao">
-    <div class="jieshao-content">
-        <ul>
-            <li>
-                <p class="p1"><img src="images/tu1.png"></p>
-                <p>
-                    <span>您的需求由您决定</span>
-                    
-&nbsp;&nbsp;&nbsp;&nbsp;整合微信官方平台优势和企业服务经验，为您创建个性化精准定制微信账号，提供与众不同的、有针对性的营
-销推广服务，让您的客户在手机上就能够直接得到网站快速、简单、可靠的即时资源
-                    ，从而快速提升微信公众平台的知名度。
-                </p>
-            </li>
-            <li class="list"></li>
-            <li>
-                <p class="p2"><img src="images/tu2.png"></p>
-                <p>
-                    <span>强大的功能</span>
-                    
-&nbsp;&nbsp;&nbsp;&nbsp;通过微平台，用户可以轻松管理自己的微信各类信息，对微信公众账号进行维护、开发智能机器人、在线发优
-惠券、抽奖、刮奖、派发会员卡、开启微团购等多种互动，对微信营销实现有效监控，极大
-                    扩展潜在客户端群和实现企业的运营目标。
-                </p>
-            </li>
-            <li class="list"></li>
-            <li>
-                <p class="p3"><img src="images/tu3.png"></p>
-                <p>
-                    <span>巨大的盈利空间</span>
-                    
-&nbsp;&nbsp;&nbsp;&nbsp;淘时代已过，微时代来临，财富在裂变，七亿微信用户逼你致富。微信营销的魔力已经迅速蔓延，每一个时代
-都是一次革命，每一个时代都成就一批创富精英。将业务轻松搬到微信中，快人一步，超越同行，
-                    抢占终端！这个趋势你能否把握？
-                </p>
-            </li>
-            <li class="list"></li>
-            <li>
-                <p class="p4"><img src="images/tu4.png"></p>
-                <p>
-                    <span>全方位一站式服务</span>
-                    
-&nbsp;&nbsp;&nbsp;&nbsp;我们拥有多年网络营销的管理团队，强大的技术支持，从增加潜在客户量、线下活动策划、丰富线上功能等多
-个方面实现客户微信平台真正的公众化、互动化，为客户提供开发、运营、维护一站式服务。
-                </p>
-            </li>
-            <div class="cl"></div>
-        </ul>
-    </div>
-</div>
-<!--jieshao完-->
-
-<!--关于微信开发-->
-<div class="guanyu">
-    <div class="guanyu-content">
-        <h2>关于微信开发</h2>
-        <h4>想要更简单的方式制作网站？我们已经准备好一切</h4>
-        <ul>
-            <li>
-                <img src="images/guanyu1.png" class="img1">
-                <p>
-                    <span>
-                        <img src="images/fd.png">
-                    </span>
-                </p>
-            </li>
-            <li>
-                <img src="images/guanyu2.png" class="img1">
-                <p>
-                    <span>
-                        <img src="images/fd.png">
-                    </span>
-                </p>
-            </li>
-            <li>
-                <img src="images/guanyu3.png" class="img1">
-                <p>
-                    <span>
-                        <img src="images/fd.png">
-                    </span>
-                </p>
-            </li>
-            <div class="cl"></div>
-        </ul>
-    </div>
-</div>
-<!--关于微信开发完-->
-
-<!--微信优势-->
-<div class="youshi">
-    <div class="youshi-content">
-        <h2>微信优势</h2>
-        <h4>再小的品牌也有自己的优势</h4>
-        <ul>
-            <li>
-                <span><img src="images/shubiao.png"></span>
-                <h3>微信平台</h3>
-                <p>玩转微信营销省时省力从微信申请、微网站的精美专业制作、微营销入门到实战的应用操作培训，让您轻松开启移动营销</p>
-            </li>
-            <li>
-                <span><img src="images/diannao.png"></span>
-                <h3>产品特点</h3>
-                <p class="text-center">全方位展示商家品牌，便捷的移动沟通方式。</p>
-            </li>
-            <li>
-                <span><img src="images/tuandui.png"></span>
-                <h3>案例展示</h3>
-                <p>支撑绑定独立域名，支持微信以外的其他手机浏览器访问。</p>
-            </li>
-            <div class="cl"></div>
-        </ul>
-    </div>
-</div>
-<!--微信优势完-->
-
-<!--功能介绍-->
-<div class="gongneng">
-    <div class="gongneng-content">
-        <h2>功能介绍</h2>
-        <h4>提供多种行业解决方案，让你拥有更多选择</h4>
-        <ul>
-            <li>
-                <img src="images/cy.png">
-                <h4>微点餐</h4>
-            </li>
-            <li>
-                <img src="images/es.png">
-                <h4>微二手房</h4>
-            </li>
-            <li>
-                <img src="images/pm.png">
-                <h4>微拍卖</h4>
-            </li>
-            <li>
-                <img src="images/wfx.png">
-                <h4>微分销</h4>
-            </li>
-            <li>
-                <img src="images/sc.png">
-                <h4>微商城</h4>
-            </li>
-            <li>
-                <img src="images/yl.png">
-                <h4>微医疗</h4>
-            </li>
-            <li>
-                <img src="images/ly.png">
-                <h4>微路由</h4>
-            </li>
-            <li>
-                <img src="images/zc.png">
-                <h4>微众筹</h4>
-            </li>
-            <li>
-                <img src="images/mp.png">
-                <h4>微名片</h4>
-            </li>
-            <li>
-                <img src="images/cj.png">
-                <h4>微场景</h4>
-            </li>
-            <li>
-                <img src="images/gou.png">
-                <h4>1元购</h4>
-            </li>
-            <li>
-                <img src="images/wm.png">
-                <h4>微外卖</h4>
-            </li>
-            <li>
-                <img src="images/xq.png">
-                <h4>微相亲</h4>
-            </li>
-            <li>
-                <img src="images/rc.png">
-                <h4>微人才</h4>
-            </li>
-            <div class="cl"></div>
-        </ul>
-    </div>
-</div>
-<!--功能介绍完-->
-
-<!--案例展示-->
-<div class="case">
-    <div class="case-content">
-        <h2>案例展示</h2>
-        <h4>提供多种行业解决方案，让你拥有更多选择</h4>
-        <img src="images/Scenes.png">
-    </div>
-</div>
-<!--footer-->
-<div class="foot">
-    <div class="container">
-        <ul class="w_1">
-            <li>可了可网络科技中心</li>
-            <li>QQ 	584066697</li>
-        </ul>
-        <ul class="w_2">
-            <a href="https://beian.miit.gov.cn">鲁ICP备2024131741号-1</a>
-        </ul>
-        <div class="cl"></div>
-    </div>
-</div>
-<!--footer end-->
-<!--返回顶部-->
-<div class="celan">
-    <div id="cs_box">
-        <div class="cs_btn">
-            <a target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin=584066697&site=qq&menu=yes" > 
-                <i><img src="images/8r68row3_03.png"></i>
-                <p>584066697</p>
+<body class="font-sans text-dark bg-white">
+    <!-- 导航栏 -->
+    <header class="fixed w-full bg-white/90 backdrop-blur-sm shadow-sm z-50 transition-all duration-300">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <a href="/py/getkey" class="flex items-center gap-2">
+                <div class="w-10 h-10 bg-primary rounded-lg flex items-center justify-center text-white">
+                    <span class="icon icon-code">&lt;/&gt;</span>
+                </div>
+                <span class="text-xl font-bold text-dark">可了可网络</span>
             </a>
+            
+            <!-- 桌面导航 -->
+            <nav class="hidden md:flex items-center gap-8">
+                <a href="/2025rili.png" class="text-gray-600 hover:text-primary transition-colors">服务日历</a>
+                <a href="/py/note/bkk" class="text-gray-600 hover:text-primary transition-colors">笔记本</a>
+                <a href="#about" class="text-gray-600 hover:text-primary transition-colors">关于我们</a>
+                <a href="/svn" class="bg-primary hover:bg-primary/90 text-white px-6 py-2 rounded-full transition-all hover:shadow-lg">
+                    立即咨询SVN
+                </a>
+            </nav>
+            
+            <!-- 移动端菜单按钮 -->
+            <button id="menuBtn" class="md:hidden text-gray-600 focus:outline-none">
+                <span class="icon icon-menu text-xl"></span>
+            </button>
         </div>
-    </div>   
-    <div class="ruturn_top text-center" id="ruturn_top" style="display: none">
-        <a href="javascript:;">
-            <i class="glyphicon glyphicon-chevron-up"></i>
-            <span>返回顶部</span>
-        </a>
-    </div>
-</div>
-<script src="http://libs.baidu.com/jquery/2.1.4/jquery.min.js"></script>
-<script src="js/weixinxin.js"></script>
-<script>
-$(document).ready(function(){
+        
+        <!-- 移动端导航菜单 -->
+        <div id="mobileMenu" class="md:hidden hidden bg-white border-t">
+            <div class="container mx-auto px-4 py-3 flex flex-col gap-3">
+                <a href="/2025rili.png" class="text-gray-600 hover:text-primary transition-colors">服务日历</a>
+                <a href="/py/note/bkk" class="text-gray-600 hover:text-primary transition-colors">笔记本</a>
+                <a href="#about" class="text-gray-600 hover:text-primary transition-colors">关于我们</a>
+                <a href="/svn" class="bg-primary hover:bg-primary/90 text-white px-6 py-2 rounded-full transition-all hover:shadow-lg">
+                    立即咨询SVN
+                </a>
+            </div>
+        </div>
+    </header>
 
-});
-</script>
+    <!-- 英雄区域 -->
+    <section class="pt-32 pb-20 md:pt-40 md:pb-32 bg-gradient-to-br from-light to-white">
+        <div class="container mx-auto px-4">
+            <div class="max-w-4xl mx-auto text-center">
+                <h1 class="text-[clamp(2rem,5vw,3.5rem)] font-bold leading-tight text-dark mb-6">
+                    微信公众号与小程序<br class="md:hidden">定制研发服务
+                </h1>
+                <p class="text-gray-600 text-lg md:text-xl mb-10 max-w-2xl mx-auto">
+                    专业为企业提供微信生态解决方案，助力数字化转型，提升品牌影响力
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <a href="/py/getstock" class="bg-primary hover:bg-primary/90 text-white px-8 py-3 rounded-full text-lg font-medium transition-all hover:shadow-lg">
+                        了解更多
+                    </a>
+                    <a href="/py/note/bkk" class="bg-white border border-gray-200 hover:border-primary text-dark px-8 py-3 rounded-full text-lg font-medium transition-all hover:shadow-md">
+                        服务详情
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
 
-</body></html>
+    <!-- 服务介绍 -->
+    <section id="services" class="py-20 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-[clamp(1.8rem,4vw,2.5rem)] font-bold mb-4">我们的核心服务</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">专注于微信生态开发，为企业提供一站式数字化解决方案</p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-10 max-w-5xl mx-auto">
+                <!-- 服务项1：微信公众号开发 -->
+                <div class="bg-light rounded-2xl p-8 shadow-sm hover:shadow-md transition-all group">
+                    <div class="w-14 h-14 bg-primary/10 rounded-xl flex items-center justify-center mb-6 text-primary group-hover:bg-primary group-hover:text-white transition-all">
+                        <span class="icon icon-weixin text-2xl"></span>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">微信公众号定制开发</h3>
+                    <p class="text-gray-600 mb-5">
+                        从基础搭建到高级功能开发，包括自定义菜单、自动回复、图文素材、用户管理等，打造专属企业公众号平台。
+                    </p>
+                    <ul class="space-y-2 text-gray-600">
+                        <li class="flex items-start gap-2">
+                            <span class="icon icon-check text-primary mt-1"></span>
+                            <span>品牌展示型公众号开发</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="icon icon-check text-primary mt-1"></span>
+                            <span>营销活动功能定制</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="icon icon-check text-primary mt-1"></span>
+                            <span>用户管理与数据分析</span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <!-- 服务项2：小程序开发 -->
+                <div class="bg-light rounded-2xl p-8 shadow-sm hover:shadow-md transition-all group">
+                    <div class="w-14 h-14 bg-primary/10 rounded-xl flex items-center justify-center mb-6 text-primary group-hover:bg-primary group-hover:text-white transition-all">
+                        <span class="icon icon-mobile text-3xl"></span>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">微信小程序开发</h3>
+                    <p class="text-gray-600 mb-5">
+                        定制开发各类小程序，包括电商、服务、展示等多种类型，优化用户体验，提升转化率。
+                    </p>
+                    <ul class="space-y-2 text-gray-600">
+                        <li class="flex items-start gap-2">
+                            <span class="icon icon-check text-primary mt-1"></span>
+                            <span>电商小程序开发</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="icon icon-check text-primary mt-1"></span>
+                            <span>服务预约小程序</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="icon icon-check text-primary mt-1"></span>
+                            <span>企业展示小程序</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- 开发流程 -->
+            <div class="mt-20">
+                <h3 class="text-2xl font-bold text-center mb-12">我们的开发流程</h3>
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-6 max-w-5xl mx-auto">
+                    <div class="text-center">
+                        <div class="w-16 h-16 bg-primary text-white rounded-full flex items-center justify-center text-xl font-bold mx-auto mb-4">1</div>
+                        <h4 class="font-bold mb-2">需求分析</h4>
+                        <p class="text-gray-600 text-sm">深入了解客户需求，制定解决方案</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="w-16 h-16 bg-primary text-white rounded-full flex items-center justify-center text-xl font-bold mx-auto mb-4">2</div>
+                        <h4 class="font-bold mb-2">方案设计</h4>
+                        <p class="text-gray-600 text-sm">UI/UX设计，功能模块规划</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="w-16 h-16 bg-primary text-white rounded-full flex items-center justify-center text-xl font-bold mx-auto mb-4">3</div>
+                        <h4 class="font-bold mb-2">开发测试</h4>
+                        <p class="text-gray-600 text-sm">代码开发，多维度测试优化</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="w-16 h-16 bg-primary text-white rounded-full flex items-center justify-center text-xl font-bold mx-auto mb-4">4</div>
+                        <h4 class="font-bold mb-2">上线维护</h4>
+                        <p class="text-gray-600 text-sm">部署上线，提供技术支持</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 关于我们 -->
+    <section id="about" class="py-20 bg-light">
+        <div class="container mx-auto px-4">
+            <div class="max-w-5xl mx-auto">
+                <div class="grid md:grid-cols-2 gap-12 items-center">
+                    <div>
+                        <h2 class="text-[clamp(1.8rem,4vw,2.5rem)] font-bold mb-6">关于可了可网络</h2>
+                        <p class="text-gray-600 mb-4">
+                            滨城区可了可网络信息科技中心专注于微信生态开发服务，拥有多年行业经验和专业技术团队。
+                        </p>
+                        <p class="text-gray-600 mb-6">
+                            我们致力于为企业提供高质量的微信公众号和小程序定制开发服务，帮助企业快速进入移动互联网领域，提升品牌影响力和业务效率。
+                        </p>
+                        <div class="flex flex-wrap gap-4">
+                            <div class="flex items-center gap-2">
+                                <span class="icon icon-circle-check text-primary"></span>
+                                <span class="text-gray-700">专业技术团队</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <span class="icon icon-circle-check text-primary"></span>
+                                <span class="text-gray-700">定制化解决方案</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <span class="icon icon-circle-check text-primary"></span>
+                                <span class="text-gray-700">完善售后服务</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="rounded-2xl overflow-hidden shadow-lg bg-gradient-to-br from-primary/5 to-primary/10 h-64 flex items-center justify-center">
+                        <div class="text-center p-6">
+                            <div class="w-20 h-20 bg-white rounded-full flex items-center justify-center mx-auto mb-4 shadow-sm">
+                                <span class="icon icon-code text-3xl text-primary">&lt;/&gt;</span>
+                            </div>
+                            <p class="text-gray-700 font-medium">专业开发团队</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer class="bg-dark text-white py-10">
+        <div class="container mx-auto px-4">
+            <div class="max-w-5xl mx-auto">
+                <div class="grid md:grid-cols-3 gap-8 mb-8">
+                    <div>
+                        <div class="flex items-center gap-2 mb-4">
+                            <div class="w-10 h-10 bg-white rounded-lg flex items-center justify-center text-primary">
+                                <span class="icon icon-code">&lt;/&gt;</span>
+                            </div>
+                            <span class="text-xl font-bold">可了可网络</span>
+                        </div>
+                        <p class="text-gray-400 mb-4">
+                            专业的微信公众号与小程序定制研发服务提供商，助力企业数字化转型。
+                        </p>
+                    </div>
+                    <div>
+                        <h4 class="text-lg font-bold mb-4">快速链接</h4>
+                        <ul class="space-y-2">
+                            <li><a href="#services" class="text-gray-400 hover:text-white transition-colors">服务</a></li>
+                            <li><a href="#about" class="text-gray-400 hover:text-white transition-colors">关于我们</a></li>
+                            <li><a href="#contact" class="text-gray-400 hover:text-white transition-colors">联系我们</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="text-lg font-bold mb-4">联系我们</h4>
+                        <ul class="space-y-2 text-gray-400">
+                            <li class="flex items-center gap-2">
+                                <span class="icon icon-qq"></span>
+                                <span>584066697</span>
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <span class="icon icon-mail"></span>
+                                <span>584066697@qq.com</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="border-t border-gray-800 pt-6 text-center text-gray-500 text-sm">
+                    <p>© 2023 滨城区可了可网络信息科技中心 版权所有</p>
+                    <p class="mt-2"><a href="https://beian.miit.gov.cn/" class="hover:text-gray-300 transition-colors">鲁ICP备2024131741号-1</a></p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // 移动端菜单切换
+        document.getElementById('menuBtn').addEventListener('click', function() {
+            const mobileMenu = document.getElementById('mobileMenu');
+            mobileMenu.classList.toggle('hidden');
+        });
+        
+        // 导航栏滚动效果
+        window.addEventListener('scroll', function() {
+            const header = document.querySelector('header');
+            if (window.scrollY > 50) {
+                header.classList.add('py-2', 'shadow');
+                header.classList.remove('py-4');
+            } else {
+                header.classList.add('py-4');
+                header.classList.remove('py-2', 'shadow');
+            }
+        });
+        
+        // 平滑滚动
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                // 关闭移动端菜单
+                document.getElementById('mobileMenu').classList.add('hidden');
+                
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

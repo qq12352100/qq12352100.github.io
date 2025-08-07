@@ -1,35 +1,57 @@
+a {
+    color: #27ae60;
+    text-decoration: none; /* ç§»é™¤æ‰€æœ‰ä¸‹åˆ’çº¿ */
+}
+a:hover {
+    text-decoration: underline; /* æ‚¬åœæ—¶æ˜¾ç¤ºä¸‹åˆ’çº¿ */
+    text-decoration-color: red; /* å¯è‡ªå®šä¹‰é¢œè‰² */
+}
+.toggle_left_div::before {
+    content: "\267B"
+}
 .rgith_div {
-float: left;
-width: 85%;
+    float: left;
+    width: 85%;
 }
 .left_div {
-float: left;
-width:15%;
+    float: left;
+    width:15%;
 }
 iframe{
-width: 100%;
-height: 1500px;
+    width: 100%;
+    height: 1500px;
 }
 .hidden {
-  display: none;
+    display: none;
+}
+.folder {
+    background: linear-gradient(to right, #a1c4fd, #c2e9fb);
+    color: #2980b9;
 }
 .folder::before{
-content: "\2718"; /* Ê¹ÓÃUnicodeÂë±íÊ¾Ô²µã */
-color: #FF6347; /* ÉèÖÃÔ²µãÑÕÉ« */
-font-weight: bold; /* ¿ÉÑ¡£ºÊ¹Ô²µã¼Ó´Ö */
-margin-right: 5px; /* ¿ÉÑ¡£ºµ÷ÕûÔ²µãÓëÎÄ±¾Ö®¼äµÄ¾àÀë */
+    content: "\1F30A"; /* ä½¿ç”¨Unicodeç è¡¨ç¤ºåœ†ç‚¹ */
+    color: #FF6347; /* è®¾ç½®åœ†ç‚¹é¢œè‰² */
+    font-weight: bold; /* å¯é€‰ï¼šä½¿åœ†ç‚¹åŠ ç²— */
+    margin-right: 5px; /* å¯é€‰ï¼šè°ƒæ•´åœ†ç‚¹ä¸æ–‡æœ¬ä¹‹é—´çš„è·ç¦» */
 }
-/* ´øÓĞĞ¡Ô²µãÍ¼±êµÄÁĞ±í */
 ul {
-list-style-type: none; /* ÒÆ³ıÄ¬ÈÏµÄÁĞ±íÑùÊ½ */
-padding-left: 20px; /* Ìí¼Ó×ó²à¼ä¾à */
+    list-style-type: none; /* ç§»é™¤é»˜è®¤çš„åˆ—è¡¨æ ·å¼ */
+    padding-left: 20px; /* æ·»åŠ å·¦ä¾§é—´è· */
+}
+li {
+    background: linear-gradient(to right, #84fab0, #8fd3f4);
+    color: #ffffff;
+    border-radius: 10px;
+    margin: 2px;
 }
 li::before {
-content: "\2764"; /* Ê¹ÓÃUnicodeÂë±íÊ¾Ô²µã */
-color: #FF6347; /* ÉèÖÃÔ²µãÑÕÉ« */
-font-weight: bold; /* ¿ÉÑ¡£ºÊ¹Ô²µã¼Ó´Ö */
-margin-right: 5px; /* ¿ÉÑ¡£ºµ÷ÕûÔ²µãÓëÎÄ±¾Ö®¼äµÄ¾àÀë */
+    content: "\1F343"; /* ä½¿ç”¨Unicodeç è¡¨ç¤ºåœ†ç‚¹ */
+    color: #FF6347; /* è®¾ç½®åœ†ç‚¹é¢œè‰² */
+    font-weight: bold; /* å¯é€‰ï¼šä½¿åœ†ç‚¹åŠ ç²— */
+    margin-right: 5px; /* å¯é€‰ï¼šè°ƒæ•´åœ†ç‚¹ä¸æ–‡æœ¬ä¹‹é—´çš„è·ç¦» */
 }
-.common_top a {
+.common_top a::before {
+    content: "\2605"; /* å®å¿ƒäº”è§’æ˜Ÿ â˜… */
+    color: red;
     margin-left: 1%;
 }
