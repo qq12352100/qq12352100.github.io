@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>可了可网络 - 微信公众号与小程序定制研发</title>
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
     <script src="tailwindcss3.4.js"></script>
     <script>
         tailwind.config = {
@@ -68,19 +70,18 @@
     <header class="fixed w-full bg-white/90 backdrop-blur-sm shadow-sm z-50 transition-all duration-300">
         <div class="container mx-auto px-4 py-4 flex justify-between items-center">
             <a href="/py/getkey" class="flex items-center gap-2">
-                <div class="w-10 h-10 bg-primary rounded-lg flex items-center justify-center text-white">
-                    <span class="icon icon-code">&lt;/&gt;</span>
+                <div class="w-10 h-10 rounded-lg flex items-center justify-center text-white">
+                    <img src="favicon.ico" alt="favicon" style="max-width: 70%;">
                 </div>
-                <span class="text-xl font-bold text-dark">可了可网络</span>
+                <span class="text-xl font-bold text-dark">可了可网络信息科技中心</span>
             </a>
             
             <!-- 桌面导航 -->
             <nav class="hidden md:flex items-center gap-8">
-                <a href="/2025rili.png" class="text-gray-600 hover:text-primary transition-colors">服务日历</a>
-                <a href="/py/note/bkk" class="text-gray-600 hover:text-primary transition-colors">笔记本</a>
+                <a href="#services" class="text-gray-600 hover:text-primary transition-colors">服务</a>
                 <a href="#about" class="text-gray-600 hover:text-primary transition-colors">关于我们</a>
-                <a href="/svn" class="bg-primary hover:bg-primary/90 text-white px-6 py-2 rounded-full transition-all hover:shadow-lg">
-                    立即咨询SVN
+                <a href="#about" class="bg-primary hover:bg-primary/90 text-white px-6 py-2 rounded-full transition-all hover:shadow-lg">
+                    立即咨询
                 </a>
             </nav>
             
@@ -93,31 +94,28 @@
         <!-- 移动端导航菜单 -->
         <div id="mobileMenu" class="md:hidden hidden bg-white border-t">
             <div class="container mx-auto px-4 py-3 flex flex-col gap-3">
-                <a href="/2025rili.png" class="text-gray-600 hover:text-primary transition-colors">服务日历</a>
-                <a href="/py/note/bkk" class="text-gray-600 hover:text-primary transition-colors">笔记本</a>
+                <a href="#services" class="text-gray-600 hover:text-primary transition-colors">服务</a>
                 <a href="#about" class="text-gray-600 hover:text-primary transition-colors">关于我们</a>
-                <a href="/svn" class="bg-primary hover:bg-primary/90 text-white px-6 py-2 rounded-full transition-all hover:shadow-lg">
-                    立即咨询SVN
-                </a>
+                <a href="#about" class="bg-primary hover:bg-primary/90 text-white px-6 py-2 rounded-full transition-all hover:shadow-lg">立即咨询</a>
             </div>
         </div>
     </header>
 
-    <!-- 英雄区域 -->
+    <!-- 头部区域 -->
     <section class="pt-32 pb-20 md:pt-40 md:pb-32 bg-gradient-to-br from-light to-white">
         <div class="container mx-auto px-4">
             <div class="max-w-4xl mx-auto text-center">
                 <h1 class="text-[clamp(2rem,5vw,3.5rem)] font-bold leading-tight text-dark mb-6">
-                    微信公众号与小程序<br class="md:hidden">定制研发服务
+                    <a href="/py/getstock">微信公众号与小程序<br class="md:hidden">定制研发服务</a>
                 </h1>
                 <p class="text-gray-600 text-lg md:text-xl mb-10 max-w-2xl mx-auto">
                     专业为企业提供微信生态解决方案，助力数字化转型，提升品牌影响力
                 </p>
                 <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                    <a href="/py/getstock" class="bg-primary hover:bg-primary/90 text-white px-8 py-3 rounded-full text-lg font-medium transition-all hover:shadow-lg">
+                    <a href="#about" class="bg-primary hover:bg-primary/90 text-white px-8 py-3 rounded-full text-lg font-medium transition-all hover:shadow-lg">
                         了解更多
                     </a>
-                    <a href="/py/note/bkk" class="bg-white border border-gray-200 hover:border-primary text-dark px-8 py-3 rounded-full text-lg font-medium transition-all hover:shadow-md">
+                    <a href="#about" class="bg-white border border-gray-200 hover:border-primary text-dark px-8 py-3 rounded-full text-lg font-medium transition-all hover:shadow-md">
                         服务详情
                     </a>
                 </div>
@@ -190,7 +188,9 @@
                 <h3 class="text-2xl font-bold text-center mb-12">我们的开发流程</h3>
                 <div class="grid grid-cols-1 md:grid-cols-4 gap-6 max-w-5xl mx-auto">
                     <div class="text-center">
-                        <div class="w-16 h-16 bg-primary text-white rounded-full flex items-center justify-center text-xl font-bold mx-auto mb-4">1</div>
+                        <a href="/py/note/bkk">
+                            <div class="w-16 h-16 bg-primary text-white rounded-full flex items-center justify-center text-xl font-bold mx-auto mb-4">1</div>
+                        </a>
                         <h4 class="font-bold mb-2">需求分析</h4>
                         <p class="text-gray-600 text-sm">深入了解客户需求，制定解决方案</p>
                     </div>
@@ -205,7 +205,9 @@
                         <p class="text-gray-600 text-sm">代码开发，多维度测试优化</p>
                     </div>
                     <div class="text-center">
-                        <div class="w-16 h-16 bg-primary text-white rounded-full flex items-center justify-center text-xl font-bold mx-auto mb-4">4</div>
+                        <a href="/py/note/bkk">
+                            <div class="w-16 h-16 bg-primary text-white rounded-full flex items-center justify-center text-xl font-bold mx-auto mb-4">4</div>
+                        </a>
                         <h4 class="font-bold mb-2">上线维护</h4>
                         <p class="text-gray-600 text-sm">部署上线，提供技术支持</p>
                     </div>
@@ -220,7 +222,7 @@
             <div class="max-w-5xl mx-auto">
                 <div class="grid md:grid-cols-2 gap-12 items-center">
                     <div>
-                        <h2 class="text-[clamp(1.8rem,4vw,2.5rem)] font-bold mb-6">关于可了可网络</h2>
+                        <h2 class="text-[clamp(1.8rem,4vw,2.5rem)] font-bold mb-6">可了可网络信息科技中心</h2>
                         <p class="text-gray-600 mb-4">
                             滨城区可了可网络信息科技中心专注于微信生态开发服务，拥有多年行业经验和专业技术团队。
                         </p>
@@ -242,14 +244,11 @@
                             </div>
                         </div>
                     </div>
-                    <div class="rounded-2xl overflow-hidden shadow-lg bg-gradient-to-br from-primary/5 to-primary/10 h-64 flex items-center justify-center">
-                        <div class="text-center p-6">
-                            <div class="w-20 h-20 bg-white rounded-full flex items-center justify-center mx-auto mb-4 shadow-sm">
-                                <span class="icon icon-code text-3xl text-primary">&lt;/&gt;</span>
-                            </div>
-                            <p class="text-gray-700 font-medium">专业开发团队</p>
+                    <a href="/2025rili.png">
+                        <div class="rounded-2xl overflow-hidden shadow-lg bg-gradient-to-br from-primary/5 to-primary/10 h-64 flex items-center justify-center">
+                            <img src="hands.png" alt="favicon" style="max-width: 70%;">
                         </div>
-                    </div>
+                    </a>
                 </div>
             </div>
         </div>
@@ -263,9 +262,9 @@
                     <div>
                         <div class="flex items-center gap-2 mb-4">
                             <div class="w-10 h-10 bg-white rounded-lg flex items-center justify-center text-primary">
-                                <span class="icon icon-code">&lt;/&gt;</span>
+                                <img src="favicon.ico" alt="favicon" style="max-width: 70%;">
                             </div>
-                            <span class="text-xl font-bold">可了可网络</span>
+                            <span class="text-xl font-bold">可了可网络信息科技中心</span>
                         </div>
                         <p class="text-gray-400 mb-4">
                             专业的微信公众号与小程序定制研发服务提供商，助力企业数字化转型。
