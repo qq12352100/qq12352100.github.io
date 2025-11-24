@@ -1,3 +1,13 @@
+-----------------------------------------------------------------------------【Windows安装】
+官网：https://ffmpeg.org/download.html
+
+https://www.gyan.dev/ffmpeg/builds/packages/ffmpeg-7.1.1-essentials_build.zip
+
+在夸克网盘中--小工具--绿色免安装中
+
+解压把bin添加到path中
+
+-----------------------------------------------------------------------------【常用】
 #合并加密的M3U8 TS视频文件为MP4格式，-c copy参数表示复制原始的视频和音频流，不进行转码。这样可以节省时间，并保留原始视频的质量。
 ffmpeg -i index.m3u8 -c copy output.mp4
 

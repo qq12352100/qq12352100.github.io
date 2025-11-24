@@ -113,7 +113,7 @@ def get_stock_info():
 
 # 获取金价
 def getgold():
-    gold_price_data = ak.futures_foreign_commodity_realtime(symbol='GC,XAU,BTC')
+    gold_price_data = ak.futures_foreign_commodity_realtime(symbol='XAU,BTC')
     if gold_price_data is not None and not gold_price_data.empty:
         result_list = []
         for index, row in gold_price_data.iterrows():

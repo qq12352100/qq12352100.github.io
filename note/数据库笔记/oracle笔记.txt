@@ -1,6 +1,14 @@
 oracle 创建实例bkk(与orcl同级同概念） 创建用户赋权限
 
 Insert into Table2(a, c, d) select a,c,5 from Table1
+
+SELECT * FROM your_table WHERE ROWNUM = 1;    -- 只取一条数据
+
+============================================================================================================连接问题
+jdbc:oracle:thin:@//localhost:1521/orcl   服务名格式
+
+jdbc:oracle:thin:@localhost:1521:orcl     SID格式
+
 ============================================================================================================建库流程
 -- 注意：请用SYSTEM用户登录，再运行此脚本
 -- 文档 https://docs.oracle.com/cd/B19306_01/server.102/b14200/statements_7003.htm

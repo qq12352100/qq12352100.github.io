@@ -53,7 +53,6 @@ python -m venv myenv            #会在当前目录下创建一个名为 myenv �
 myenv\Scripts\activate          #激活虚拟环境
 deactivate                      #停用虚拟环境  如果不再需要某个虚拟环境，可以直接删除文件夹
 ===================================================================
-yum install -y gcc patch libffi-devel python-devel  zlib-devel bzip2-devel openssl-devel ncurses-devel sqlite-devel readline-devel tk-devel gdbm-devel db4-devel libpcap-devel xz-devel -y
 
 ===================================================================【python数据类型】
 基本类型

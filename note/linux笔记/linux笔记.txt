@@ -16,6 +16,12 @@ cd bin
 curl -s -L https://raw.githubusercontent.com/233boy/v2ray/master/install.sh | bash
 curl -s -L https://gitee.com/qq12352100/linux-shell/raw/master/sysinfo.sh | bash
 wget -O TOTP.py https://raw.githubusercontent.com/qq12352100/note/master/note/script/python/web/TOTP.py
+===========================================================================================【awk命令详解】
+cat /var/log/secure |grep 'authentication failure' | awk '{print $(NF-1)}' | uniq -c | awk '$1 > 3'| awk '{gsub(/.*rhost=| ./,""); print}' | awk 'NF > 0'
+awk '{print $(NF-1)}'                   # 列表倒数第二块 NF代表最后一块
+uniq -c | awk '$1 > 3'                  # 取第一列判断大于3
+awk '{gsub(/.*rhost=| ./,""); print}'   # 替换rhost=
+awk 'NF > 0'                            # 去除空行
 ===========================================================================================【安装telnet】
 1、关闭防火墙；2、执行【rpm -qa |grep telnet】命令查看是否安装过相关软件包；3、执行【yum install telnet telnet-server】命令安装telnet即可。
 ===========================================================================================【进程端口】

@@ -1,6 +1,32 @@
 
 yum install -y yum-fastestmirror lrzsz vim screen java-1.8.0-openjdk* mariadb mariadb-server redis nginx unzip zip wget net-tools
 
+#------------------------------安装java17
+
+wget https://corretto.aws/downloads/latest/amazon-corretto-17-x64-linux-jdk.rpm
+yum install -y amazon-corretto-17-x64-linux-jdk.rpm
+
+#------------------------------配置mysql8
+wget https://dev.mysql.com/get/mysql80-community-release-el7-11.noarch.rpm
+rpm -ivh mysql80-community-release-el7-11.noarch.rpm
+
+yum install -y mysql-server --nogpgcheck
+systemctl start mysqld
+
+mysql_secure_installation
+
+grep 'temporary password' /var/log/mysqld.log
+mysql -uroot -p
+
+SELECT user, host, plugin FROM mysql.user WHERE user = 'root';  -- 查看当前有哪些 root 用户：
+
+-- 1. 创建用户 'root'@'%'（如果不存在）
+CREATE USER 'root'@'%' IDENTIFIED WITH mysql_native_password BY 'o6KRMJvFrHxS@';
+-- 2. 授予所需权限（例如所有权限）
+GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' WITH GRANT OPTION;
+-- 3. 刷新权限
+FLUSH PRIVILEGES;
+
 #------------------------------配置mariadb
 systemctl start mariadb
 systemctl enable mariadb
@@ -34,9 +60,32 @@ vim /etc/redis.conf
 命令模式:/bind
 systemctl start redis.service
 
+wget https://archives.fedoraproject.org/pub/archive/epel/7/x86_64/Packages/r/redis-3.2.12-2.el7.x86_64.rpm
+wget https://archives.fedoraproject.org/pub/archive/epel/7/x86_64/Packages/j/jemalloc-3.6.0-1.el7.x86_64.rpm
+
+yum install -y jemalloc-3.6.0-1.el7.x86_64.rpm redis-3.2.12-2.el7.x86_64.rpm
+
 #------------------------------配置nginx
 vim /etc/nginx/nginx.conf
 systemctl start nginx.service
+
+# 安装编译依赖
+sudo yum install -y gcc pcre-devel zlib-devel openssl-devel make
+
+# 下载源码（以 1.24.0 为例）
+wget https://nginx.org/download/nginx-1.24.0.tar.gz
+tar -xzf nginx-1.24.0.tar.gz
+cd nginx-1.24.0
+
+# 编译安装
+./configure --prefix=/usr/local/nginx --with-http_ssl_module
+make -j$(nproc)
+make install
+
+# 启动
+/usr/local/nginx/sbin/nginx
+
+ln -s /usr/local/nginx/sbin/nginx /usr/bin/nginx
 
 #------------------------------配置gohttpserver
 wget -P /usr/local/src/ https://github.com/codeskyblue/gohttpserver/releases/download/1.1.0/gohttpserver_1.1.0_linux_amd64.tar.gz

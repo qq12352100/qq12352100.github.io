@@ -1,5 +1,20 @@
 下载地址：http://nginx.org/en/download.html
 
+--------------------------------------------------------【Windows版本】
+#启动
+双击nginx.exe，或者cmd运行nginx.exe然后关掉cmd窗口（Ctrl + C 无用，已经启动）
+
+# 查看
+tasklist | findstr nginx
+netstat -ano | findstr :80
+
+# 退出
+D:\A\nginx-1.28.0>nginx.exe -s quit   或者   taskkill /f /im nginx.exe
+
+# 重启
+D:\A\nginx-1.28.0>nginx.exe -s reload
+
+--------------------------------------------------------
 yum -y install make zlib zlib-devel pcre pcre-devel gcc-c++ libtool  openssl openssl-devel
 mkdir /usr/local/src/
 cd /usr/local/src/

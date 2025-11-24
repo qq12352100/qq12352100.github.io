@@ -2,6 +2,46 @@ General error: 1665 Cannot execute statement: impossible to write to binary log 
 永久生效，需要修改my.ini
 binlog_format=ROW
 
+---------------------------------------------------------------------------------------【安装mysql8】
+
+wget https://dev.mysql.com/get/mysql80-community-release-el7-11.noarch.rpm
+rpm -ivh mysql80-community-release-el7-11.noarch.rpm
+
+yum install -y mysql-server --nogpgcheck
+systemctl start mysqld
+
+mysql_secure_installation
+
+grep 'temporary password' /var/log/mysqld.log
+mysql -uroot -p
+
+SELECT user, host, plugin FROM mysql.user WHERE user = 'root';  -- 查看当前有哪些 root 用户：
+
+-- 1. 创建用户 'root'@'%'（如果不存在）
+CREATE USER 'root'@'%' IDENTIFIED WITH mysql_native_password BY 'o6KRMJvFrHxS@';
+-- 2. 授予所需权限（例如所有权限）
+GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' WITH GRANT OPTION;
+-- 3. 刷新权限
+FLUSH PRIVILEGES;
+-----------------------------------------systemctl start mysqld有问题  systemctl status mysqld查看   
+
+大部分问题是目录权限问题，yum安装完先授权，再mysql_secure_installation
+
+#卸载 重装
+yum install -y mysql-server
+
+#查看配置
+cat /etc/my.conf
+
+
+# 重置数据目录权限
+chown -R mysql:mysql /var/lib/mysql
+chmod -R 700 /var/lib/mysql
+
+# 修复套接字目录权限（若存在）
+mkdir -p /var/run/mysqld
+chown -R mysql:mysql /var/run/mysqld
+
 ---------------------------------------------------------------------------------------【忘记密码】
 1、sudo systemctl stop mysql  # 或者  sudo service mysql stop
 2、sudo mysqld_safe --skip-grant-tables &
@@ -11,6 +51,24 @@ USE mysql;
 ALTER USER 'root'@'localhost' IDENTIFIED BY 'GkFjrpWgUP';
 FLUSH PRIVILEGES;
 4、sudo systemctl start mysql  # 或者  sudo service mysql start
+---------------------------------------------------------------------------------------【8.0以后的登录认证问题】
+从 MySQL 8.0 开始，默认的身份验证插件从 mysql_native_password 改为 caching_sha2_password。
+
+-- 先仅修改密码（使用默认 caching_sha2_password，MySQL 8.0 默认）
+ALTER USER 'root'@'%' IDENTIFIED BY 'o6KRMJvFrHxS@';
+ALTER USER 'root'@'%' IDENTIFIED WITH mysql_native_password BY 'o6KRMJvFrHxS@';
+ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'o6KRMJvFrHxS@';
+FLUSH PRIVILEGES;
+
+
+SELECT user, host, plugin FROM mysql.user WHERE user = 'root';  -- 查看当前有哪些 root 用户：
+
+-- 1. 创建用户 'root'@'%'（如果不存在）
+CREATE USER 'root'@'%' IDENTIFIED WITH mysql_native_password BY 'o6KRMJvFrHxS@';
+-- 2. 授予所需权限（例如所有权限）
+GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' WITH GRANT OPTION;
+-- 3. 刷新权限
+FLUSH PRIVILEGES;
 ---------------------------------------------------------------------------------------
 /*[mysqld]*/
 character-set-server=utf8

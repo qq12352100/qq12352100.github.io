@@ -1,0 +1,23 @@
+-- 创建用户original_data，设置密码为original_data@123
+CREATE USER originaldata IDENTIFIED BY "original_data@123ABC";
+
+-- 授予RESOURCE角色（包含创建表、索引等基础资源操作权限）
+GRANT RESOURCE TO originaldata;
+GRANT PUBLIC TO originaldata;
+
+-- 赋予对EVENT_INFO表的增删改查权限
+GRANT SELECT ANY TABLE, INSERT ANY TABLE, UPDATE ANY TABLE, DELETE ANY TABLE TO originaldata;
+
+
+
+
+
+-- 1. 在新模式中创建表结构(不会创建注释等)
+CREATE TABLE big_grid_data.EVENT_INFO AS SELECT * FROM original_data.EVENT_INFO WHERE 1=0;
+
+-- 2. 复制数据（如果需要保留数据）
+INSERT INTO big_grid_data.EVENT_INFO SELECT * FROM original_data.EVENT_INFO;
+
+-- 3. 删除原表（如果需要）
+DROP TABLE original_data.EVENT_INFO;
+

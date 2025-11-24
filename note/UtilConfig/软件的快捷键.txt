@@ -82,35 +82,63 @@ telnet---->>Ctrl+],然后再按q就可以退出了。
 
 按两下Shift唤出全局搜索
 
-Ctrl + Q              查看函数文档
-Ctrl + P              查看函数入参
-Ctrl + W              选中整个单词
-Ctrl + D              复制选中行
-Ctrl + Y              删除选中行
-Ctrl + E              最近打开的文件
-Ctrl + 减号           折叠代码
-Ctrl + 等号           展开代码
-Ctrl + F12            查看类结构
 
-Alt + J       选择html中对称符号
+Ctrl + Alt + \          查找请求路径
+Ctrl + Alt + V          快速生成返回值     *
 
-Shift + F6    重命名变量名
+Ctrl + /                单行注释           *
+Ctrl + Q                查看函数文档
+Ctrl + P                查看函数入参
+Ctrl + W                选中整个单词
+Ctrl + D                复制选中行
+Ctrl + Y                删除选中行         *
+Ctrl + E                最近打开的文件
+Ctrl + 减号             折叠代码
+Ctrl + 等号             展开代码
+Ctrl + F12              查看类结构
+
+Alt + J                 选择html中对称符号
+Alt + Shift + ↑         上下移动选中行
+Alt + 回车              快速修复、提示     *
+
+Shift + F6              重命名变量名
 
 Ctrl + Shift + 空格     智能提示  Tab 替换后面的值
-Ctrl + Shift + 回车     代码补全
+Ctrl + Shift + 回车     代码补全              *
 Ctrl + Shift + 减号     折叠整个类代码
 Ctrl + Shift + 等号     展开整个类代码
-Ctrl + Shift + ↑        上下移动方法
+Ctrl + Shift + ↑        上下移动方法          *
 Ctrl + Shift + DELETE   删除代码包围块
-Ctrl + Shift + F        查找
+Ctrl + Shift + F        查找                  *
 Ctrl + Shift + R        替换      Alt + D 当前目录替换
 
-Ctrl + Alt + Shift + L  格式化代码
+Ctrl + Alt + L          格式化代码            *
+Ctrl + Alt + T          包围代码块
+------------------------------------------自定义快捷键
+设置快捷键Ctrl + W关闭当前界面    按两下Shift唤出全局搜索 keymap 搜索 close 修改Close Tab的快捷键
+设置快捷键前进后退代码            按两下Shift唤出全局搜索 keymap 搜索 navigate 修改Back与Forward的快捷键
+设置复制当前行代码                按两下Shift唤出全局搜索 keymap 搜索 Duplicate Line or Selection 修改 Ctrl + Alt + 上下箭头
+设置移动当前行代码                按两下Shift唤出全局搜索 keymap 搜索 Move Line 修改  Move Line Down 和 Move Line Up 为 Alt + 上下箭头
+设置删除当前行代码                按两下Shift唤出全局搜索 keymap 搜索 Delete Line 改为 Ctrl + D
+设置撤销前进                      按两下Shift唤出全局搜索 keymap 搜索 redo 改为 Ctrl + Y
 
-Alt + Shift + ↑        上下移动选中行
+------------------------------------------自动引入包
+按两下Shift唤出全局搜索 Editor -> General -> Auto Import  勾选Add unambiguous...和Optimize imports...
+------------------------------------------自动左右联动
+点项目右上角的三个点设置，点 Behavior 然后选 Always Select Opened File
 
-Ctrl + Alt + T         包围代码块
+输入sout，生成System.out.println()方法.
+输入iter，生成foreach循环.
+输入fori，生成for循环.
+    
+输入prsf    private static final 
 
+输入psf     public static final 
+输入psfi    public static final int
+输入psfs    public static final Sting
+输入psvm    生成main方法. 或者输入 main 按回车
+
+    
 ===============================================================================================================【eclipse快捷键】
 
 去除空行:在Find输入框中输入：^\s*\n 

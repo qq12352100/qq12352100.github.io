@@ -78,7 +78,7 @@ def note(subpath):
                         var content = $('#contentArea').val();
                         var path = $('#path').val();
                         $.ajax({
-                            url: '/save_content',
+                            url: 'save_content',
                             type: 'POST',
                             contentType: 'application/json',
                             data: JSON.stringify({ content : content , path : path}),

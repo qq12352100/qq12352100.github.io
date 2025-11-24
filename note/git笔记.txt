@@ -2,6 +2,7 @@
 git branch -a                       #所有分支
 git fetch origin                    #拉取远程分支
 git reset --hard origin/branch-name #重置到远程分支
+git push --force origin master      #强制把本地分支推送到远程
 ==========================================================================================代理
 http://用户名:密码@127.0.0.1:10809
 
@@ -12,6 +13,13 @@ git config --global https.proxy 'http://127.0.0.1:10809'        #全局设置 HT
 git config --global --unset https.proxy                         #取消HTTPS代理
 git config --global http.proxy 'http://127.0.0.1:10809'         #全局设置 HTTPS 代理
 git config --global --unset http.proxy                          #取消HTTP代理
+==========================================================================================github换gitee
+git remote -v                                                   #查看远程信息
+git remote rm origin                                            #删除远程信息
+git remote add origin git@gitee.com:qq12352100/note.git         #添加新的
+git push -u origin "master"                                     #提交代码
+git pull origin master --no-rebase                              #将远程变更合并到本地，保留完整历史
+git branch --set-upstream-to=origin/master master               #设置上游分支，避免下次再提示
 ==========================================================================================下载别人代码
 git init
 git remote add origin https://github.com/codeskyblue/gohttpserver.git
@@ -99,7 +107,7 @@ git commit -m 'first commit'
 git remote add origin git@github.com:qq12352100/note.git
 git push origin master
 
-git remote add origin git@github.com:qq12352100/note.git    //添加远程仓库
+git remote add origin git@github.com:qq12352100/note.git    //添加远程仓库   git@gitee.com:qq12352100/note.git
 git remote -v                                               //查看远程仓库
 git remote rm origin                                        //移除远程仓库
 

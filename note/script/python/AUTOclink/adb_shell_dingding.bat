@@ -28,8 +28,7 @@ call :dingding
 
     :: 判断是否为指定时间点之一
     set "run=no"
-    if "%hour%"=="12" if "%minute%"=="00" set run=yes
-    if "%hour%"=="12" if "%minute%"=="55" set run=yes
+    if "%hour%"=="8" if "%minute%"=="20" set run=yes
     if "%hour%"=="17" if "%minute%"=="30" set run=yes
 
     if "%run%"=="yes" (
@@ -43,10 +42,10 @@ call :dingding
     )
     
     :: 判断是否是周五，是否第一次执行，是否下午5点，弹窗提醒写ppt
-    if /i "%friday_alert_done%" neq "yes" if /i "%dayofweek%"=="Friday" if "%hour%"=="17" (
-        msg * "今天是星期五！记得写ppt哦！"
-        set "friday_alert_done=yes"
-    )
+    REM if /i "%friday_alert_done%" neq "yes" if /i "%dayofweek%"=="Friday" if "%hour%"=="17" (
+        REM msg * "今天是星期五！记得写ppt哦！"
+        REM set "friday_alert_done=yes"
+    REM )
         
     :: 等待 50 秒后再次检查
     timeout /t 50 /nobreak >nul

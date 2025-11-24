@@ -1,7 +1,9 @@
 #!/usr/bin/python
 # encoding:utf-8
 import os
-
+'''
+运行qq12352100项目下note中的generateNoteIndex.py，更新本文件在note中更新，把整个note拷贝到qq12352100项目中
+'''
 def getfiles():
     # 获取当前工作目录
     current_directory = os.getcwd()

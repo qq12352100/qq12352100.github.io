@@ -1,0 +1,25 @@
+
+;暂停 Windows 的 1000周更新  reg格式：windos/utf-8  复制下面的，不能有注释
+
+Windows Registry Editor Version 5.00
+[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\WindowsUpdate\UX\Settings]
+"FlightSettingsMaxPauseDays"=dword:00001b58
+"PauseFeatureUpdatesStartTime"="2023-07-07T10:00:52Z"
+"PauseFeatureUpdatesEndTime"="2042-09-05T09:59:52Z"
+"PauseQualityUpdatesStartTime"="2023-07-07T10:00:52Z"
+"PauseQualityUpdatesEndTime"="2042-09-05T09:59:52Z"
+"PauseUpdatesStartTime"="2023-07-07T09:59:52Z"
+"PauseUpdatesExpiryTime"="2042-09-05T09:59:52Z"
+
+
+;取消暂停 Windows 的 1000周更新
+
+Windows Registry Editor Version 5.00
+[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\WindowsUpdate\UX\Settings]
+"FlightSettingsMaxPauseDays"=-
+"PauseFeatureUpdatesStartTime"=-
+"PauseFeatureUpdatesEndTime"=-
+"PauseQualityUpdatesStartTime"=-
+"PauseQualityUpdatesEndTime"=-
+"PauseUpdatesStartTime"=-
+"PauseUpdatesExpiryTime"=-

@@ -1,0 +1,42 @@
+编辑 /etc/ssh/sshd_config：
+
+bash
+sudo nano /etc/ssh/sshd_config
+修改以下配置：
+
+config
+Port 22222                          # 更改默认端口
+PermitRootLogin no                  # 禁止root登录
+PasswordAuthentication no           # 禁用密码认证，使用密钥
+PubkeyAuthentication yes
+AllowUsers your_username            # 只允许特定用户
+MaxAuthTries 3                      # 最大尝试次数
+ClientAliveInterval 300
+ClientAliveCountMax 2
+Protocol 2
+重启 SSH 服务：
+
+bash
+sudo systemctl restart ssh
+
+
+
+# 查看最近的认证失败日志
+sudo grep "Failed password" /var/log/auth.log
+
+# 查看无效用户尝试登录
+sudo grep "Invalid user" /var/log/auth.log
+
+# 查看所有认证相关错误
+sudo grep -i "fail\|error\|invalid" /var/log/auth.log | tail -20
+
+
+
+查看服务状态
+sudo systemctl status fail2ban
+查看被封禁的 IP
+sudo fail2ban-client status sshd
+解封特定 IP
+sudo fail2ban-client set sshd unbanip 192.168.1.100
+手动封禁 IP
+sudo fail2ban-client set sshd banip 192.168.1.100
