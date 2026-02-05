@@ -16,6 +16,20 @@ cd bin
 curl -s -L https://raw.githubusercontent.com/233boy/v2ray/master/install.sh | bash
 curl -s -L https://gitee.com/qq12352100/linux-shell/raw/master/sysinfo.sh | bash
 wget -O TOTP.py https://raw.githubusercontent.com/qq12352100/note/master/note/script/python/web/TOTP.py
+
+===========================================================================================【允许root远程登录】
+Ubuntu 要先安装  sudo apt install -y openssh-server
+
+Include /etc/ssh/sshd_config.d/*.conf    # 在这下面新建一个root.conf
+
+vim /etc/ssh/sshd_config
+
+Port 22
+ListenAddress 0.0.0.0
+PermitRootLogin yes             # 找到"PermitRootLogin prohibit-password"，将其改为"PermitRootLogin yes"。这样root用户就可以使用密码登录了。
+PasswordAuthentication yes      # 允许密码认证（但对 root 无效）
+
+service ssh restart
 ===========================================================================================【awk命令详解】
 cat /var/log/secure |grep 'authentication failure' | awk '{print $(NF-1)}' | uniq -c | awk '$1 > 3'| awk '{gsub(/.*rhost=| ./,""); print}' | awk 'NF > 0'
 awk '{print $(NF-1)}'                   # 列表倒数第二块 NF代表最后一块

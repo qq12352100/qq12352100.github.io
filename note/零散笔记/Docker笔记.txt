@@ -1,0 +1,194 @@
+
+Docker 属于 Linux 容器的一种封装，提供简单易用的容器使用接口。它是目前最流行的 Linux 容器解决方案。
+Docker 将应用程序与该程序的依赖，打包在一个文件里面。运行这个文件，就会生成一个虚拟容器。程序在这个虚拟容器里运行，就好像在真实的物理机上运行一样。有了 Docker，就不用担心环境问题。
+总体来说，Docker 的接口相当简单，用户可以方便地创建和使用容器，把自己的应用放入容器。容器还可以进行版本管理、复制、分享、修改，就像管理普通的代码一样。
+
+https://hub.docker.com/  qq12352100  qq12352100
+
+------------------------------------------------------------------------------【wsl】下载地址 https://github.com/microsoft/WSL/releases   选  wsl.2.6.3.0.x64.msi 
+# 修改注册表，wsl的默认安装位置
+New-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Lxss" -Name "BasePath" -Value "D:\A\WSL" -PropertyType String -Force
+
+# 列出可用的 WSL 发行版
+winget search wsl
+
+# 安装 Ubuntu         卸载  winget uninstall Canonical.Ubuntu.2404
+winget install Canonical.Ubuntu.2404
+winget install Kali Linux
+
+#如果返回了路径，那么直接运行它。
+Get-Command ubuntu2404.exe
+
+# 列出所有发行版   wsl --list --verbose
+wsl -l -v
+
+# 列出所有可用的发行版（在线）
+wsl --list --online
+
+# 安装
+wsl --install -d kali-linux
+
+# 启动指定发行版
+wsl -d Ubuntu-24.04
+
+# 设置默认发行版
+wsl --set-default Ubuntu-24.04
+
+# 停止所有发行版
+wsl --shutdown
+
+# 停止指定发行版
+wsl --terminate Ubuntu-24.04
+
+====迁移ubuntu
+# 先看下自己安装的 WSL 名字是什么，下面是我的名字是 Ubuntu-24.04，你要做替换
+wsl -l
+# 进入 D 盘，然后新建 WSL 文件夹，你可以叫其他名字，用来承载新迁移的目录
+mkdir D:\A\WSL
+cd D:\A\WSL
+# 接着开始迁移
+wsl --export Ubuntu-24.04 D:\A\WSL\ubuntu-24.04.tar
+wsl --unregister Ubuntu-24.04
+wsl --import Ubuntu-24.04 D:\A\WSL\ubuntu-24.04 D:\A\WSL\ubuntu-24.04.tar
+# 再次使用 wsl -l 命令查看，然后启动 Ubuntu-24.04 看下是否迁移正常。
+====迁移kali
+wsl --export kali-linux D:\A\WSL\kali.tar
+wsl --unregister kali-linux
+wsl --import kali-linux D:\A\WSL\kali-linux D:\A\WSL\kali.tar
+
+------------------------------------------------------------------------------【安装Docker Desktop（Windows版）】
+https://github.com/asxez/DockerDesktop-CN/releases   git
+https://www.docker.com/   下载AMD64版本
+
+mkdir "D:\Program Files\Docker\data"
+
+start /w "" "Docker Desktop Installer_amd64.exe" install -accept-license --installation-dir="D:\Program Files\Docker" --wsl-default-data-root="D:\Program Files\Docker\data" --windows-containers-default-data-root="D:\\Program Files\\Docker"
+
+docker --version
+Docker version 29.1.3, build f52814d
+
+docker-compose --version
+Docker Compose version v2.40.3-desktop.1
+
+------------------------------------------------------------------------------【常用命令】
+#启动：
+systemctl start docker
+#验证：
+docker run hello-world
+
+docker image ls                    #列出本机的所有 image 文件
+docker image rm [imageName]        #删除 image 文件
+docker container run hello-world   #运行hello-world  如果发现本地没有指定的 image 文件，就会从仓库自动抓取，也可以使用docker container run命令的--rm参数，在容器终止运行后自动删除容器文件。
+                                    
+docker container ls                 #列出本机正在运行的容器
+docker container ls --all           #列出本机所有容器，包括终止运行的容器
+docker container rm [containerID]   #命令删除
+docker container kill [containID]   #手动终止
+
+--------------------------------------【Ubuntu安装】
+
+# 1. 卸载旧版本
+sudo apt remove docker docker-engine docker.io containerd runc
+
+# 2. 更新apt包索引并安装依赖包
+sudo apt update
+sudo apt install -y ca-certificates curl gnupg lsb-release
+
+# 3. 添加Docker的官方GPG密钥（使用清华源）
+sudo mkdir -p /etc/apt/keyrings
+curl -fsSL https://mirrors.tuna.tsinghua.edu.cn/docker-ce/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+
+# 4. 设置Docker的稳定版仓库（使用清华源）
+echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://mirrors.tuna.tsinghua.edu.cn/docker-ce/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+
+# 5. 更新apt包索引（再次）
+sudo apt update
+
+# 6. 安装Docker Engine, CLI, Containerd, Docker Compose
+sudo apt install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+
+# 查看版本
+docker --version
+docker info
+
+# 7. 启动Docker并设置开机自启
+sudo systemctl start docker
+sudo systemctl enable docker
+
+# 配置源
+sudo mkdir -p /etc/docker
+sudo tee /etc/docker/daemon.json <<-'EOF'
+{
+  "registry-mirrors": [
+    "https://1u9qrly1.mirror.aliyuncs.com",
+    "https://9cpn8tt6.mirror.aliyuncs.com",
+    "https://registry.docker-cn.com",
+    "https://mirror.ccs.tencentyun.com",
+    "https://docker.1panel.live",
+    "https://2a6bf1988cb6428c877f723ec7530dbc.mirror.swr.myhuaweicloud.com",
+    "https://docker.m.daocloud.io",
+    "https://hub-mirror.c.163.com",
+    "https://mirror.baidubce.com",
+    "https://your_preferred_mirror",
+    "https://dockerhub.icu",
+    "https://docker.registry.cyou",
+    "https://docker-cf.registry.cyou",
+    "https://dockercf.jsdelivr.fyi",
+    "https://docker.jsdelivr.fyi",
+    "https://dockertest.jsdelivr.fyi",
+    "https://mirror.aliyuncs.com",
+    "https://dockerproxy.com",
+    "https://mirror.baidubce.com",
+    "https://docker.m.daocloud.io",
+    "https://docker.nju.edu.cn",
+    "https://docker.mirrors.sjtug.sjtu.edu.cn",
+    "https://docker.mirrors.ustc.edu.cn",
+    "https://mirror.iscas.ac.cn",
+    "https://docker.rainbond.cc"
+    ]
+}
+EOF
+
+sudo systemctl daemon-reload
+sudo systemctl stop docker.service
+sudo systemctl stop docker.socket
+sudo systemctl start docker.service
+sudo systemctl start docker.socket
+
+# 测试镜像下载速度
+time docker pull alpine:latest
+
+# 或使用工具测试
+curl -o /dev/null -s -w '%{time_total}\n' https://9cpn8tt6.mirror.aliyuncs.com/v2/
+curl -o /dev/null -s -w '%{time_total}\n' https://1u9qrly1.mirror.aliyuncs.com/v2/
+-------------------------------------------------------------------------------------------【启动nginx】
+# 后台运行一个 Nginx 容器，映射 8080 端口，命名为 my-nginx 外主机的 8080 端口映射到容器内部的 80 端口
+docker run -d -p 8080:80 --name my-nginx nginx
+# 进入该容器
+docker exec -it my-nginx /bin/bash
+# 查看日志
+docker logs -f my-nginx
+# 停止并删除
+docker stop my-nginx && docker rm my-nginx
+-------------------------------------------------------------------------------------------【部署dify】
+git clone --branch "$(curl -s https://api.github.com/repos/langgenius/dify/releases/latest | jq -r .tag_name)" https://github.com/langgenius/dify.git
+
+cd dify/docker
+cp .env.example .env
+# 启动
+docker compose up -d
+# 验证
+docker compose ps
+
+停止服务：docker compose down
+查看日志：docker compose logs -f
+重启服务：docker compose restart
+
+docker logs --tail 300 -f docker-plugin_daemon-1   # 查看插件市场日志
+
+export HTTP_PROXY=http://192.168.0.102:10808 
+export HTTPS_PROXY=http://192.168.0.102:10808 
+unset HTTP_PROXY HTTPS_PROXY
+env | grep -i proxy
+
+sk-a7d4a528f0f54d3487da31b598a9e9d2

@@ -10,15 +10,18 @@ https://nodejs.org/dist/v16.15.0/
 
 配置全局安装的模块路径和缓存路径
 在nodejs根目录,创建node_global，node_cache文件夹，然后cmd执行
-npm config set prefix "D:\A\nodejs\node_modules\node_global"
-npm config set cache "D:\A\nodejs\node_modules\node_cache"
+npm config set prefix "D:\A\nodejs\node_global"
+npm config set cache "D:\A\nodejs\node_cache"
+
+npm config get prefix
+npm config get cache
 
 配置环境变量
-创建 NODE_PATH 变量 变量值为node_modules地址-->> NODE_PATH   C:\nodejs\node_modules
-path 中添加  C:\nodejs 和 C:\nodejs\node_global
+创建 NODE_PATH 变量 变量值为node_modules地址-->> NODE_PATH   D:\A\nodejs\node_modules
+path 中添加  D:\A\nodejs 和 D:\A\nodejs\node_global
 
 npm install -g nrm      #下载nrm
-nrm ls                  #查看可切换的镜像源
+nrm ls                  #查看可切换的镜像源    nrm命令找不到  -->>  path 中添加 D:\A\nodejs\node_modules\node_global
 nrm use taobao          #切换淘宝镜像源
 npm get registry        #查看镜像源使用状态
 

@@ -1,0 +1,20 @@
+Windows：echo %PROCESSOR_ARCHITECTURE%
+
+AMD64 → 选 amd64
+ARM64 → 选 arm64
+
+macOS：arch
+arm64       → 选 Apple Silicon
+i386/x86_64 → 选 Intel
+
+Linux：uname -m
+x86_64  → 选amd64
+aarch64 → 选arm64
+
+
+amd64   x86_64/x64      Intel Core、AMD Ryzen 等传统 PC/服务器 CPU
+arm64   AArch64         Apple Silicon（M1/M2/M3）、高通 Snapdragon X Elite、AWS Graviton、树莓派 4/5（64位系统）等
+
+
+
+

@@ -1,3 +1,22 @@
+
+
+方式一：
+下载解压
+N_m3u8DL-RE "https://vodcnd00.myqqdd.com/20250909/9CI98AYK/2421kb/hls/index.m3u8" -sv best -sa best --thread-count 16 --download-retry-count 5 --mux-after-done "mp4" --save-name "不知不觉"
+
+方式二：
+pip install yt-dlp 然后直接用
+yt-dlp "https://vodcnd00.myqqdd.com/20250909/9CI98AYK/2421kb/hls/index.m3u8" --format "bv*+ba/b" --retries 5 --concurrent-fragments 16 --fragment-retries 5 --merge-output-format mp4 -o "不知不觉"
+
+方式三：下载b站视频  https://github.com/nilaoda/BBDown
+for (const d of document.querySelectorAll('.video-pod__list > div')) console.log(d.dataset.key);  // 获取播放列表
+
+BBDown.exe BV1VxDwY8EQx -tv --work-dir "E://Temp//bilibili"
+
+-----------------------------------------------------------------------------
+
+ffmpeg -f concat -safe 0 -i videos.txt -c:v libx264 -crf 23 -preset fast -c:a aac -b:a 128k output.mp4          // 重新编码合并输出
+
 -----------------------------------------------------------------------------【Windows安装】
 官网：https://ffmpeg.org/download.html
 
@@ -63,6 +82,8 @@ copy: 保留原视频编码，不做重新编码。
 -b:v: 设置视频比特率，例如 1M 表示 1 Mbps。
 -speed: 设置编码速度，范围
 -----------------------------------------------------------------------------【合并视频】
+ffmpeg -f concat -safe 0 -i videos.txt -c:v libx264 -crf 23 -preset fast -c:a aac -b:a 128k output.mp4          // 重新编码合并输出
+
 ffmpeg -f concat -safe 0 -i videos.txt -vf "scale=1024:600" -c:v libx265 -crf 23 -preset medium -c:a copy output.mp4
 
 

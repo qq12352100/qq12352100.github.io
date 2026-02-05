@@ -10,6 +10,7 @@ import time as t
 import TOTP
 import online_note
 import stock
+import Zhaopin
 
 app = Flask(__name__)
 
@@ -28,7 +29,14 @@ def run_stock_info():
             stock.get_stock_info()
         t.sleep(600)  # 休眠10分钟
 
+def getZhaopinInfo():
+    while True:
+        item = Zhaopin.getZhaopinInfo()
+        stock.send_qq_email(item[0]['title'],item)
+        t.sleep(6000)  # 休眠10分钟
+
 if __name__ == '__main__':
+    stock_info_thread = Thread(target=getZhaopinInfo)
     stock_info_thread = Thread(target=run_stock_info)
     stock_info_thread.start()
     app.run(debug=True, port=5000)

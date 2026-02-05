@@ -1,0 +1,40 @@
+# 终端中查看分辨率 
+xrandr
+
+# 修改分辨率
+xrandr --output VNC-0 --mode 1920×1080
+
+
+
+
+
+------------------------------------【安装QQ】
+wget https://dldir1v6.qq.com/qqfile/qq/QQNT/Linux/QQ_3.2.23_260108_amd64_01.deb
+sudo apt install -y libgtk-3-0 libnotify4 libnss3 libxss1 libxtst6 xdg-utils libatspi2.0-0 libuuid1 libappindicator3-1 libsecret-1-0
+sudo dpkg -i QQ_3.2.23_260108_amd64_01.deb
+/opt/QQ/qq
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

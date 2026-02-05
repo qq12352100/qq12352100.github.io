@@ -1,5 +1,6 @@
 下载地址：https://github.com/fatedier/frp/releases
 文档：https://gofrp.org/zh-cn/docs/
+RDP协议：被控电脑，右键属性，远程--远程桌面--允许远程连接到此计算机
 
 简介：frp是有一个客户端，一个服务器端。首先配置服务器端的frp配置；frpc后门跟着一个c，大家应该知道是client的首字母，frps也是一样server；
 
@@ -89,3 +90,59 @@ webServer.port = 7500
 # dashboard 用户名密码，可选，默认为空
 webServer.user = "admin"
 webServer.password = "admin"
+
+-----------------------------------------------frp_0.65.0完整配置
+---------------frps.toml配置：
+bindPort = 7000
+auth.method = "token"
+auth.token = "admin123"
+
+# 默认为 127.0.0.1，如果需要公网访问，需要修改为 0.0.0.0。
+webServer.addr = "0.0.0.0"
+webServer.port = 7500
+# dashboard 用户名密码，可选，默认为空
+webServer.user = "admin"
+webServer.password = "admin"
+
+# 域名配置
+subdomainHost = "kktop1.top"
+
+---------------frpc.toml配置：
+serverAddr = "8.152.208.138"
+serverPort = 7000
+auth.method = "token"
+auth.token = "admin123"
+
+[[proxies]]
+name = "rdp-service"
+type = "tcp"
+localIP = "127.0.0.1"
+localPort = 3389
+remotePort = 43389
+
+---------------DNS解析：
+类型    主机记录    记录值
+A       rdp        8.152.208.138 
+
+测试：telnet rdp.kktop1.top:43389
+
+RDP协议：被控电脑，右键属性，远程--远程桌面--允许远程连接到此计算机
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

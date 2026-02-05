@@ -23,6 +23,10 @@ CREATE USER 'root'@'%' IDENTIFIED WITH mysql_native_password BY 'o6KRMJvFrHxS@';
 GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' WITH GRANT OPTION;
 -- 3. 刷新权限
 FLUSH PRIVILEGES;
+
+ALTER USER 'root'@'localhost' IDENTIFIED BY 'root';
+ALTER USER 'root'@'%' IDENTIFIED BY 'root';
+FLUSH PRIVILEGES;
 -----------------------------------------systemctl start mysqld有问题  systemctl status mysqld查看   
 
 大部分问题是目录权限问题，yum安装完先授权，再mysql_secure_installation

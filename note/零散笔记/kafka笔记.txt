@@ -4,6 +4,28 @@ Consumer：消费者，获取数据，可消费指定的Topic；
 Group：消费者组，同一个group可以有多个消费者，一条消息在一个group中，只会被一个消费者获取；
 Partition：分区，为了保证kafka的吞吐量，一个Topic可以设置多个分区。同一分区只能被一个消费者订阅。
 
+=============================================================================================================【Windows11】
+https://kafka.apache.org/downloads
+下载Binary download: kafka_2.13-4.1.1.tgz ，Kafka 4.0 基于 JDK 17 编译，需提前安装并配置 JAVA_HOME 环境变量。
+1、解压到D:\A\kafka_2.13-4.1.1
+2、创建D:\A\kafka_2.13-4.1.1\kafka-logs目录
+3、修改D:\A\kafka_2.13-4.1.1\config\server.properties,注释掉之前的log.dirs=D:\\A\\kafka_2.13-4.1.1\\kafka-logs
+4、执行D:\A\kafka_2.13-4.1.1\bin\windows下的kafka-storage.bat random-uuid 并复制生成的集群唯一标识 3nPZ9ZfQSLKPLM_5DGLkvA
+5、执行kafka-storage.bat format -t 3nPZ9ZfQSLKPLM_5DGLkvA -c ..\..\config\server.properties 然后看下kafka-logs下是否生成 meta.properties 和 bootstrap.checkpoint 文件。
+6、修改server.properties，增加：
+kafka# 集群唯一标识（之前生成的 UUID）
+cluster.id=3nPZ9ZfQSLKPLM_5DGLkvA
+
+# 控制器选举配置（单机模式示例）Kafka 4.0 默认使用 KRaft 模式（Kafka Raft Metadata），取代了旧版的 ZooKeeper。在 KRaft 模式下，controller.quorum.voters 是必需配置，用于指定集群的控制器节点。
+controller.quorum.voters=1@localhost:9093
+7、启动kafka-server-start.bat ..\..\config\server.properties
+
+-------------------问题：
+'wmic' 不是内部或外部命令，也不是可运行的程序
+解决：修改kafka-server-start.bat，把if里全注释掉并改为：set KAFKA_HEAP_OPTS=-Xmx1G -Xms1G
+kafka-logs下没生成文件
+解决：把D:盘下的/tmp文件夹删了，注释掉server.properties里原来的log.dirs
+
 =============================================================================================================【Windows】
 1、jdk选择1.8的版本,然后环境变量JAVA_HOME。
 2、zookeeper

@@ -131,14 +131,16 @@ for /f "tokens=* skip=2" %%A in ('ping %host% -n 1') do (
 nircmd.exe setfiletime "D://1.txt" "24-06-2003 17:57:11" "22-11-2005 10:21:56"
 
 -------------cmdÒªÒÔ¹ÜÀíÔ±ÔËĞĞ----------¡¾Ìí¼Ó·şÎñ »ò NSSM°²×°·şÎñ https://nssm.cc/¡¿
+sc create frp binPath= "D:\A\frp_0.65.0_windows_amd64\frpc.exe -c D:\A\frp_0.65.0_windows_amd64\frpc.toml" start= auto DisplayName= "FRP Client Service"
+
 sc create frp_service binPath= "D:\AAA\frp_0.57.0_windows_amd64\frpc.exe -c D:\AAA\frp_0.57.0_windows_amd64\frpc.toml"
 sc config frp_service start=AUTO    rem AUTO(×Ô¶¯)DEMAND(ÊÖ¶¯)DISABLED(½ûÓÃ)
 sc description frp_service "This service runs the frp client"
 
-net start MyFRPService      rem Æô¶¯·şÎñ
-sc query MyFRPService       rem ²é¿´Æô¶¯ÊÇ·ñÆô¶¯³É¹¦
-net stop MyFRPService       rem Í£Ö¹·şÎñ
-sc delete MyFRPService      rem É¾³ı·şÎñ
+net start frp_service      rem Æô¶¯·şÎñ
+sc query frp_service       rem ²é¿´Æô¶¯ÊÇ·ñÆô¶¯³É¹¦
+net stop frp_service       rem Í£Ö¹·şÎñ
+sc delete frp_service      rem É¾³ı·şÎñ
 
 
 
@@ -153,7 +155,9 @@ sc config MyService depend= [DependentServiceNames]                  rem ÉèÖÃ·şÎ
 sc config MyService Type= [ownShare| share| interact| kernel| kernelDriver| fileSystemDriver] rem ownShare£º·şÎñÓµÓĞ×Ô¼ºµÄ½ø³Ì¿Õ¼ä¡£share£º·şÎñÓëÆäËû·şÎñ¹²Ïí½ø³Ì¿Õ¼ä¡£interact£º·şÎñ¿ÉÒÔÓë×ÀÃæ½»»¥¡£kernel£ºÄÚºËÇı¶¯³ÌĞò¡£kernelDriver£ºÄÚºËÇı¶¯³ÌĞò¡£fileSystemDriver£ºÎÄ¼şÏµÍ³Çı¶¯³ÌĞò¡£
 
 ÏÂÔØhttps://nssm.cc/£¬½âÑ¹Ö®ºó¹ÜÀíÔ±Éí·İÆô¶¯cmdÇĞ»»µ½½âÑ¹Ä¿Â¼
-nssm install FrpService "D:\AAA\frp_0.57.0_windows_amd64\frpc.exe" -c "D:\AAA\frp_0.57.0_windows_amd64\frpc.toml"
+nssm install frp "D:\A\frp_0.65.0_windows_amd64\frpc.exe" "-c D:\A\frp_0.65.0_windows_amd64\frpc.toml"
+net start frp     rem Æô¶¯·şÎñ
+sc delete frp     rem É¾³ı·şÎñ
 
 NSSM: The non-sucking service manager
 Version 2.24 64-bit, 2014-08-31
@@ -180,6 +184,17 @@ To manage a service:
         nssm status <servicename>
         nssm rotate <servicename>
 
+-------------×¢²á±íÄ¬ÈÏ³ÌĞò----------
+rem ²é¿´.pngÀ©Õ¹Ãû¹ØÁªµÄÎÄ¼şÀàĞÍ
+assoc .png
+rem ²é¿´¸ÃÎÄ¼şÀàĞÍ¹ØÁªµÄ³ÌĞò
+ftype pngfile
+rem ²é¿´ÓÃ»§Ñ¡ÔñµÄÄ¬ÈÏ³ÌĞò
+reg query "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.png\UserChoice" /v ProgId
+rem ²é¿´È«¾Ö.png¹ØÁª
+reg query "HKCR\.png"
+rem ²é¿´Êµ¼Ê´ò¿ªÃüÁî
+reg query "HKCR\pngfile\shell\open\command" /ve
 
 
 

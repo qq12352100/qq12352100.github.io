@@ -213,8 +213,106 @@ git config --global core.quotepath false
 git config --global core.autocrlf input
 git config --global core.eol lf
 
+=======================================================================================================================【配置文件】
+D:\Program Files\PortableGit-2.50.0.2-64-bit\etc\gitconfig  文件
+[core]
+	symlinks = false
+	autocrlf = true
+	fscache = true
+[color]
+	interactive = true
+	ui = auto
+[help]
+	format = html
+[diff "astextplain"]
+	textconv = astextplain
+[rebase]
+	autosquash = true
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
+[credential]
+	helper = !\"D:/Program Files/PortableGit-2.50.0.2-64-bit/mingw64/bin/git-credential-manager.exe\"
+-------------------------------------------------------------------------------------------------------------------------
+C:\Users\admin1\.gitconfig  文件
+# ==============================
+# Git 全局配置文件 (~/.gitconfig)
+# 用户：bkk
+# 邮箱：qq12352100@163.com
+# 平台：Windows (Git for Windows + PortableGit)
+# ==============================
 
+[user]
+    name = bkk
+    email = qq12352100@163.com
 
+[core]
+    # 自动转换换行符：提交时转 LF，检出时转 CRLF（适合 Windows）
+    autocrlf = true
+    # 不启用符号链接（Windows 默认不支持）
+    symlinks = false
+    # 启用文件系统缓存，提升性能
+    fscache = true
+    # 路径含中文/特殊字符时不转义（如显示“中文.txt”而非 \344\270\255.txt）
+    quotepath = false
+    # 默认分支名（新建仓库时使用）
+    defaultBranch = master
+
+[color]
+    # 自动启用彩色输出
+    ui = auto
+
+[color "interactive"]
+    # 交互式命令（如 add -p）启用颜色
+    enabled = true
+
+[help]
+    # 使用 HTML 格式打开帮助文档（在浏览器中查看）
+    format = html
+
+[diff "astextplain"]
+    # 对二进制文件（如 .docx, .pdf）尝试转为文本进行 diff
+    textconv = astextplain
+
+[rebase]
+    # 执行 git rebase -i 时自动归并 fixup!/squash! 提交
+    autosquash = true
+
+[filter "lfs"]
+    # Git LFS（大文件存储）配置
+    clean = git-lfs clean -- %f
+    smudge = git-lfs smudge -- %f
+    process = git-lfs filter-process
+    required = true
+
+[credential]
+    # 使用 Git Credential Manager (GCM) 安全管理凭证
+    helper = "D:/Program Files/PortableGit-2.50.0.2-64-bit/mingw64/bin/git-credential-manager.exe"
+
+[credential "http://172.30.162.102:8088"]
+    # 指定私有 Git 服务器使用通用凭证提供者
+    provider = generic
+
+# ==============================
+# 可选增强配置（按需取消注释）
+# ==============================
+
+# [alias]
+#     st = status
+#     co = checkout
+#     br = branch
+#     lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+#     unstage = reset HEAD --
+
+# [push]
+#     # 推送时默认使用当前分支名（避免每次写全名）
+#     default = current
+
+# [pull]
+#     # 使用 rebase 而非 merge 进行 pull（保持线性历史）
+#     rebase = true
 
 
 
