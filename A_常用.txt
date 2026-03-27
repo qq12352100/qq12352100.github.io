@@ -1,5 +1,8 @@
 ---------------------------------------------【Windows】
-administrator
+administrator       regedit  注册表 || gpedit.msc  策略 || services.msc  服务 || sysdm.cpl 系统属性 || taskschd.msc  计划任务 || control  控制面板
+systeminfo | findstr /i "系统类型"
+
+calc                            # 计算器
 mstsc                           # 远程
 telnet 192.168.0.10 3306        # 查看端口是否通
 tracert 192.168.0.1             # 路由追踪
@@ -11,7 +14,9 @@ tracert wwww.baidu.com          # 路由跟踪
 dxdiag                          # 看显卡
 msinfo32                        # 看系统信息
 ---------------------------------------------【linux】
-free -h ; df -h                 # 查看内存与硬盘
+# 查看内存与硬盘,物理核心数,逻辑 CPU 数量
+free -h ; df -h ; lsblk ; grep "core id" /proc/cpuinfo | sort -u | wc -l ; grep -c processor /proc/cpuinfo
+
 systemctl status firewalld      # 查看防火墙状态
 systemctl list-unit-files       # 查看所有开机启动
 scp /home/1.mp3 root@192.168.1.50:/home/music       #传文件  -r 传文件夹
