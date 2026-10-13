@@ -15,7 +15,8 @@ dxdiag                          # 看显卡
 msinfo32                        # 看系统信息
 ---------------------------------------------【linux】
 # 查看内存与硬盘,物理核心数,逻辑 CPU 数量
-free -h ; df -h ; lsblk ; grep "core id" /proc/cpuinfo | sort -u | wc -l ; grep -c processor /proc/cpuinfo
+free -h;df -h;lsblk;echo "物理核心:$(grep "core id" /proc/cpuinfo|sort -u|wc -l)";echo "逻辑线程:$(grep -c processor /proc/cpuinfo)";echo "CPU插槽:$(grep "physical id" /proc/cpuinfo|sort -u|wc -l)";echo "CPU型号:$(grep -m1 'model name' /proc/cpuinfo)"
+
 
 systemctl status firewalld      # 查看防火墙状态
 systemctl list-unit-files       # 查看所有开机启动
